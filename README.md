@@ -1,6 +1,6 @@
-## ![logo](https://avatars1.githubusercontent.com/u/1303816?v=2&u=c153ce09f7ba68a3c3eff36d876638a224db35da&s=30) koa-scaffold ![npm](https://badge.fury.io/js/koa-scaffold.png)
+## ![logo](https://avatars1.githubusercontent.com/u/1303816?v=2&u=c153ce09f7ba68a3c3eff36d876638a224db35da&s=30) koa-scaffold !
 
-A koa scaffold with a well organize structure for build large application.
+A koa scaffold for build application rapidly with a carefully designed folder structure.
 
 ### Installation
 ````
@@ -16,18 +16,19 @@ $ node --harmony app.js
 ````
 
 ### Folder structure
-Think folder is a module of your app, and route has a like name. for example:
-you should manage account of user, then you create a folder account, and in account/routes.js,
-you def /account/profile as user's profile, /account/login and /account/logout for login and logout
+the app is composed by modules, every folder in app is a module. route.js in modules is routes defination for mvc, for example:
+you design manage your account of users, you should create a folder account as a module, and create file routes.js for routes,
+now you can def "/account/profile" for user's profile page, "/account/login" and "/account/logout" for user login and logout and so on...
 
 
 ### Routes autowire
-In app.js, all routes.js (all routes should be defined in) is autowired recursive.
+In app.js, all routes.js (all routes should be defined in) is autowired recursive, it means you just write your routes,
+dont need care require in app, but it's no order and all routes.js is autowired, if you dont want to, change it youself in app.js.
 
 
 ### About static file
-I strongly suggest you should has a single static project and serve it use a web service such as nginx,
-in this scoffold, it support serve static files by use koa-static-cache, you can rapidly develop at beginning.
+it support serve static files by use [koa-static-cache](https://github.com/koajs/static-cache) for rapidly develop, 
+you can change serve folder and static prefix in app/common/config.js, But I strongly suggest you should has a single static project and serve it use a web service such as nginx,
 
 
 ### ORM and Database
