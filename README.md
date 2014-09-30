@@ -1,6 +1,6 @@
 ## ![logo](https://avatars1.githubusercontent.com/u/1303816?v=2&u=c153ce09f7ba68a3c3eff36d876638a224db35da&s=30) koa-scaffold ![npm](https://badge.fury.io/js/koa-scaffold.png)
 
-This is a koa scaffold with a well organize structure for build large application.
+A koa scaffold with a well organize structure for build large application.
 
 ### Installation
 ````
