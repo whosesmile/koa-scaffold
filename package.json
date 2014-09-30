@@ -1,0 +1,29 @@
+{
+  "name": "koa-scaffold",
+  "description": "This is a koa scaffold with swig as template engine.",
+  "version": "0.0.1",
+  "author": {
+    "name": "shuangbao.li",
+    "email": "lovemoon@yeah.net"
+  },
+  "repository": "https://github.com/whosesmile/koa-scaffold",
+  "dependencies": {
+    "co": "^3.0.6",
+    "koa": "^0.8.0",
+    "koa-router": "^3.4.0",
+    "swig": "~1.4.2",
+    "debug": "~2.0.0",
+    "koa-static": "~1.4.7",
+    "koa-rewrite": "~1.1.0",
+    "koa-static-cache": "~1.2.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "engines": {
+    "node": ">= 11.3"
+  }
+}
