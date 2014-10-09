@@ -3,8 +3,9 @@ var router = require('koa-router');
 var support = require('./app/common/support');
 var debug = require('debug')('koa:scaffold');
 var app = module.exports = koa();
+var port = 7777;
 
-require('./app/common/config');
+var config = require('./app/common/config');
 
 // 初始化路由
 app.use(router(app));
@@ -22,4 +23,7 @@ support.walk(__dirname, function (error, result) {
   });
 });
 
-app.listen(8080);
+app.listen(port);
+
+console.log('Server started, listening on port:', port);
+process.stdout.write('waiting...');

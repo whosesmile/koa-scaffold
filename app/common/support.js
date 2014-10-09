@@ -38,8 +38,8 @@ function callsite() {
   Error.prepareStackTrace = function (_, stack) {
     return stack;
   };
-  var err = new Error;
-  Error.captureStackTrace(err, arguments.callee);
+  var err = new Error();
+  Error.captureStackTrace(err, callsite);
   var stack = err.stack;
   Error.prepareStackTrace = orig;
   return stack;

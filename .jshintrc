@@ -1,0 +1,21 @@
+{
+  "curly": false,
+  "eqeqeq": true,
+  "forin": true,
+  "immed": true,
+  "indent": 2,
+  "noyield": true,
+  "noarg": true,
+  "latedef": true,
+  "newcap": true,
+  "sub": true,
+  "esnext": true,
+  "node": true,
+  "browser": false,
+  "undef": true,
+  // "vars":true,
+  "unused": "vars",
+  "boss": true,
+  "eqnull": true,
+  "globals": {}
+}
