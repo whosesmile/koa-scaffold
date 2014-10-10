@@ -1,5 +1,4 @@
-var app = require('../../app');
-var template = require('../common/config').template;
+var app = require('../app');
 
 // home
 app.get('/', function * (next) {
@@ -10,5 +9,5 @@ app.get('/', function * (next) {
 
 // error
 app.get('/error', function * (next) {
-  this.body = global.a;
+  this.body = '';
 });

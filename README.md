@@ -1,6 +1,6 @@
-## ![logo](https://avatars1.githubusercontent.com/u/1303816?v=2&u=c153ce09f7ba68a3c3eff36d876638a224db35da&s=30) koa-scaffold !
+## ![logo](https://avatars1.githubusercontent.com/u/1303816?v=2&u=c153ce09f7ba68a3c3eff36d876638a224db35da&s=30) koa-scaffold
 
-A koa scaffold for build application rapidly with a carefully designed structure.
+A koa scaffold for build web mvc application rapidly with a carefully designed structure.
 
 ### Installation
 ````
@@ -12,15 +12,15 @@ $ npm install
 
 Aha, just input cmd:
 ````
-$ node --harmony app.js
+$ node --harmony server.js
 ````
 
-I strongly suggest you install [node-supervisor](https://github.com/isaacs/node-supervisor), and input
+I strongly suggest you install [node-supervisor](https://github.com/isaacs/node-supervisor), and input cmd:
 ````
-$ supervisor --harmony -w app app.js
+$ supervisor --harmony -w app server.js
 ````
 
-### structure
+### Structure
 The application is composed by modules, every folder in app folder is treated as a module. routes.js in modules is the place for def routers, for example:
 you design pages for your users, you can create a folder named account as a module, and create file routes.js in account for routes,
 now you can def "/account/profile" for user's profile page, "/account/login" and "/account/logout" for user login and logout and so on...

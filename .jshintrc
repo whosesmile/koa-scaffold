@@ -17,5 +17,7 @@
   "unused": "vars",
   "boss": true,
   "eqnull": true,
-  "globals": {}
+  "globals": {
+    "template": true
+  }
 }

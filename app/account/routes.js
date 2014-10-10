@@ -1,5 +1,4 @@
-var app = require('../../app');
-var template = require('../common/config').template;
+var app = require('../app');
 
 // account
 app.get('/account', function * (next) {
