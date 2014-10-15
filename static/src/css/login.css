@@ -1,0 +1,15 @@
+body { background: rgb(108, 65, 60) url(/static/images/bg/login.jpg) center bottom no-repeat; background-attachment: fixed; background-size: cover; overflow: hidden; }
+.bounceInDown { -webkit-animation-duration: .75s; animation-duration: .75s; }
+#login { position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-size: 14px; }
+#login .alert { padding: 8px 15px; }
+#login .form { font-size: 14px; }
+#login .form-title { margin-bottom: 15px; line-height: 40px; }
+#login .form-title img { width: 40px; margin-right: 10px; float: left; }
+#login .form-group p.text-danger { margin-top: 8px; }
+#login .form-control { height: 36px; }
+#login .form-control label { margin-bottom: 0; }
+#login .btn { font-size: 16px; }
+#login .input-group-addon .fa { width: 14px; }
+#login .input-group-addon .fa-lock { font-size: 18px; }
+#login .content { box-shadow: 0 0 10px rgba(204, 204, 204, 0.8); background-color: #fff; width: 340px; padding: 20px 30px; border: 1px solid #ddd; border-radius: 5px; position: absolute; top: 20%; left: 50%; margin-left: -180px; }
+#login .content .form-group { margin-bottom: 25px; }

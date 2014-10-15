@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}微笑故事{% endblock %}</title>
+  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" /><![endif]-->
+  <!--[if lt IE 9]><script src="/static/js/lib/modernizr.js"></script><![endif]-->
+  <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico" />
+  <link type="text/css" rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="/static/vendor/fontawesome/css/font-awesome.min.css" />
+  <link type="text/css" rel="stylesheet" href="/static/vendor/animate/animate.min.css" />
+  <link type="text/css" rel="stylesheet" href="/static/css/base.css" />
+  <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/vendor/angular/angular.min.js"></script>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  {% block header %}{% endblock %}
+  {% block content %}{% endblock %}
+  {% block footer %}{% endblock %}
+</body>
+</html>

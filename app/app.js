@@ -2,11 +2,11 @@ var koa = require('koa');
 var path = require('path');
 var swig = require('swig');
 var router = require('koa-router');
-var support = require('./support');
 var statics = require('koa-static-cache');
 var compress = require('koa-compress');
 var minifier = require('koa-html-minifier');
 var favicon = require('koa-favicon');
+var support = require('./support');
 
 // Let's GO~
 var app = module.exports = koa();
@@ -62,14 +62,17 @@ app.use(minifier({
 }));
 
 // config static 
-app.use(statics('static', {
+app.use(statics('static/src', {
   gzip: true,
   prefix: '/static',
   maxAge: 365 * 24 * 60 * 60
 }));
 
 // config favicon.ico
-app.use(favicon(path.join(__dirname, '../favicon.ico')));
+app.use(favicon(path.join(__dirname, 'favicon.ico')));
+
+// common routes.js
+require('./modules/common/routes');
 
 // load all routes.js
 support.walk(__dirname, function (error, result) {

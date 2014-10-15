@@ -18,7 +18,10 @@
     "koa-html-minifier": "~1.0.1",
     "koa-compress": "~1.0.8",
     "koa-error": "~1.1.2",
-    "koa-favicon": "~1.2.0"
+    "koa-favicon": "~1.2.0",
+    "waterline": "~0.10.11",
+    "sails-disk": "~0.10.4",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
     "mocha": "*",
