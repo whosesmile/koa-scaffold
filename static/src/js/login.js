@@ -1,30 +1,26 @@
-// bounce down animate
-$(function () {
-  $('#login').addClass('animated swing');
-});
+(function () {
+  // bounce down animate
+  $(function () {
+    var actions = ['swing', 'pulse', 'tada', 'fadeInDown', 'bounce', 'bounceIn', 'bounceInDown', 'flip', 'rollIn'];
+    var action = actions[Math.floor(actions.length * Math.random(0, 1))];
+    $('#login').addClass('animated').addClass(action);
+  });
 
-// controller
-var app = angular.module('loginModule', []);
+  // controller
+  var app = angular.module('loginModule', []);
 
-app.controller('loginController', function ($scope) {
+  app.controller('loginController', function ($scope) {
 
-  // checked
-  $scope.remember = true;
+    $scope.remember = true;
 
-  $scope.login = function () {
-    $scope.processing = true;
-    service.login($scope.email, $scope.password, $scope.remember).then(function (res) {
-      $scope.$emit('$initialize');
-    }, function (rej) {
-      $scope.error = true;
-    })['finally'](function () {
-      $scope.processing = false;
-    });
-  };
+    $scope.login = function () {
 
-});
+    };
 
-// bootstrap
-angular.element(document).ready(function () {
-  angular.bootstrap(document, ['loginModule']);
-});
+  });
+
+  // bootstrap
+  angular.element(document).ready(function () {
+    angular.bootstrap(document, ['loginModule']);
+  });
+})();

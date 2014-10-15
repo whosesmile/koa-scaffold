@@ -1,5 +1,5 @@
 body { background: rgb(108, 65, 60) url(/static/images/bg/login.jpg) center bottom no-repeat; background-attachment: fixed; background-size: cover; overflow: hidden; }
-.bounceInDown { -webkit-animation-duration: .75s; animation-duration: .75s; }
+.bounceInDown { -webkit-animation-duration: .65s; animation-duration: .65s; }
 #login { position: absolute; top: 0; left: 0; right: 0; bottom: 0; font-size: 14px; }
 #login .alert { padding: 8px 15px; }
 #login .form { font-size: 14px; }
