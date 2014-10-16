@@ -41,23 +41,21 @@ global.template = {
 
 };
 
-// Initial router
-app.use(router(app));
+app.use(function * (next) {
+  yield next;
+});
 
-// compress html
+// compress html & text
 app.use(compress({
   threshold: 1024,
-  flush: require('zlib').Z_SYNC_FLUSH,
-  filter: function (content_type) {
-    return /text/i.test(content_type);
-  }
+  flush: require('zlib').Z_SYNC_FLUSH
 }));
 
 // html minifier
 app.use(minifier({
-  collapseWhitespace: true,
   minifyJS: true,
   minifyCSS: true,
+  collapseWhitespace: true,
   keepClosingSlash: true
 }));
 
@@ -70,6 +68,9 @@ app.use(statics('static/src', {
 
 // config favicon.ico
 app.use(favicon(path.join(__dirname, 'favicon.ico')));
+
+// Initial router
+app.use(router(app));
 
 // common routes.js
 require('./modules/common/routes');

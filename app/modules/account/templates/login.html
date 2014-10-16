@@ -1,6 +1,6 @@
 {% extends './modules/common/templates/layout.html' %}
 
-{% block title %}登录 - 微笑故事{% endblock %}
+{% block title %}微笑故事 - 你我的故事{% endblock %}
 
 {% block head %}
   <link type="text/css" rel="stylesheet" href="/static/css/login.css" />
@@ -46,7 +46,7 @@
 
         <div class="form-group text-center">
           <button class="btn btn-success btn-block" type="submit" ng-disabled="form.$invalid || processing">
-            <span ng-if="!processing">立即登录 <i class="fa fa-arrow-circle-o-right"></i></span>
+            <span ng-if="!processing">立即登录</span>
             <span ng-if="processing">正在登录...</span>
           </button> 
         </div>
