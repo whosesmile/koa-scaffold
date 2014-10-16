@@ -61,13 +61,15 @@ app.use(minifier({
 
 // config static 
 app.use(statics('static/src', {
-  gzip: true,
   prefix: '/static',
-  maxAge: 365 * 24 * 60 * 60
+  gzip: true,
+  maxAge: 365 * 24 * 60 * 60 // s
 }));
 
 // config favicon.ico
-app.use(favicon(path.join(__dirname, 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'favicon.ico'), {
+  maxAge: 365 * 24 * 60 * 60 * 1000 // ms
+}));
 
 /*--------------------------------------------------------------------------------*/
 // Add generator before this line, because router not call next generator continue.
