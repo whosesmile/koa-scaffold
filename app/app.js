@@ -69,7 +69,11 @@ app.use(statics('static/src', {
 // config favicon.ico
 app.use(favicon(path.join(__dirname, 'favicon.ico')));
 
-// Initial router
+/*--------------------------------------------------------------------------------*/
+// Add generator before this line, because router not call next generator continue.
+/*--------------------------------------------------------------------------------*/
+
+// init router
 app.use(router(app));
 
 // common routes.js
@@ -77,11 +81,12 @@ require('./modules/common/routes');
 
 // load all routes.js
 support.walk(__dirname, function (error, result) {
-  if (error)
+  if (error) {
     console.error(error);
+  }
 
   result.filter(function (path) {
-    return /routes\.js$/.test([path]);
+    return /\broutes\.js$/.test([path]);
   }).forEach(function (routes) {
     require(routes.replace(__dirname, '.'));
   });
