@@ -41,10 +41,6 @@ global.template = {
 
 };
 
-app.use(function * (next) {
-  yield next;
-});
-
 // compress html & text
 app.use(compress({
   threshold: 1024,
@@ -71,6 +67,15 @@ app.use(favicon(path.join(__dirname, 'favicon.ico'), {
   maxAge: 365 * 24 * 60 * 60 * 1000 // ms
 }));
 
+// Like python flask, add slash at end of path, hmm, just for beauty...
+var slash = /\/$/;
+app.use(function * (next) {
+  if (this.accepts('text/html') && !slash.test(this.path)) {
+    return this.redirect(this.path + '/');
+  }
+  yield next;
+});
+
 /*--------------------------------------------------------------------------------*/
 // Add generator before this line, because router not call next generator continue.
 /*--------------------------------------------------------------------------------*/
@@ -95,7 +100,7 @@ support.walk(__dirname, function (error, result) {
 });
 
 var port = 7777;
-app.listen(port);
-
-console.log('Server started, listening on port:', port);
-process.stdout.write('waiting...');
+app.listen(port, function () {
+  console.log('Server started, listening on port: %d', port);
+  process.stdout.write('waiting...');
+});

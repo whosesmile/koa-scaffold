@@ -11,17 +11,16 @@
     "co": "^3.0.6",
     "koa": "^0.8.0",
     "koa-router": "^3.4.0",
-    "swig": "~1.4.2",
-    "debug": "~2.0.0",
     "koa-rewrite": "~1.1.0",
     "koa-static-cache": "~1.2.0",
     "koa-html-minifier": "~1.0.1",
     "koa-compress": "~1.0.8",
     "koa-error": "~1.1.2",
     "koa-favicon": "~1.2.0",
-    "waterline": "~0.10.11",
-    "sails-disk": "~0.10.4",
-    "lodash": "~2.4.1"
+    "swig": "~1.4.2",
+    "debug": "~2.0.0",
+    "sequelize": "~2.0.0-rc2",
+    "mysql": "~2.5.3"
   },
   "devDependencies": {
     "mocha": "*",

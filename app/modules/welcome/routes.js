@@ -2,7 +2,7 @@ var app = require('../../app');
 
 // home
 app.get('/', function * (next) {
-  this.redirect('/account/login');
+  this.redirect('/account/login/');
 });
 
 // error
