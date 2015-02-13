@@ -1,25 +1,20 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <title>{% block title %}微笑故事 - 你我的故事{% endblock %}</title>
-  <meta name="description" content="你我的故事" />
-  <meta name="keywords" content="你我的故事" />
-  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" /><![endif]-->
-  <!--[if lt IE 9]><script src="/static/js/lib/modernizr.js"></script><![endif]-->
-  <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico" />
-  <link type="text/css" rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/vendor/fontawesome/css/font-awesome.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/vendor/animate/animate.min.css" />
-  <link type="text/css" rel="stylesheet" href="/static/css/base.css" />
-  <script type="text/javascript" src="/static/vendor/jquery/jquery.min.js"></script>
-  <script type="text/javascript" src="/static/vendor/angular/angular.min.js"></script>
-  {% block head %}{% endblock %}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="target-densitydpi=device-dpi,width=640,user-scalable=no" />
+  <title>{% block title %}千丁小区{% endblock %}</title>
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/base.css" />
+  {% block style %}{% endblock %}
 </head>
 <body>
-  {% block header %}{% endblock %}
-  {% block content %}{% endblock %}
-  {% block footer %}{% endblock %}
+  <div class="root">
+    {% block header %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block footer %}{% endblock %}
+  </div>
+  <script src="{{ shost }}/public/vendor/zepto.js"></script>
   {% block script %}{% endblock %}
 </body>
 </html>

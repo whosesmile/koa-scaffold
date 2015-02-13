@@ -2,52 +2,55 @@ var koa = require('koa');
 var path = require('path');
 var swig = require('swig');
 var router = require('koa-router');
-var statics = require('koa-static-cache');
-var compress = require('koa-compress');
 var minifier = require('koa-html-minifier');
-var favicon = require('koa-favicon');
+var http = require('http');
+var _ = require('lodash');
+var cpus = require('os').cpus().length;
+var config = require('./config');
 var support = require('./support');
+var cluster = require('cluster');
 
-// Let's GO~
-var app = module.exports = koa();
-
-// config swig loader folder (config is useless unless you use swig not template)
+// 配置模板加载路径
 swig.setDefaults({
   loader: swig.loaders.fs(path.resolve(__dirname)),
-  cache: false // disabled for dev, should be commented on product
+  cache: config.templateCache // disabled for dev, should be commented on product
 });
 
-// shortcut for render file by relative path
+// 添加全局模板引用 方便渲染页面
 global.template = {
 
-  regexp: /^[^./]/i,
-
-  render: function () {
-    if (this.regexp.test(arguments[0])) {
-      var stack = support.callsite();
-      var folder = path.dirname(stack[1].getFileName());
-      return swig.renderFile.apply(swig, [path.resolve(folder, arguments[0])].concat(Array.prototype.slice.call(arguments, 1)));
+  render: function (template, model, callback) {
+    // 兼容JSON处理
+    if (_.isNumber(template)) {
+      return this.renderJSON(template, model);
     }
 
-    return swig.renderFile.apply(swig, Array.prototype.slice.call(arguments, 0));
+    // 添加静态域名变量
+    model = _.merge({
+      shost: config.shost
+    }, model);
+
+    if (/^[^./]/i.test(template)) {
+      var folder = path.dirname(support.callsite()[1].getFileName());
+      template = path.resolve(folder, template);
+    }
+
+    return swig.renderFile(template, model, callback);
   },
 
-  stringify: function (data, code) {
-    return {
-      code: code || 200,
+  renderJSON: function (code, data) {
+    return JSON.stringify({
+      code: code,
       data: data
-    };
+    });
   }
 
 };
 
-// compress html & text
-app.use(compress({
-  threshold: 1024,
-  flush: require('zlib').Z_SYNC_FLUSH
-}));
+// 初始化
+var app = module.exports = koa();
 
-// html minifier
+// 去除HTML页面中的换行和空白
 app.use(minifier({
   minifyJS: true,
   minifyCSS: true,
@@ -55,43 +58,22 @@ app.use(minifier({
   keepClosingSlash: true
 }));
 
-// config static 
-app.use(statics('static/src', {
-  prefix: '/static',
-  gzip: true,
-  maxAge: 365 * 24 * 60 * 60 // s
-}));
-
-// config favicon.ico
-app.use(favicon(path.join(__dirname, 'favicon.ico'), {
-  maxAge: 365 * 24 * 60 * 60 * 1000 // ms
-}));
-
-// Like python flask, add slash at end of path, hmm, just for beauty...
-var slash = /\/$/;
-app.use(function * (next) {
-  if (this.accepts('text/html') && !slash.test(this.path)) {
-    return this.redirect(this.path + '/');
-  }
-  yield next;
+app.use(function* (next) {
+  yield * next;
 });
 
 /*--------------------------------------------------------------------------------*/
 // Add generator before this line, because router not call next generator continue.
 /*--------------------------------------------------------------------------------*/
 
-// init router
+// 初始化routers
 app.use(router(app));
 
-// common routes.js
+// 加载通用路由模块
 require('./modules/common/routes');
 
-// load all routes.js
+// 遍历目录加载所有模块
 support.walk(__dirname, function (error, result) {
-  if (error) {
-    console.error(error);
-  }
-
   result.filter(function (path) {
     return /\broutes\.js$/.test([path]);
   }).forEach(function (routes) {
@@ -99,8 +81,14 @@ support.walk(__dirname, function (error, result) {
   });
 });
 
-var port = 7777;
-app.listen(port, function () {
-  console.log('Server started, listening on port: %d', port);
-  process.stdout.write('waiting...');
-});
+// 启动服务器
+if (cluster.isMaster) {
+  for (var i = 0; i < cpus; i++) {
+    cluster.fork();
+  }
+}
+else {
+  app.listen(config.port, function () {
+    console.log('clustor worker %d started, listening on port: %d', cluster.worker.id, config.port);
+  });
+}

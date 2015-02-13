@@ -1,0 +1,59 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/home.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="home">
+    <header class="bar fixed">
+      <h1>首页</h1>
+    </header>
+    <section class="has-header has-footer">
+      <div class="slider">
+        <img src="{{ shost }}/mobile/images/slider.jpg" />
+      </div>
+      <div class="notes">
+        <p class="ellipsis"><i class="icon icon-notice"></i>今天13点至13:30分小区自来水停水今天13点至13:30分小区自来水停水</p>
+      </div>
+      <div class="myapps clearfix">
+        <a class="item" href="">
+          <i class="icon icon-phone"></i>
+          <span>管家电话</span>
+        </a>
+        <a class="item" href="">
+          <i class="icon icon-pass"></i>
+          <span>访客通行</span>
+        </a>
+        <a class="item" href="">
+          <i class="icon icon-key"></i>
+          <span>我的钥匙</span>
+        </a>
+        <a class="item" href="">
+          <i class="icon icon-where"></i>
+          <span>周末去哪</span>
+        </a>
+        <a class="item" href="">
+          <i class="icon icon-food"></i>
+          <span>天天美食</span>
+        </a>
+        <a class="item" href="">
+          <i class="icon icon-house"></i>
+          <span>我的房屋</span>
+        </a>
+      </div>
+    </section>
+    <footer class="bar fixed">
+      <nav>
+        <a href=""><i class="icon icon-tab-home"></i></a>
+        <a href=""><i class="icon icon-tab-housekeep"></i></a>
+        <a href=""><i class="icon icon-tab-shopping"></i></a>
+        <a href=""><i class="icon icon-tab-neighbour"></i></a>
+      </nav>
+    </footer>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ shost }}/mobile/js/home.js"></script>
+{% endblock %}

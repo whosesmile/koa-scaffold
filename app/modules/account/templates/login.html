@@ -1,60 +1,15 @@
 {% extends './modules/common/templates/layout.html' %}
 
-{% block title %}微笑故事 - 你我的故事{% endblock %}
-
-{% block head %}
-  <link type="text/css" rel="stylesheet" href="/static/css/login.css" />
-  <script type="text/javascript" src="/static/js/login.js"></script>
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/login.css" />
 {% endblock %}
 
 {% block content %}
-  <div id="login" ng-controller="loginController">
-    <div class="content center-block">
-      <form method="post" name="form" ng-submit="login()">
-        <h3 class="form-title"><img src="/static/img/logo.png" alt="logo" /> 微笑故事</h3>
-        <div class="alert alert-danger" ng-if="error">
-          <button type="button" class="close" ng-click="$parent.error=false" title="关闭">&times;</button>
-          <span><i class="fa fa-info-circle fa-lg"></i> 邮箱或密码错误</span>
-        </div>
-
-        <div class="form-group">
-          <div class="input-group" ng-class="{'ng-dirty': form.email.$dirty, 'ng-valid': form.email.$valid, 'ng-invalid': form.email.$invalid}">
-            <div class="input-group-addon">
-              <i class="fa fa-envelope"></i>
-            </div>
-            <input class="form-control" type="email" placeholder="邮箱" name="email" ng-model="email" cs-focus autofocus required />
-          </div>
-          <p class="text-danger" ng-if="form.email.$dirty &amp;&amp; form.email.$invalid"><i class="fa fa-exclamation-circle"></i> 请输入您的邮箱</p>
-        </div>
-        
-        <div class="form-group">
-          <div class="input-group" ng-class="{'ng-dirty': form.password.$dirty, 'ng-valid': form.password.$valid, 'ng-invalid': form.password.$invalid}">
-            <div class="input-group-addon">
-              <i class="fa fa-lock"></i>
-            </div>
-            <input class="form-control" type="password" placeholder="密码" name="password" ng-model="password" cs-autofill required />
-          </div>
-          <p class="text-danger" ng-if="form.password.$dirty &amp;&amp; form.password.$invalid"><i class="fa fa-exclamation-circle"></i> 请输入您的密码</p>
-        </div>
-
-        <div class="form-group clearfix">
-          <label class="pull-left">
-            <input type="checkbox" name="remember" ng-model="remember" value="true" /> 保持登录
-          </label>
-          <a href="" class="pull-right">忘记密码？</a>
-        </div>
-
-        <div class="form-group text-center">
-          <button class="btn btn-success btn-block" type="submit" ng-disabled="form.$invalid || processing">
-            <span ng-if="!processing">立即登录</span>
-            <span ng-if="processing">正在登录</span>
-          </button> 
-        </div>
-      </form>
-
-      <div class="copyright small text-center text-muted">
-         2014 &copy; 微笑故事
-      </div>
-    </div>
+  <div id="login">
+    <img alt="千丁小区" class="logo" src="{{ shost }}/mobile/images/logo.jpg" />
   </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ shost }}/mobile/js/login.js"></script>
 {% endblock %}

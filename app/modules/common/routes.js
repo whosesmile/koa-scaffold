@@ -1,4 +1,17 @@
+var fs = require('fs');
+var Promise = require("bluebird");
 var app = require('../../app');
+var config = require('../../config');
+var readFile = Promise.promisify(fs.readFile);
+
+// favicon.ico
+app.get('/favicon.ico', function* (next) {
+  // 缓存7天
+  this.set('Cache-Control', 'public, max-age=' + 7 * 60 * 60);
+  this.type = 'image/x-icon';
+  this.body =
+    yield readFile(config.favicon);
+});
 
 // proxy error handler: 404 or 50X
 var exceptionHandler = function () {
@@ -9,9 +22,9 @@ var exceptionHandler = function () {
   this.status = 200;
 
   if (mime === 'json') {
-    this.body = template.stringify({
+    this.body = template.render(code, {
       message: message
-    }, code);
+    });
   }
   else if (mime === 'html') {
     this.body = template.render(page);
@@ -23,10 +36,10 @@ var exceptionHandler = function () {
 };
 
 // error handler
-app.use(function * (next) {
+app.use(function* (next) {
   var error = null;
   try {
-    yield next;
+    yield * next;
   }
   catch (e) {
     error = e;
