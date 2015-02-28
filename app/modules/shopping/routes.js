@@ -1,13 +1,21 @@
 var app = require('../../app');
+var shoppingService = require('./service');
 
 // 团购首页
 app.get('/shopping', function * (next) {
-  this.body = template.render('templates/shopping.html');
+  var data = yield shoppingService.listGoods();
+  console.log(data)
+  this.body = template.render('templates/shopping.html', data);
 });
 
 // 分类频道
 app.get('/shopping/channel', function * (next) {
   this.body = template.render('templates/channel.html');
+});
+
+// 推荐频道
+app.get('/shopping/promotes', function * (next) {
+  this.body = template.render('templates/promotes.html');
 });
 
 // 商品详情

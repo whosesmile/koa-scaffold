@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var request = require('request');
 
 // recursive dir
 function walk(dir, done) {
@@ -45,5 +46,35 @@ function callsite() {
   return stack;
 }
 
+// request proxy to return promise 
+function requestProxy(options) {
+  return new Promise(function (resolve, reject) {
+    request(options, function (err, res) {
+      if (err) {
+        reject(err);
+      }
+      res = JSON.parse(res.body);
+      res.code = parseInt(res.code, 10);
+      resolve(res);
+    });
+  });
+}
+
+var response = {
+
+  // 参数不正确
+  badRequest: function (message) {
+    return {
+      code: 400,
+      data: {
+        message: message || '请求参数不正确'
+      }
+    };
+  }
+
+};
+
 module.exports.walk = walk;
 module.exports.callsite = callsite;
+module.exports.request = requestProxy;
+module.exports.response = response;
