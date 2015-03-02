@@ -8,7 +8,10 @@ var request = require('../../support').request;
 exports.listCity = function () {
   return request({
     url: whost + '/brick/app/data/city.json',
-    method: 'get'
+    method: 'get',
+    qs: {
+      qdPlatform: 'weixin'
+    }
   });
 };
 
@@ -23,7 +26,7 @@ exports.listProject = function (cityId) {
     method: 'get',
     qs: {
       cityId: cityId,
-      qdPlatform: 'android'
+      qdPlatform: 'weixin'
     }
   });
 };

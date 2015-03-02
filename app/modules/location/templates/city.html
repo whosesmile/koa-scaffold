@@ -1,0 +1,44 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/city.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="city">
+    <header class="bar fixed">
+      <h1>选择城市</h1>
+    </header>
+    <section class="has-header">
+      <div class="geo">
+        <h3>定位到您当前所在的城市是：</h3>
+        <div class="city"><i class="icon icon-location"></i>北京市</div>
+      </div>
+      
+      {% for item in list %}
+        <div class="list list-padding">
+          {% for letter, citys in item %}
+            <div class="item-divider">{{ letter }}</div>
+            {% for city in citys %}
+              <a href="/location/project?cityId={{ city.id }}" class="item"><span>{{ city.name }}</span></a>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      <div class="letters">
+        <div class="wrap">
+        {% for item in list %}
+          {% for letter, citys in item %}
+          <i>{{ letter }}</i>
+          {% endfor %}
+        {% endfor %}
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- // <script src="{{ shost }}/mobile/js/home.js"></script> -->
+{% endblock %}

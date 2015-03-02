@@ -58,10 +58,6 @@ app.use(minifier({
   keepClosingSlash: true
 }));
 
-app.use(function* (next) {
-  yield * next;
-});
-
 /*--------------------------------------------------------------------------------*/
 // Add generator before this line, because router not call next generator continue.
 /*--------------------------------------------------------------------------------*/

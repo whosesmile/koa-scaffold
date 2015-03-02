@@ -55,7 +55,9 @@ function requestProxy(options) {
       }
       res = JSON.parse(res.body);
       res.code = parseInt(res.code, 10);
-      resolve(res);
+      if (res.code === 0 || res.code === 200) {
+        resolve(res.data);
+      }
     });
   });
 }
@@ -74,7 +76,7 @@ var response = {
 
 };
 
-module.exports.walk = walk;
-module.exports.callsite = callsite;
-module.exports.request = requestProxy;
-module.exports.response = response;
+exports.walk = walk;
+exports.callsite = callsite;
+exports.request = requestProxy;
+exports.response = response;

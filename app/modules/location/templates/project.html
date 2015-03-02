@@ -1,0 +1,31 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/project.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="project">
+    <header class="bar fixed">
+      <a class="left-icon" href=""><i class="icon icon-back"></i></a>
+      <h1>选择小区-北京</h1>
+    </header>
+    <section class="has-header">
+      <div class="filter">
+        <input type="text" placeholder="请输入小区名字" />
+      </div>
+
+      <div class="list list-padding">
+        {% for item in list %}
+          <a href="/location/choose?projectId={{ item.id }}" class="item"><span>{{ item.name }}</span></a>
+        {% endfor %}
+      </div>
+
+      <div class="text-center small notfound">没有找到自己的小区或房屋？<a href="" class="text-warning">电话联系我们</a></div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- // <script src="{{ shost }}/mobile/js/home.js"></script> -->
+{% endblock %}
