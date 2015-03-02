@@ -5,7 +5,7 @@ var path = require('path');
 module.exports = {
 
   // 服务端口
-  port: 8080,
+  port: 7777,
 
   // 模板是否缓存
   templateCache: false,
