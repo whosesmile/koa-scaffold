@@ -1,3 +1,4 @@
+{% import 'modules/common/templates/macro.html' as macro %}
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -9,11 +10,9 @@
   {% block style %}{% endblock %}
 </head>
 <body>
-  <div class="root">
-    {% block header %}{% endblock %}
-    {% block content %}{% endblock %}
-    {% block footer %}{% endblock %}
-  </div>
+  {% block header %}{% endblock %}
+  {% block content %}{% endblock %}
+  {% block footer %}{% endblock %}
   <script src="{{ shost }}/public/vendor/zepto.js"></script>
   {% block script %}{% endblock %}
 </body>

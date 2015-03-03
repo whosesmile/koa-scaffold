@@ -4,6 +4,7 @@ var swig = require('swig');
 var router = require('koa-router');
 var minifier = require('koa-html-minifier');
 var http = require('http');
+var session = require('koa-session');
 var _ = require('lodash');
 var cpus = require('os').cpus().length;
 var config = require('./config');
@@ -50,6 +51,13 @@ global.template = {
 // 初始化
 var app = module.exports = koa();
 
+// 设置session
+app.keys = ['LWXA@0ZrXj~!]/mNHH98j/3yX R,?RT'];
+app.use(session(app, {
+  key: 'T',
+  maxage: 365 * 24 * 60 * 60 * 1000
+}));
+
 // 去除HTML页面中的换行和空白
 app.use(minifier({
   minifyJS: true,
@@ -57,6 +65,27 @@ app.use(minifier({
   collapseWhitespace: true,
   keepClosingSlash: true
 }));
+
+// 读取project信息
+app.use(function * (next) {
+  // 防止循环重定向
+  if (!/^\/location(\/|$)/.test(this.path) && !this.session.projectId) {
+    return this.redirect('/location');
+  }
+  yield next;
+});
+
+// 全局错误处理
+app.use(function * (next) {
+  try {
+    yield next;
+  }
+  catch (e) {
+    this.status = e.status || 500;
+    this.body = e.message;
+    console.log(e)
+  }
+});
 
 /*--------------------------------------------------------------------------------*/
 // Add generator before this line, because router not call next generator continue.

@@ -7,7 +7,7 @@
 {% block content %}
   <div class="project">
     <header class="bar fixed">
-      <a class="left-icon" href=""><i class="icon icon-back"></i></a>
+      <a class="left-icon" href="/location"><i class="icon icon-back"></i></a>
       <h1>选择小区-北京</h1>
     </header>
     <section class="has-header">
@@ -17,11 +17,11 @@
 
       <div class="list list-padding">
         {% for item in list %}
-          <a href="/location/choose?projectId={{ item.id }}" class="item"><span>{{ item.name }}</span></a>
+          <a href="/location/choose/{{ item.id }}" class="item"><span>{{ item.name }}</span></a>
         {% endfor %}
       </div>
 
-      <div class="text-center small notfound">没有找到自己的小区或房屋？<a href="" class="text-warning">电话联系我们</a></div>
+      <div class="text-center small notfound">没有找到自己的小区或房屋？<a href="tel:4007080080" class="text-warning">电话联系我们</a></div>
     </section>
   </div>
 {% endblock %}

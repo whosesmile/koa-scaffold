@@ -20,7 +20,7 @@
           {% for letter, citys in item %}
             <div class="item-divider">{{ letter }}</div>
             {% for city in citys %}
-              <a href="/location/project?cityId={{ city.id }}" class="item"><span>{{ city.name }}</span></a>
+              <a href="/location/{{ city.id }}" class="item"><span>{{ city.name }}</span></a>
             {% endfor %}
           {% endfor %}
         </div>
