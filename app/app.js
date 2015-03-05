@@ -5,6 +5,7 @@ var router = require('koa-router');
 var minifier = require('koa-html-minifier');
 var http = require('http');
 var session = require('koa-session');
+var parseForm = require('koa-body');
 var _ = require('lodash');
 var cpus = require('os').cpus().length;
 var config = require('./config');
@@ -20,32 +21,53 @@ swig.setDefaults({
 // 添加全局模板引用 方便渲染页面
 global.template = {
 
-  render: function (template, model, callback) {
-    // 兼容JSON处理
+  // 用来渲染页面
+  render: function (template) {
+    // 合并数据模型 
+    var data = {};
+    for (var i = 1; i < arguments.length; i++) {
+      if (!_.isFunction(arguments[i])) {
+        _.merge(data, arguments[i]);
+      }
+    }
+    // 确定回调函数
+    var callback = arguments[arguments.length - 1];
+    callback = _.isFunction(callback) ? callback : null;
+
+    // 兼容JSON响应
     if (_.isNumber(template)) {
-      return this.renderJSON(template, model);
+      return this.renderJSON(template, data);
     }
 
-    // 添加静态域名变量
-    model = _.merge({
-      shost: config.shost
-    }, model);
+    // HTML模板中使用的静态域名
+    data.shost = config.shost
 
+    // 根据相对位置查找模板
     if (/^[^./]/i.test(template)) {
       var folder = path.dirname(support.callsite()[1].getFileName());
       template = path.resolve(folder, template);
     }
 
-    return swig.renderFile(template, model, callback);
+    return swig.renderFile(template, data, callback);
   },
 
+  // 用来渲染JSON
   renderJSON: function (code, data) {
-    return JSON.stringify({
+    return {
       code: code,
       data: data
-    });
+    };
   }
+};
 
+// 登录中间件 方便做登录验证跳转
+global.loginRequired = function * (next) {
+  if (this.session.user) {
+    yield next;
+  }
+  else {
+    this.redirect('/login?next=' + encodeURIComponent(this.request.href));
+  }
 };
 
 // 初始化
@@ -63,8 +85,12 @@ app.use(minifier({
   minifyJS: true,
   minifyCSS: true,
   collapseWhitespace: true,
-  keepClosingSlash: true
+  keepClosingSlash: true,
+  removeComments: true
 }));
+
+// 解析form
+app.use(parseForm());
 
 // 读取project信息
 app.use(function * (next) {

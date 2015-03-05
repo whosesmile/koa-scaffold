@@ -47,24 +47,31 @@ var callsite = exports.callsite = function () {
 };
 
 // request proxy to return promise 
-exports.request = function (options) {
+exports.request = function (options, unpack) {
   return new Promise(function (resolve, reject) {
     request(options, function (err, res) {
       if (err) {
         reject(err);
       }
+      // 打印数据
+      console.info('\n**********');
+      console.info('request:', options)
+      console.info('response:', res.body);
+      console.info('**********\n');
+
       try {
-        res = JSON.parse(res.body);
-        res.code = parseInt(res.code, 10);
-        if (res.code === 0 || res.code === 200) {
-          resolve(res.data);
+        res = rebuild(res);
+
+        // 默认自动拆包解析结果
+        if (unpack !== false) {
+          res.code === 200 ? resolve(res.data) : reject(res.data);
         }
         else {
-          console.log(JSON.stringify(res))
-          reject(res);
+          resolve(res);
         }
       }
       catch (e) {
+        console.error(e);
         reject({
           message: '服务器接口内部错误',
           status: 500
@@ -74,7 +81,22 @@ exports.request = function (options) {
   });
 };
 
-var response = exports.response = {
+// 将服务器端返回的数据结构重新封装统一的格式
+// {code:200, data: {message: 'some message'}}
+function rebuild(res) {
+  res = JSON.parse(res.body);
+  res.code = parseInt(res.code, 10);
+  res.code = res.code || 200;
+  res.data = res.data || {};
+  res.data.message = res.msg || res.message || res.data.msg || res.data.message;
+  delete res.msg;
+  delete res.message;
+  delete res.data.msg;
+  return res;
+}
+
+// 响应快捷方式
+exports.response = {
 
   // 参数不正确
   badRequest: function (message) {

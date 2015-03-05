@@ -15,24 +15,26 @@
       </nav>
     </header>
     <section class="has-header">
+      {% if error %}
+        <center class="alert alert-warning">{{ error }}</center>  
+      {% endif %}
       <div class="tips text-gray small padding-horizontal">*请输入您自己的手机号码 (将用此号码登录千丁)</div>
-      <form method="post" action="register">
+      <form method="post" autocomplete="off">
         <div class="list">
           <label class="item-input">
-            <input type="tel" name="mobile" placeholder="请输入手机号" maxlength="11" require />
+            <input type="tel" name="mobile" placeholder="请输入手机号" maxlength="11" value="{{ mobile }}" require />
             <a class="getcapture text-warning" onclick="getCaptcha()">获取验证码</a>
           </label>
           <label class="item-input">
-            <input type="text" name="pwd" placeholder="请输入验证码" maxlength="6" require />
+            <input type="text" name="captcha" placeholder="请输入验证码" maxlength="6" require />
           </label>
           <label class="item-input">
-            <input type="text" name="pwd" placeholder="请输入登录密码 (至少6位)" maxlength="20" require />
+            <input type="password" name="password" placeholder="请输入登录密码 (至少6位)" maxlength="20" require />
           </label>
         </div>
-        <div class="protocal small text-gray padding">
-          <i class="icon icon-checked"></i>         
-          我接受“千丁”的服务条款和隐私协议
-        </div>
+        <label class="center-block protocal small text-gray text-center padding">
+          <input type="checkbox" name="address" value="true" checked /> 我接受“千丁”的服务条款和隐私协议
+        </label>
         <div class="submit padding">
           <button class="button button-warning button-block">完成</button>
         </div>
