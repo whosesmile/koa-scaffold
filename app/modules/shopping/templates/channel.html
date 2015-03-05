@@ -1,0 +1,42 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping-selected.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="shopping-selected">
+    <header class="bar fixed">
+      <h1>精选</h1>
+      <a class="icon-cart right-item" href=""></a>
+      <a class="back-item" href="">
+        <span class="icon icon-back"></span>
+      </a>
+    </header>
+    <section class="has-header has-footer">
+      {% if list.length %}
+        <div class="selected-list itemblock">
+          <ul class="clearfix">
+            {% for item in list %}
+              <li>
+                <a href="">
+                  <p class="img"><img src="{{ item.goodsImg }}"></p>
+                  <p class="tit">{{ item.publishName }}</p>
+                  <p class="price">
+                    <em>￥<i>{{ item.price }}</i></em> 
+                    <span>￥<i>{{ item.originalPrice }}</i></span>
+                  </p>
+                  <span class="liked"> <em class="icon icon-icon-like"></em>0</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- // <script src="{{ shost }}/mobile/js/register.js"></script> -->
+{% endblock %}

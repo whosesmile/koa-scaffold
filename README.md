@@ -57,7 +57,7 @@ TODO
 
 ### Test
 ````
-TODO Aha, I`m not test driver...
+TODO
 ````
 
 ### and so on...

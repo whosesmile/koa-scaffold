@@ -5,7 +5,9 @@ var _ = require('lodash');
 
 // 个人主页
 app.get('/profile', function * (next) {
-  this.body = template.render('templates/profile.html');
+  this.body = template.render('templates/profile.html', {
+    user: this.session.user
+  });
 });
 
 // 获取登录页面

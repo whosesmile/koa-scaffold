@@ -1,1 +1,75 @@
-111 {{ data.name }}
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping-home.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="shopping-home">
+    <header class="bar fixed">
+      <h1>乐购</h1>
+      <a class="icon-cart right-item" href=""></a>
+    </header>
+    <section class="has-header">
+      <div class="slider">
+        <img src="http://front.qdingnet.com/mobile/images/slider.jpg">
+      </div>
+
+      {% if category %}
+        <div class="myapps clearfix">
+          {% if category.length > 4 %}
+            {% for item in category %}
+              {% if loop.index < 4 %}
+                <a href="/shopping/channel/{{ item.id }}" class="item">
+                  <img src="{{ item.icon }}" />
+                  <span>{{ item.name }}</span>
+                </a>
+              {% endif %}
+            {% endfor %}
+            <a href="/shopping/category" class="item">
+              <i class="icon icon-more"></i>
+              <span>更多分类</span>
+            </a>
+          {% else %}
+            {% for item in category %}
+              <a href="/shopping/channel/{{ item.id }}" class="item">
+                <img src="{{ item.icon }}" />
+                <span>{{ item.name }}</span>
+              </a>
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if recommend%}
+        {% for group in recommend %}
+          {% if group.rg.length %}
+            <div class="itemblock">
+              <h3><a class="more-btn">更多</a> {{ group.name }}</h3>
+              <ul class="clearfix">
+                {% for item in group.rg %}
+                  <li>
+                    <a href="/shopping/details/{{ item.id }}">
+                      <p class="img"><img src="{{ item.goodsImg }}"></p>
+                      <p class="tit">{{ item.publishName }}</p>
+                      <p class="price">
+                        <em>￥<i>{{ item.price }}</i></em> 
+                        <span>￥<i>{{ item.originalPrice }}</i></span>
+                      </p>
+                      <span class="liked"> <em class="icon icon-icon-like"></em>0</span>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- // <script src="{{ shost }}/mobile/js/register.js"></script> -->
+{% endblock %}

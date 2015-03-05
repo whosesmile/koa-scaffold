@@ -1,0 +1,81 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping-detail.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="shopping-detail">
+    <header class="bar fixed">
+      <h1>{{ goods.publishName }}</h1>
+      <a href="" class="icon icon-fav right-item-left"></a>
+      <a class="icon-cart right-item" href=""></a>
+      <a class="back-item" href="">
+        <span class="icon icon-back"></span>
+      </a>
+    </header>
+    <section class="has-header">
+        <div class="slider">
+          <img src="{{ goods.img }}" />
+        </div>
+        <p class="p-title">{{ goods.publishName }}</p>
+        <p class="p-subtitle">{{ goods.name }}</p>
+        <p class="p-price">
+            <span class="discount-price">￥{{ goods.price }}</span>
+            <span class="original-price">￥{{ goods.originalPrice }}</span>
+            <span class="discount">{{ (goods.price/goods.originalPrice * 10).toFixed(1) }}折</span>
+            <span class="shipping">包邮</span>
+        </p>
+        <div class="flex">
+          <div class="sales-volume">
+            已售出 <i>{{ goods.soldCount }}</i> 件
+          </div>
+          <div class="v-line"></div>
+          <div class="like-nums">
+            <span><i class="icon icon-icon-like"></i>喜欢 0 人</span>
+          </div>
+        </div>
+        <div class="promotion">
+            <p>
+              <em class="icon icon-timer"></em>
+              <span class="time-left">距打折结束还有<i>2</i>天<i>12</i>小时<i>48</i>分</span>
+            </p>
+        </div>
+        <div class="v-padding"></div>
+        <dl class="p-info">
+          <dt>
+            优惠活动
+            <span class="tag">满99减10</span>
+            <span class="tag">支持千丁券</span>
+            <i class="icon icon-detail"></i>
+          </dt>
+          <dd></dd>
+          <dt>
+              规格/尺寸
+              <i class="icon icon-detail"></i>
+          </dt>
+          <dd></dd>
+          <dt>
+              购买须知
+              <i class="icon icon-detail"></i>
+          </dt>
+          <dd></dd>
+          <dt class="active">
+            商品详情
+            <i class="icon icon-detail"></i>
+          </dt>
+          <dd style="display: block;">
+            阿克苏属暖温带乾旱型气候．年均气温7℃—8℃，降雨量较小，但水流量丰富，因阿克苏地区冬季寒冷、气温较低，果品生长期病虫害发生极少，再加上干旱少雨，霉菌不易生成，减少了病虫害、霉菌和农药对果面的侵蚀机会。因此，阿克苏红富士苹果果面光滑细腻、色泽光亮自然
+          </dd>
+        </dl>
+    </section>
+    <section class="buy-bar">
+      <button class="cart-btn">加入购物车</button>
+      <button class="buy-btn">立即购买</button>
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- // <script src="{{ shost }}/mobile/js/register.js"></script> -->
+{% endblock %}

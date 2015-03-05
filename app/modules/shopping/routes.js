@@ -3,24 +3,31 @@ var shoppingService = require('./service');
 
 // 团购首页
 app.get('/shopping', function * (next) {
-  var data = yield shoppingService.listGoods();
-  console.log(data)
+  var data = yield shoppingService.shopping(this.session.projectId);
   this.body = template.render('templates/shopping.html', data);
 });
 
+// 团购分类
+app.get('/shopping/category', function * (next) {
+  this.body = template.render('templates/category.html');
+});
+
 // 分类频道
-app.get('/shopping/channel', function * (next) {
-  this.body = template.render('templates/channel.html');
+app.get('/shopping/channel/:id', function * (next) {
+  var data = yield shoppingService.listGoods(this.session.projectId, this.params.id);
+  this.body = template.render('templates/channel.html', data);
+});
+
+// 商品详情
+app.get('/shopping/details/:id', function * (next) {
+  var user = this.session.user;
+  var data = yield shoppingService.details(this.params.id, user ? user.id : null);
+  this.body = template.render('templates/details.html', data);
 });
 
 // 推荐频道
 app.get('/shopping/promotes', function * (next) {
   this.body = template.render('templates/promotes.html');
-});
-
-// 商品详情
-app.get('/shopping/details', function * (next) {
-  this.body = template.render('templates/details.html');
 });
 
 // 选择商品

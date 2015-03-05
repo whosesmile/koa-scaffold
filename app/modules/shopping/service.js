@@ -1,4 +1,21 @@
-var request = require('request');
+var whost = require('../../config').whost;
+var request = require('../../support').request;
+var _ = require('lodash');
+
+/**
+ * 获取乐购数据
+ * @param  {number} projectId 所选择的项目
+ * @return promise
+ */
+exports.shopping = function (projectId) {
+  return request({
+    url: whost + '/market/index',
+    method: 'get',
+    qs: {
+      projectId: projectId
+    }
+  });
+};
 
 /**
  * 根据项目, 分类, 页码, 容量返回列表数据
@@ -8,20 +25,36 @@ var request = require('request');
  * @param  {number} size       [每页容量大小，默认值 10]
  * @return {object}            [object]
  */
-// proxy: /market/goods/list
-// projectId & categoryId &  pageNo & pageSize
 exports.listGoods = function (projectId, categoryId, page, size) {
   page = page || 1;
   size = size || 10;
 
-  return new Promise(function (resolve, reject) {
-    // request(whost + '/market/goods/list', function (err, res) {
-    //   err ? reject(err) : resolve(res);
-    // });
+  return request({
+    url: whost + '/market/goods/list',
+    method: 'get',
+    qs: {
+      projectId: projectId,
+      categoryId: categoryId,
+      pageNo: page,
+      pageSize: size
+    }
+  });
+};
 
-    request('http://127.0.0.1:8080/test', function (err, res) {
-      err ? reject(err) : resolve(JSON.parse(res.body));
-    });
+/**
+ * 返回商品详情
+ * @param  {number} id     商品ID
+ * @param  {number} userId 用户ID
+ * @return promise
+ */
+exports.details = function (id, userId) {
+  return request({
+    url: whost + '/market/goods/info',
+    method: 'get',
+    qs: {
+      id: id,
+      userId: userId
+    }
   });
 };
 
@@ -33,17 +66,6 @@ exports.listGoods = function (projectId, categoryId, page, size) {
 // proxy: /market/getGoodsByIds
 // goodsId
 exports.listPromotes = function (ids) {
-  // TODO
-  return {};
-};
-
-/**
- * 返回商品详情
- * @return {object}
- */
-// proxy: /market/goods/info
-// id & userId
-exports.goodsDetail = function (id, userId) {
   // TODO
   return {};
 };
