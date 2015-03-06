@@ -40,7 +40,8 @@ global.template = {
     }
 
     // HTML模板中使用的静态域名
-    data.shost = config.shost
+    data.shost = config.shost; // static host
+    data.whost = config.whost; // webapi host
 
     // 根据相对位置查找模板
     if (/^[^./]/i.test(template)) {
