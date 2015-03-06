@@ -6,7 +6,9 @@ var _ = require('lodash');
 // 列出城市
 app.get('/location', function * (next) {
   var data = yield service.listCity();
-  this.body = template.render('templates/city.html', data);
+  this.body = template.render('templates/city.html', data, {
+    projectId: this.session.projectId
+  });
 });
 
 // 列出城市开通的项目

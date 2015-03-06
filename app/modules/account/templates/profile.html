@@ -7,23 +7,25 @@
 {% block content %}
   <div class="profile">
     <header class="bar fixed">
-      <a class="left-icon" href=""><i class="icon icon-back"></i></a>
+      <a class="left-icon" onclick="javascript:history.back();"><i class="icon icon-back"></i></a>
       <h1>我的</h1>
     </header>
     <section class="has-header has-footer">
-      <a class="profile-head-box" href="/account/settings">
-        {% if user %}
+      {% if user %}
+        <a class="profile-head-box" href="/account/settings">
           <div class="head">
             <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" />
           </div>
           <p class="profile-message">{{ user.name }}</p>
-        {% else %}
+        </a>
+      {% else %}
+        <a class="profile-head-box" href="{{ macro.url('/login', {next: '/profile'}) }}">
           <div class="head">
             <img src="{{ shost }}/mobile/images/profile/icon_head.png" />
           </div>
-          <p class="profile-message"><a href="{{ macro.url('/login', {next: '/profile'}) }}">未登录，点击登录或注册</a></p>
-        {% endif %}
-      </a>
+          <p class="profile-message">未登录，点击登录或注册</p>
+        </a>
+      {% endif %}
       <div class="profile-list-box">
         <ul>
           <a href="myorder.html"><i class="icon icon-order profile-list-icon"></i>我的订单<i class="icon icon-detail pull-right"></i></a>
