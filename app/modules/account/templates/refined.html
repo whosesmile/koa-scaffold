@@ -18,7 +18,7 @@
         <div class="list">
           <label class="item-input has-label">
             <span class="label">姓名：</span>
-            <input type="text" name="name" placeholder="请输入收货人姓名" maxlength="20" value="{{ name }}" require />
+            <input type="text" name="name" placeholder="请输入收货人姓名" maxlength="20" value="{{ name }}" required />
           </label>
           <label class="item-input has-label">
             <span class="label">性别：</span>
@@ -30,7 +30,7 @@
           </label>
           <label class="item-input has-label">
             <span class="label">手机号码：</span>
-            <input type="tel" name="mobile" placeholder="请输入您的手机号码" maxlength="11" value="{{ mobile }}" require />
+            <input type="tel" name="mobile" placeholder="请输入您的手机号码" maxlength="11" value="{{ mobile }}" required />
           </label>
         </div>
         <label class="center-block small text-gray text-center set-default">
@@ -46,5 +46,5 @@
 {% endblock %}
 
 {% block script %}
-  <!-- // <script src="{{ shost }}/mobile/js/register.js"></script> -->
+  <script src="{{ shost }}/mobile/js/refined.js"></script>
 {% endblock %}

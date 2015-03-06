@@ -11,7 +11,6 @@
       <nav>
         <a href="{{ macro.url('/login', {next: next}) }}">登录</a>
         <a href="{{ macro.url('/register', {next: next}) }}" class="active">注册</a>
-        <!-- <a href="">邀请码</a> -->
       </nav>
     </header>
     <section class="has-header">
@@ -22,14 +21,14 @@
       <form method="post" autocomplete="off">
         <div class="list">
           <label class="item-input">
-            <input type="tel" name="mobile" placeholder="请输入手机号" maxlength="11" value="{{ mobile }}" require />
+            <input type="tel" name="mobile" placeholder="请输入手机号" maxlength="11" value="{{ mobile }}" required />
             <a class="getcapture text-warning" onclick="getCaptcha()">获取验证码</a>
           </label>
           <label class="item-input">
-            <input type="text" name="captcha" placeholder="请输入验证码" maxlength="6" require />
+            <input type="text" name="captcha" placeholder="请输入验证码" maxlength="6" required />
           </label>
           <label class="item-input">
-            <input type="password" name="password" placeholder="请输入登录密码 (至少6位)" maxlength="20" require />
+            <input type="password" name="password" placeholder="请输入登录密码 (至少6位)" maxlength="20" required />
           </label>
         </div>
         <label class="center-block protocal small text-gray text-center padding">
