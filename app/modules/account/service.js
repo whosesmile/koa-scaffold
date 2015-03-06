@@ -19,7 +19,7 @@ exports.login = function (mobile, password, projectId, ip) {
       mobile: mobile,
       pwd: password,
       projectId: projectId,
-      ip: ip,
+      ip: ip.replace('::ffff:', ''),
       device: 'html5'
     }
   }).then(function (res) {
