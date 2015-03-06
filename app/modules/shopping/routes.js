@@ -9,7 +9,8 @@ app.get('/shopping', function * (next) {
 
 // 团购分类
 app.get('/shopping/category', function * (next) {
-  this.body = template.render('templates/category.html');
+  var data = yield shoppingService.listCategory(this.session.projectId);
+  this.body = template.render('templates/category.html', data);
 });
 
 // 分类频道

@@ -15,20 +15,25 @@
       </nav>
     </header>
     <section class="has-header">
-      <form method="post">
-        <div class="list">
-          <label class="item-input">
-            <input type="tel" name="mobile" placeholder="手机号" maxlength="11" require value="{{ mobile }}" />
-          </label>
-          <label class="item-input">
-            <input type="password" name="password" placeholder="密码" maxlength="20" require />
-          </label>
-        </div>
-        <div class="submit padding">
-          <button class="button button-warning button-block">登录</button>
-        </div>
-        <div class="small text-right text-gray padding-horizontal"><a href="/forgot">忘记密码</a></div>
-      </form>
+      <div class="box">
+        {% if error %}
+          <center class="alert alert-warning">{{ error }}</center>  
+        {% endif %}
+        <form method="post">
+          <div class="list">
+            <label class="item-input">
+              <input type="tel" name="mobile" placeholder="手机号" maxlength="11" require value="{{ mobile }}"/>
+            </label>
+            <label class="item-input">
+              <input type="password" name="password" placeholder="密码" maxlength="20" require />
+            </label>
+          </div>
+          <div class="submit padding">
+            <button class="button button-warning button-block">登录</button>
+          </div>
+          <div class="small text-right text-gray padding-horizontal"><a href="/forgot">忘记密码</a></div>
+        </form>
+      </div>
     </section>
   </div>
 {% endblock %}

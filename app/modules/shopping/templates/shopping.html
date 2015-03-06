@@ -10,7 +10,7 @@
       <h1>乐购</h1>
       <a class="icon-cart right-item" href=""></a>
     </header>
-    <section class="has-header">
+    <section class="has-header has-footer">
       <div class="slider">
         <img src="http://front.qdingnet.com/mobile/images/slider.jpg">
       </div>
@@ -65,8 +65,9 @@
           {% endif %}
         {% endfor %}
       {% endif %}
-
     </section>
+
+    {{ macro.footer('shopping') }}
   </div>
 {% endblock %}
 

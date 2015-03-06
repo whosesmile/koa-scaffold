@@ -1,3 +1,4 @@
+{# 超链接 #}
 {% macro url(path, params) %}
   {% set query = [] %}
   
@@ -14,4 +15,28 @@
   {% else %}
     {{ path }}
   {% endif %}
+{% endmacro %}
+
+{# 底部菜单 #}
+{% macro footer(type) %}
+  <footer class="bar fixed">
+    <nav>
+      <a href="/" {% if type === 'home' %}class="active"{% endif %}>
+        <i class="icon icon-tab-home"></i>
+        <span>首页</span>
+      </a>
+      <a href="/" {% if type === '' %}class="active"{% endif %}>
+        <i class="icon icon-tab-housekeep"></i>
+        <span>管家</span>
+      </a>
+      <a href="/shopping" {% if type === 'shopping' %}class="active"{% endif %}>
+        <i class="icon icon-tab-shopping"></i>
+        <span>乐购</span>
+      </a>
+      <a href="/profile" {% if type === 'profile' %}class="active"{% endif %}>
+        <i class="icon icon-tab-neighbour"></i>
+        <span>我的</span>
+      </a>
+    </nav>
+  </footer>
 {% endmacro %}

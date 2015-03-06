@@ -18,6 +18,19 @@ exports.shopping = function (projectId) {
 };
 
 /**
+ * 获取乐购商品分类
+ * @param  {number} projectId 所选择的项目
+ * @return promise
+ */
+exports.listCategory = function (projectId) {
+  return exports.shopping(projectId).then(function (data) {
+    return {
+      list: data.category
+    };
+  });
+};
+
+/**
  * 根据项目, 分类, 页码, 容量返回列表数据
  * @param  {number} projectId  [所属项目主键]
  * @param  {number} categoryId [所属分类编号]

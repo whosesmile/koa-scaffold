@@ -20,13 +20,39 @@ app.get('/login', function * (next) {
 // 登录逻辑
 app.post('/login', function * (next) {
   var form = this.request.body;
+  var error = null;
+
+  // 校验手机
+  if (!form.mobile || _.trim(form.mobile) === '') {
+    error = '请输入您的手机号';
+  }
+  // 校验密码
+  else if (!form.password) {
+    error = '请输入您的密码';
+  }
+
+  if (error) {
+    return this.body = template.render('templates/login.html', {
+      mobile: form.mobile,
+      error: error
+    });
+  }
+
   var data = yield service.login(form.mobile, form.password, this.session.projectId, this.ip);
-  // 缓存数据
-  this.session.user = data.user;
-  this.session.city = data.city;
-  this.session.project = data.project;
-  // 登录成功
-  this.redirect(this.query.next || '/');
+
+  // 登录成功  
+  if (data) {
+    this.session.user = data.user;
+    this.session.city = data.city;
+    this.session.project = data.project;
+    this.redirect(this.query.next || '/');
+  }
+  else {
+    return this.body = template.render('templates/login.html', {
+      mobile: form.mobile,
+      error: '您的账户不存在或密码错误'
+    });
+  }
 });
 
 // 登出
@@ -97,7 +123,7 @@ app.post('/register', function * (next) {
     this.session.project = data.project;
 
     // 跳转至完善信息页面
-    this.redirect('/refined');
+    this.redirect('/account/refined');
   }
   else {
     this.body = template.render('templates/register.html', form, {
@@ -137,17 +163,17 @@ app.get('/account/exists', function * (next) {
 });
 
 // 忘记密码
-app.get('/forgot', function * (next) {
+app.get('/account/forgot', function * (next) {
   this.body = template.render('templates/forgot.html');
 });
 
 // 完善信息页面
-app.get('/refined', loginRequired, function * (next) {
+app.get('/account/refined', loginRequired, function * (next) {
   this.body = template.render('templates/refined.html', this.session.user);
 });
 
 // 更新用户信息
-app.post('/refined', loginRequired, function * (next) {
+app.post('/account/refined', loginRequired, function * (next) {
   var form = this.request.body;
   var user = yield service.updateUser({
     id: this.session.user.id,
@@ -166,4 +192,48 @@ app.post('/refined', loginRequired, function * (next) {
   }
 
   this.redirect(this.query.next || '/');
+});
+
+// 个人资料
+app.get('/account/settings', loginRequired, function * (next) {
+  this.body = template.render('templates/settings.html', {
+    user: this.session.user
+  });
+});
+
+// 修改密码
+app.get('/account/password', loginRequired, function * (next) {
+  this.body = template.render('templates/password.html');
+});
+
+// 修改密码
+app.post('/account/password', loginRequired, function * (next) {
+  var form = this.request.body;
+
+  var error = null;
+  if (!form.oldpwd || form.oldpwd === '') {
+    error = '请输入原密码';
+  }
+  else if (!form.newpwd || form.newpwd === '') {
+    error = '请输入新密码';
+  }
+  else if (form.newpwd.length < 6) {
+    error = '新密码至少为6位';
+  }
+  if (error) {
+    return this.body = template.render('templates/password.html', {
+      error: error
+    });
+  }
+
+  // 修改密码
+  var data = yield service.updatePassword(this.session.user.id, form.oldpwd, form.newpwd);
+  if (data) {
+    this.redirect('/profile');
+  }
+  else {
+    return this.body = template.render('templates/password.html', {
+      error: '原密码输入不正确'
+    });
+  }
 });

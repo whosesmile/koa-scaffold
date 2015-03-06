@@ -14,7 +14,7 @@ module.exports = {
   shost: 'http://front.qdingnet.com',
 
   // Web接口域名
-  whost: 'http://boss.qdingnet.com',
+  whost: 'http://qaboss.qdingnet.com',
 
   // favicon路径
   favicon: path.resolve(__dirname, '../favicon.ico')

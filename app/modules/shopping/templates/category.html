@@ -1,1 +1,6 @@
-category
+{% for item in list %}
+  <a href="/shopping/channel/{{ item.id }}" class="item">
+    <img src="{{ item.icon }}" />
+    <span>{{ item.name }}</span>
+  </a>
+{% endfor %}

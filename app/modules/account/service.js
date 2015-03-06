@@ -46,6 +46,8 @@ exports.login = function (mobile, password, projectId, ip) {
         addresses: data.project.addresses
       }
     };
+  }, function (rej) {
+    return false;
   });
 };
 
@@ -121,6 +123,29 @@ exports.updateUser = function (form) {
     qs: form
   }).then(function (data) {
     return data.entity;
+  });
+};
+
+/**
+ * 更改密码
+ * @param  {number} userId 用户主键
+ * @param  {oldpwd} oldpwd 旧密码
+ * @param  {newpwd} newpwd 新密码
+ * @return promise
+ */
+exports.updatePassword = function (userId, oldpwd, newpwd) {
+  return request({
+    url: whost + '/user/app/user/updatePassword.json',
+    method: 'post',
+    form: {
+      id: userId,
+      oldPwd: oldpwd,
+      newPwd: newpwd
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
   });
 };
 

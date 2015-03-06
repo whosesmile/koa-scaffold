@@ -1,0 +1,63 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="settings">
+    <header class="bar fixed">
+      <a class="left-icon" href=""><i class="icon icon-back"></i></a>
+      <h1>个人资料</h1>
+    </header>
+    <section class="has-header">
+      <a class="settings-head item-padding">
+      <p>
+        头像 <i class="icon icon-detail pull-right head-detail"></i>
+        <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" />
+      </p>
+      </a>
+      <a class="settings-name item-padding">
+        <p>
+          姓名 <i class="icon icon-cancel pull-right"></i>
+          <span>{{ user.name }}</span>
+        </p>
+      </a>
+      <a class="settings-name item-padding">
+        <p>
+          性别 
+          <div class="sex-seclect">
+            <span class="active">男</span><span>女</span><span>保密</span>
+          </div>
+        </p>
+      </a>
+      <a class="settings-name item-padding margin-bottom20">
+        <p>个性签名 <i class="icon icon-detail pull-right "></i></p>
+      </a>
+      <a class="settings-name item-padding margin-bottom20">
+       <p>
+          我的房屋 <i class="icon icon-detail pull-right  "></i>
+          <span class="gray-color">紫都城</span>
+        </p>
+      </a>
+      <a class="settings-name item-padding" href="/account/password">
+        <p>修改密码 <i class="icon icon-detail pull-right "></i></p>
+      </a>
+      <a class="settings-name item-padding" {% if !user.mobile %}href="/account/refined"{% endif %}>
+        <p>
+          {% if user.mobile %}
+            绑定手机
+            <span>{{ user.mobile }}</span>  
+          {% else %}
+            绑定手机 <i class="icon icon-detail pull-right "></i>
+            <span>未绑定</span>
+          {% endif %}
+        </p>
+      </a>
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ shost }}/mobile/js/register.js"></script>
+{% endblock %}
