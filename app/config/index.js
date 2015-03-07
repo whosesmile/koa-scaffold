@@ -17,6 +17,8 @@ module.exports = {
   whost: 'http://qaboss.qdingnet.com',
 
   // favicon路径
-  favicon: path.resolve(__dirname, '../favicon.ico')
+  favicon: path.resolve(__dirname, '../favicon.ico'),
+
+  mapkey: 'KROBZ-3HZHV-LPYPF-UHQKQ-KLQ4O-HGFNQ'
 
 };

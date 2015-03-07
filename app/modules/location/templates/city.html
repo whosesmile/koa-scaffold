@@ -15,7 +15,10 @@
     <section class="has-header">
       <div class="geo">
         <h3>定位到您当前所在的城市是：</h3>
-        <div class="city"><i class="icon icon-location"></i>北京市</div>
+        <div class="list list-padding geo">
+          <i class="item text-gray">正在定位城市...</i>
+        </div>
+        <!-- <div class="city"><i class="text-gray">正在定位城市...</i></div> -->
       </div>
       
       {% for item in list %}
@@ -43,5 +46,5 @@
 {% endblock %}
 
 {% block script %}
-  <!-- // <script src="{{ shost }}/mobile/js/home.js"></script> -->
+  <script src="{{ shost }}/mobile/js/location.js"></script>
 {% endblock %}

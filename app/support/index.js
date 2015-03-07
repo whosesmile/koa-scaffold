@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var request = require('request');
+var _ = require('lodash');
 
 // 递归遍历目录
 var walk = exports.walk = function (dir, done) {
@@ -50,12 +51,15 @@ var callsite = exports.callsite = function () {
 exports.request = function (options, unpack) {
   return new Promise(function (resolve, reject) {
     request(options, function (err, res) {
+      console.info('\n**********');
+      console.info('request:', options);
+
       if (err) {
-        reject(err);
+        console.log('error:', err);
+        console.info('**********\n');
+        return reject(err);
       }
       // 打印数据
-      console.info('\n**********');
-      console.info('request:', options)
       console.info('response:', res.body);
       console.info('**********\n');
 
@@ -85,6 +89,12 @@ exports.request = function (options, unpack) {
 // {code:200, data: {message: 'some message'}}
 function rebuild(res) {
   res = JSON.parse(res.body);
+  if (_.isUndefined(res.code)) {
+    return {
+      code: 200,
+      data: res
+    };
+  }
   res.code = parseInt(res.code, 10);
   res.code = res.code || 200;
   res.data = res.data || {};
