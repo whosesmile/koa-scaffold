@@ -11,7 +11,7 @@ module.exports = {
   templateCache: false,
 
   // 静态域名地址
-  shost: 'http://front.qdingnet.com',
+  shost: 'http://qafront.qdingnet.com',
 
   // Web接口域名
   whost: 'http://qaboss.qdingnet.com',

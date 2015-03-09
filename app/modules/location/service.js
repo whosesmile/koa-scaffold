@@ -17,12 +17,39 @@ exports.listCity = function () {
 };
 
 /**
+ * 根据城市姓名返回城市实体
+ * @param  {string} city 查找的城市名称
+ * @return {promise}
+ */
+exports.findCity = function (city) {
+  return exports.listCity().then(function (data) {
+    var list = data.list;
+    for (var i = 0; i < list.length; i++) {
+      for (var letter in list[i]) {
+        if (list[i].hasOwnProperty(letter)) {
+          var citys = list[i][letter];
+          for (var j = 0; j < citys.length; j++) {
+            if (citys[j].name === city) {
+              return {
+                id: citys[j].id,
+                name: city
+              };
+            }
+          }
+        }
+      }
+    }
+    return null;
+  });
+};
+
+/**
  * 根据经纬度获取城市信息
  * @param  {number} lat 维度
  * @param  {number} lng 精度
  * @return promise
  */
-exports.getCity = function (lat, lng) {
+exports.geolocation = function (lat, lng) {
   return request({
     url: 'http://apis.map.qq.com/ws/geocoder/v1/',
     method: 'get',

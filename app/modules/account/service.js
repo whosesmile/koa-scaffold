@@ -116,13 +116,22 @@ exports.getCaptcha = function (mobile, action) {
 // 必传参数 id
 // 选传字段 mobile nick name sex image thumb(缩略图)
 // TODO: POST乱码
-exports.updateUser = function (form) {
+exports.update = function (form) {
   return request({
     url: whost + '/user/app/user/update.json',
     method: 'get',
     qs: form
   }).then(function (data) {
-    return data.entity;
+    data = data.entity;
+    return {
+      id: data.id,
+      name: data.name,
+      nick: data.nick,
+      mobile: data.mobile,
+      sex: data.sex === 0 ? 0 : 1,
+      image: data.image,
+      thumb: data.thumb
+    };
   });
 };
 

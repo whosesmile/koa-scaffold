@@ -1,7 +1,6 @@
 var app = require('../../app');
 
-// home
+// http 网站首页
 app.get('/', function * (next) {
-  // this.redirect('/shopping');
   this.body = template.render('templates/home.html');
 });

@@ -3,21 +3,31 @@ var support = require('../../support');
 var service = require('./service');
 var _ = require('lodash');
 
-// 个人主页
+// http 登录重定向
+app.get('/account/login', function * (next) {
+  return this.redirect('login');
+});
+
+// http 登出重定向
+app.get('/account/logout', function * (next) {
+  return this.redirect('logout');
+});
+
+// http 个人主页
 app.get('/profile', function * (next) {
   this.body = template.render('templates/profile.html', {
     user: this.session.user
   });
 });
 
-// 获取登录页面
+// http 获取登录页面
 app.get('/login', function * (next) {
   this.body = template.render('templates/login.html', {
     next: this.query.next
   });
 });
 
-// 登录逻辑
+// http 登录逻辑
 app.post('/login', function * (next) {
   var form = this.request.body;
   var error = null;
@@ -55,7 +65,7 @@ app.post('/login', function * (next) {
   }
 });
 
-// 登出
+// http 登出
 app.get('/logout', function * (next) {
   // 保留选择的项目
   _.forIn(this.session.inspect(), function (value, key) {
@@ -66,18 +76,16 @@ app.get('/logout', function * (next) {
   this.redirect('/login');
 });
 
-// 获取注册页面
+// http 获取注册页面
 app.get('/register', function * (next) {
   this.body = template.render('templates/register.html', {
     next: this.query.next
   });
 });
 
-// 注册逻辑
+// http 注册逻辑
 app.post('/register', function * (next) {
   var form = this.request.body;
-  var captcha = form.captcha;
-
   var error = null;
 
   // 校验手机
@@ -133,14 +141,12 @@ app.post('/register', function * (next) {
   }
 });
 
-// 发送注册验证码
+// ajax 发送注册验证码
 app.post('/register/captcha', function * (next) {
   var form = this.request.body;
   // 校验手机
   if (!form.mobile || _.trim(form.mobile) === '') {
-    this.body = template.render(400, {
-      message: '请输入您的手机号码'
-    });
+    this.body = template.render(400, '请输入您的手机号码');
     return;
   }
   var data = yield service.getCaptcha(form.mobile, 1);
@@ -151,7 +157,7 @@ app.post('/register/captcha', function * (next) {
   this.body = template.render(200);
 });
 
-// 验证手机是否已经注册过
+// ajax 验证手机是否已经注册过
 app.get('/account/exists', function * (next) {
   var mobile = this.request.query.mobile;
   if (_.isUndefined(mobile)) {
@@ -162,20 +168,20 @@ app.get('/account/exists', function * (next) {
   }
 });
 
-// 忘记密码
+// http 忘记密码
 app.get('/account/forgot', function * (next) {
   this.body = template.render('templates/forgot.html');
 });
 
-// 完善信息页面
+// http 完善信息页面
 app.get('/account/refined', loginRequired, function * (next) {
   this.body = template.render('templates/refined.html', this.session.user);
 });
 
-// 更新用户信息
+// http 更新用户信息
 app.post('/account/refined', loginRequired, function * (next) {
   var form = this.request.body;
-  var user = yield service.updateUser({
+  var user = yield service.update({
     id: this.session.user.id,
     name: form.name,
     nick: form.name,
@@ -194,19 +200,28 @@ app.post('/account/refined', loginRequired, function * (next) {
   this.redirect(this.query.next || '/');
 });
 
-// 个人资料
+// http 个人资料
 app.get('/account/settings', loginRequired, function * (next) {
   this.body = template.render('templates/settings.html', {
     user: this.session.user
   });
 });
 
-// 修改密码
+// http 修改用户
+app.post('/account/update', loginRequired, function * (next) {
+  var form = support.clean(this.request.body);
+  // 手机号不允许更新
+  delete form.mobile;
+  this.session.user = yield service.update(_.merge({}, this.session.user, form));
+  return this.body = template.render(200, this.session.user);
+});
+
+// http 修改密码
 app.get('/account/password', loginRequired, function * (next) {
   this.body = template.render('templates/password.html');
 });
 
-// 修改密码
+// http 修改密码
 app.post('/account/password', loginRequired, function * (next) {
   var form = this.request.body;
 

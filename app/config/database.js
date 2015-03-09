@@ -9,10 +9,10 @@ var sequelize = new Sequelize(database, 'root', '', {
 
 sequelize.authenticate().complete(function (err) {
   if (!!err) {
-    console.log('Unable to connect to the database:', database, err)
+    console.log('Unable to connect to the database:', database, err);
   }
   else {
-    console.log('Connection has been established successfully.')
+    console.log('Connection has been established successfully.');
   }
 });
 
@@ -25,10 +25,10 @@ sequelize.sync({
   force: false
 }).complete(function (err) {
   if (!!err) {
-    console.log('An error occurred while creating the table:', err)
+    console.log('An error occurred while creating the table:', err);
   }
   else {
-    console.log('It worked!')
+    console.log('It worked!');
   }
 });
 
@@ -39,10 +39,10 @@ var user = User.build({
 
 user.save().complete(function (err) {
   if (!!err) {
-    console.log('The instance has not been saved:', err)
+    console.log('The instance has not been saved:', err);
   }
   else {
-    console.log('We have a persisted instance now')
+    console.log('We have a persisted instance now');
   }
 });
 
@@ -52,13 +52,13 @@ User.find({
   }
 }).complete(function (err, johnDoe) {
   if (!!err) {
-    console.log('An error occurred while searching for John:', err)
+    console.log('An error occurred while searching for John:', err);
   }
   else if (!johnDoe) {
-    console.log('No user with the username "john-doe" has been found.')
+    console.log('No user with the username "john-doe" has been found.');
   }
   else {
-    console.log('Hello ' + johnDoe.username + '!')
-    console.log('All attributes of john:', johnDoe.values)
+    console.log('Hello ' + johnDoe.username + '!');
+    console.log('All attributes of john:', johnDoe.values);
   }
-})
+});

@@ -47,6 +47,26 @@ var callsite = exports.callsite = function () {
   return stack;
 };
 
+// 将服务器端返回的数据结构重新封装统一的格式
+// {code:200, data: {message: 'some message'}}
+function rebuild(res) {
+  res = JSON.parse(res.body);
+  if (_.isUndefined(res.code)) {
+    return {
+      code: 200,
+      data: res
+    };
+  }
+  res.code = parseInt(res.code, 10);
+  res.code = res.code || 200;
+  res.data = res.data || {};
+  res.data.message = res.msg || res.message || res.data.msg || res.data.message;
+  delete res.msg;
+  delete res.message;
+  delete res.data.msg;
+  return res;
+}
+
 // request proxy to return promise 
 exports.request = function (options, unpack) {
   return new Promise(function (resolve, reject) {
@@ -68,7 +88,12 @@ exports.request = function (options, unpack) {
 
         // 默认自动拆包解析结果
         if (unpack !== false) {
-          res.code === 200 ? resolve(res.data) : reject(res.data);
+          if (res.code === 200) {
+            resolve(res.data);
+          }
+          else {
+            reject(res.data);
+          }
         }
         else {
           resolve(res);
@@ -85,26 +110,6 @@ exports.request = function (options, unpack) {
   });
 };
 
-// 将服务器端返回的数据结构重新封装统一的格式
-// {code:200, data: {message: 'some message'}}
-function rebuild(res) {
-  res = JSON.parse(res.body);
-  if (_.isUndefined(res.code)) {
-    return {
-      code: 200,
-      data: res
-    };
-  }
-  res.code = parseInt(res.code, 10);
-  res.code = res.code || 200;
-  res.data = res.data || {};
-  res.data.message = res.msg || res.message || res.data.msg || res.data.message;
-  delete res.msg;
-  delete res.message;
-  delete res.data.msg;
-  return res;
-}
-
 // 响应快捷方式
 exports.response = {
 
@@ -118,4 +123,14 @@ exports.response = {
     };
   }
 
+};
+
+// 将数据中的空数据或未定义数据清除
+exports.clean = function (data) {
+  _.forIn(data, function (val, key) {
+    if (_.isEmpty(val) || _.isUndefined(val)) {
+      delete data[key];
+    }
+  });
+  return data;
 };

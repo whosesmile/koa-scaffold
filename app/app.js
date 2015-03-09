@@ -3,7 +3,6 @@ var path = require('path');
 var swig = require('swig');
 var router = require('koa-router');
 var minifier = require('koa-html-minifier');
-var http = require('http');
 var session = require('koa-session');
 var parseForm = require('koa-body');
 var _ = require('lodash');
@@ -26,7 +25,7 @@ global.template = {
     // 合并数据模型 
     var data = {};
     for (var i = 1; i < arguments.length; i++) {
-      if (!_.isFunction(arguments[i])) {
+      if (_.isObject(arguments[i])) {
         _.merge(data, arguments[i]);
       }
     }
@@ -36,7 +35,7 @@ global.template = {
 
     // 兼容JSON响应
     if (_.isNumber(template)) {
-      return this.renderJSON(template, data);
+      return this.renderJSON.apply(this, _.toArray(arguments));
     }
 
     // HTML模板中使用的静态域名
@@ -54,6 +53,15 @@ global.template = {
 
   // 用来渲染JSON
   renderJSON: function (code, data) {
+    if (_.isUndefined(data)) {
+      data = {};
+    }
+    if (_.isString(data)) {
+      data = {
+        message: data
+      };
+    }
+    
     return {
       code: code,
       data: data
@@ -110,7 +118,7 @@ app.use(function * (next) {
   catch (e) {
     this.status = e.status || 500;
     this.body = e.message;
-    console.log(e)
+    console.log(e);
   }
 });
 

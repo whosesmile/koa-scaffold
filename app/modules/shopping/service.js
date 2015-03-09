@@ -1,6 +1,5 @@
 var whost = require('../../config').whost;
 var request = require('../../support').request;
-var _ = require('lodash');
 
 /**
  * 获取乐购数据

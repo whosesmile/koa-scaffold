@@ -18,6 +18,7 @@
   "boss": true,
   "eqnull": true,
   "globals": {
-    "template": true
+    "template": true,
+    "loginRequired":true
   }
 }
