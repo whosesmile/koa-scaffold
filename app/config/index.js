@@ -10,11 +10,14 @@ module.exports = {
   // 模板是否缓存
   templateCache: false,
 
+  // 上传文件路径
+  upload: path.resolve(__dirname, '../../node_upload/'),
+
   // 静态域名地址
-  shost: 'http://qafront.qdingnet.com',
+  shost: 'http://devfront.qdingnet.com',
 
   // Web接口域名
-  whost: 'http://qaboss.qdingnet.com',
+  whost: 'http://devboss.qdingnet.com',
 
   // favicon路径
   favicon: path.resolve(__dirname, '../favicon.ico'),

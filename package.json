@@ -9,6 +9,7 @@
   "repository": "https://github.com/whosesmile/koa-scaffold",
   "dependencies": {
     "bluebird": "^2.9.8",
+    "co-busboy": "^1.3.0",
     "install": "^0.1.8",
     "koa": "^0.17.0",
     "koa-body": "^1.1.0",

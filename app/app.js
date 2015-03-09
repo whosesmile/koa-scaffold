@@ -61,7 +61,6 @@ global.template = {
         message: data
       };
     }
-    
     return {
       code: code,
       data: data
@@ -98,6 +97,35 @@ app.use(minifier({
   removeComments: true
 }));
 
+// 全局错误处理
+app.use(function * (next) {
+  var error = null;
+  try {
+    yield * next;
+  }
+  catch (e) {
+    error = e;
+    this.status = e.status || 500;
+    console.log('\n>>>>>>>>>>>>>>>>>>');
+    console.log(e);
+  }
+  finally {
+    if (this.status === 404 || error) {
+      var mime = this.accepts(['json', 'html', 'text/plain']);
+      if (mime === 'json') {
+        this.body = template.render(this.status, this.status === 404 ? '文件未找到' : '服务器异常');
+      }
+      else if (mime === 'html') {
+        this.body = template.render(this.status === 404 ? 'modules/common/templates/404.html' : 'modules/common/templates/500.html');
+      }
+      else {
+        this.type = 'text';
+        this.body = this.status;
+      }
+    }
+  }
+});
+
 // 解析form
 app.use(parseForm());
 
@@ -108,18 +136,6 @@ app.use(function * (next) {
     return this.redirect('/location');
   }
   yield next;
-});
-
-// 全局错误处理
-app.use(function * (next) {
-  try {
-    yield next;
-  }
-  catch (e) {
-    this.status = e.status || 500;
-    this.body = e.message;
-    console.log(e);
-  }
 });
 
 /*--------------------------------------------------------------------------------*/
