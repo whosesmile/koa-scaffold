@@ -4,7 +4,7 @@ var swig = require('swig');
 var router = require('koa-router');
 var minifier = require('koa-html-minifier');
 var session = require('koa-session');
-var parseForm = require('koa-body');
+var koaBody = require('koa-body');
 var _ = require('lodash');
 var cpus = require('os').cpus().length;
 var config = require('./config');
@@ -127,7 +127,12 @@ app.use(function * (next) {
 });
 
 // 解析form
-app.use(parseForm());
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+    uploadDir: path.join(__dirname, '../upload')
+  }
+}));
 
 // 读取project信息
 app.use(function * (next) {

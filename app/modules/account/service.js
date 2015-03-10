@@ -31,7 +31,7 @@ exports.login = function (mobile, password, projectId, ip) {
         name: data.user.name,
         nick: data.user.nick,
         mobile: data.user.mobile,
-        sex: data.user.sex === 0 ? 0 : 1,
+        sex: [0, 1, -1].indexOf(data.user.sex) === -1 ? 1 : data.user.sex,
         image: data.user.image,
         thumb: data.user.thumb
       },
@@ -128,7 +128,7 @@ exports.update = function (form) {
       name: data.name,
       nick: data.nick,
       mobile: data.mobile,
-      sex: data.sex === 0 ? 0 : 1,
+      sex: [0, 1, -1].indexOf(data.sex) === -1 ? 1 : data.sex,
       image: data.image,
       thumb: data.thumb
     };

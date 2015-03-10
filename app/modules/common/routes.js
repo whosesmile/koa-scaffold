@@ -1,9 +1,16 @@
 var app = require('../../app');
 var config = require('../../config');
 var service = require('./service');
-var parse = require('co-busboy');
-var fs = require('fs');
-var path = require('path');
+
+// http 登录重定向
+app.get('/account/login', function * (next) {
+  return this.redirect('/login');
+});
+
+// http 登出重定向
+app.get('/account/logout', function * (next) {
+  return this.redirect('/logout');
+});
 
 // http favicon
 app.get('/favicon.ico', function * (next) {
@@ -14,13 +21,28 @@ app.get('/favicon.ico', function * (next) {
 
 // 上传图片
 app.post('/common/upload', function * (next) {
-  var part;
-  var parts = parse(this);
-  while (part = yield parts) {
-    var stream = fs.createWriteStream(path.join(config.upload, Math.random().toString()));
-    part.pipe(stream);
-    console.log('uploading %s -> %s', part.filename, stream.path);
-  }
+  try {
+    var list = [];
 
-  this.redirect('/');
+    for (var name in this.request.body.files) {
+      if (this.request.body.files.hasOwnProperty(name)) {
+        var files = this.request.body.files[name];
+        files = files.constructor === Array ? files : [files];
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          if (file.size) {
+            var data = yield config.storage.uploadImage(file.name, file.type, file.path);
+            list.push(data);
+          }
+        }
+      }
+    }
+
+    this.body = template.render(200, {
+      list: list
+    });
+  }
+  catch (e) {
+    this.body = template.render(400, e);
+  }
 });

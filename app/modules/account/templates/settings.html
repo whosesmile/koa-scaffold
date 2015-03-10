@@ -12,22 +12,25 @@
     </header>
     <section class="has-header">
       <a class="settings-head item-padding">
-      <p>
-        头像 <i class="icon icon-detail pull-right head-detail"></i>
-        <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" />
-      </p>
+        <p>
+          头像 <i class="icon icon-detail pull-right head-detail"></i>
+          <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" />
+        </p>
       </a>
       <a class="settings-name item-padding">
         <p>
-          姓名 <i class="icon icon-cancel pull-right"></i>
-          <span>{{ user.name }}</span>
+          姓名 <i class="icon icon-cancel pull-right setting-cancel hide"></i>
+          <span class="name-area-span">{{ user.name }}</span>
+          <input type="text" class="name-area-input pull-right"/>
         </p>
       </a>
       <a class="settings-name item-padding">
         <p>
           性别 
           <div class="sex-seclect">
-            <span class="active">男</span><span>女</span><span>保密</span>
+            <span {% if user.sex === 1 %}class="active"{% endif %}>男</span>
+            <span {% if user.sex === 0 %}class="active"{% endif %}>女</span>
+            <span {% if user.sex === -1 %}class="active"{% endif %}>保密</span>
           </div>
         </p>
       </a>

@@ -3,16 +3,6 @@ var support = require('../../support');
 var service = require('./service');
 var _ = require('lodash');
 
-// http 登录重定向
-app.get('/account/login', function * (next) {
-  return this.redirect('login');
-});
-
-// http 登出重定向
-app.get('/account/logout', function * (next) {
-  return this.redirect('logout');
-});
-
 // http 个人主页
 app.get('/profile', function * (next) {
   this.body = template.render('templates/profile.html', {
