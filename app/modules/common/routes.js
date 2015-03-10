@@ -1,6 +1,7 @@
 var app = require('../../app');
 var config = require('../../config');
 var service = require('./service');
+var fs = require('fs');
 
 // http 登录重定向
 app.get('/account/login', function * (next) {
@@ -37,6 +38,9 @@ app.post('/common/upload', function * (next) {
               path: path
             });
           }
+
+          // 移除本地缓存文件
+          fs.unlink(file.path);
         }
       }
     }
