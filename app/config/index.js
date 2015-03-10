@@ -49,11 +49,7 @@ module.exports = {
             return reject(err);
           }
           if (data.statusCode === 200) {
-            console.info(name, 'http://image-assets.b0.upaiyun.com' + dest(name, image));
-            return resolve({
-              name: name,
-              path: 'http://image-assets.b0.upaiyun.com' + dest(name, image)
-            });
+            return resolve('http://image-assets.b0.upaiyun.com' + dest(name, image));
           }
           console.error(data);
           return reject(data);

@@ -31,8 +31,11 @@ app.post('/common/upload', function * (next) {
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
           if (file.size) {
-            var data = yield config.storage.uploadImage(file.name, file.type, file.path);
-            list.push(data);
+            var path = yield config.storage.uploadImage(file.name, file.type, file.path);
+            list.push({
+              name: name,
+              path: path
+            });
           }
         }
       }
