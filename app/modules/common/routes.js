@@ -20,7 +20,7 @@ app.get('/favicon.ico', function * (next) {
   this.body = yield service.readFile(config.favicon);
 });
 
-// 上传图片
+// json 上传图片
 app.post('/common/upload', function * (next) {
   try {
     var list = [];
@@ -45,11 +45,11 @@ app.post('/common/upload', function * (next) {
       }
     }
 
-    this.body = template.render(200, {
+    this.body = this.template.render(200, {
       list: list
     });
   }
   catch (e) {
-    this.body = template.render(400, e);
+    this.body = this.template.render(400, e);
   }
 });

@@ -2,7 +2,6 @@ var whost = require('../../config').whost;
 var request = require('../../support').request;
 var _ = require('lodash');
 
-// d
 // 必穿参数： mobile: 电话 pwd: 密码 regionId: 城市id projectId: 社区id
 // 选穿参数： buildingId: 楼栋id roomId: 房屋id qrcodesId: 二维码id role: 身份
 /**
@@ -99,7 +98,7 @@ exports.getCaptcha = function (mobile, action) {
     method: 'get',
     qs: {
       mobile: _.trim(mobile),
-      action: action
+      action: action // action: 1 注册 2 忘记密码  3 修改手机号码 4 绑定房间
     }
   }).then(function (data) {
     return {
@@ -123,6 +122,7 @@ exports.update = function (form) {
     qs: form
   }).then(function (data) {
     data = data.entity;
+    // 后台返回的数据不准确
     return {
       id: data.id,
       name: data.name,
@@ -149,6 +149,27 @@ exports.updatePassword = function (userId, oldpwd, newpwd) {
     form: {
       id: userId,
       oldPwd: oldpwd,
+      newPwd: newpwd
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
+  });
+};
+
+/**
+ * 重设密码
+ * @param  {number} mobile 手机号
+ * @param  {newpwd} newpwd 新密码
+ * @return promise
+ */
+exports.resetPassword = function (mobile, newpwd) {
+  return request({
+    url: whost + '/user/app/user/updatePassword.json',
+    method: 'post',
+    form: {
+      mobile: mobile,
       newPwd: newpwd
     }
   }).then(function () {

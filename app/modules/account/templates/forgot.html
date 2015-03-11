@@ -1,1 +1,40 @@
-忘记密码
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/forgot.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="register">
+    <header class="bar fixed">
+      <a class="left-icon" onclick="javascript:history.back();"><i class="icon icon-back"></i></a>
+      <h1>忘记密码</h1>
+    </header>
+    <section class="has-header">
+      {% if error %}
+        <center class="alert alert-warning">{{ error|safe }}</center>  
+      {% endif %}
+      <form method="post" autocomplete="off">
+        <div class="list">
+          <label class="item-input">
+            <input type="tel" name="mobile" placeholder="请输入手机号" maxlength="11" value="{{ mobile }}" required autofocus />
+            <a class="getcapture text-warning" onclick="getCaptcha()">获取验证码</a>
+          </label>
+          <label class="item-input">
+            <input type="text" name="captcha" placeholder="请输入验证码" maxlength="6" required />
+          </label>
+          <label class="item-input">
+            <input type="password" name="password" placeholder="请输入新密码 (至少6位)" maxlength="20" required />
+          </label>
+        </div>
+        <div class="submit padding">
+          <button class="button button-warning button-block">完成</button>
+        </div>
+      </form>
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ shost }}/mobile/js/forgot.js"></script>
+{% endblock %}

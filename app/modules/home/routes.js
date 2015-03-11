@@ -2,5 +2,5 @@ var app = require('../../app');
 
 // http 网站首页
 app.get('/', function * (next) {
-  this.body = template.render('templates/home.html');
+  this.body = this.template.render('templates/home.html');
 });

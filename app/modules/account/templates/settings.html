@@ -12,10 +12,13 @@
     </header>
     <section class="has-header">
       <a class="settings-head item-padding">
-        <p>
-          头像 <i class="icon icon-detail pull-right head-detail"></i>
-          <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" />
-        </p>
+        <form id="upload">
+          <p>
+            头像 <i class="icon icon-detail pull-right head-detail"></i>
+            <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" id="head-pic"/>
+          </p>
+          <input id="fileselect" type="file" >
+        </form>
       </a>
       <a class="settings-name item-padding">
         <p>
@@ -27,7 +30,7 @@
       <a class="settings-name item-padding">
         <p>
           性别 
-          <div class="sex-seclect">
+          <div class="three-options">
             <span {% if user.sex === 1 %}class="active"{% endif %}>男</span>
             <span {% if user.sex === 0 %}class="active"{% endif %}>女</span>
             <span {% if user.sex === -1 %}class="active"{% endif %}>保密</span>
@@ -40,7 +43,7 @@
       <a class="settings-name item-padding margin-bottom20" href="/location">
        <p>
           我的房屋 <i class="icon icon-detail pull-right  "></i>
-          <span class="gray-color">紫都城</span>
+          <span class="gray-color">{{ project.name }}</span>
         </p>
       </a>
       <a class="settings-name item-padding" href="/account/password">

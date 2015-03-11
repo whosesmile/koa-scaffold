@@ -5,14 +5,14 @@ var _ = require('lodash');
 
 // http 个人主页
 app.get('/profile', function * (next) {
-  this.body = template.render('templates/profile.html', {
+  this.body = this.template.render('templates/profile.html', {
     user: this.session.user
   });
 });
 
 // http 获取登录页面
 app.get('/login', function * (next) {
-  this.body = template.render('templates/login.html', {
+  this.body = this.template.render('templates/login.html', {
     next: this.query.next
   });
 });
@@ -32,7 +32,7 @@ app.post('/login', function * (next) {
   }
 
   if (error) {
-    return this.body = template.render('templates/login.html', {
+    return this.body = this.template.render('templates/login.html', {
       mobile: form.mobile,
       error: error
     });
@@ -48,7 +48,7 @@ app.post('/login', function * (next) {
     this.redirect(this.query.next || '/');
   }
   else {
-    return this.body = template.render('templates/login.html', {
+    return this.body = this.template.render('templates/login.html', {
       mobile: form.mobile,
       error: '您的账户不存在或密码错误'
     });
@@ -68,7 +68,7 @@ app.get('/logout', function * (next) {
 
 // http 获取注册页面
 app.get('/register', function * (next) {
-  this.body = template.render('templates/register.html', {
+  this.body = this.template.render('templates/register.html', {
     next: this.query.next
   });
 });
@@ -100,7 +100,7 @@ app.post('/register', function * (next) {
   }
 
   if (error) {
-    this.body = template.render('templates/register.html', form, {
+    this.body = this.template.render('templates/register.html', form, {
       error: error,
       next: this.query.next
     });
@@ -124,7 +124,7 @@ app.post('/register', function * (next) {
     this.redirect('/account/refined');
   }
   else {
-    this.body = template.render('templates/register.html', form, {
+    this.body = this.template.render('templates/register.html', form, {
       next: this.query.next,
       error: '手机号已经被注册，请直接登录'
     });
@@ -136,7 +136,7 @@ app.post('/register/captcha', function * (next) {
   var form = this.request.body;
   // 校验手机
   if (!form.mobile || _.trim(form.mobile) === '') {
-    this.body = template.render(400, '请输入您的手机号码');
+    this.body = this.template.render(400, '请输入您的手机号码');
     return;
   }
   var data = yield service.getCaptcha(form.mobile, 1);
@@ -144,7 +144,7 @@ app.post('/register/captcha', function * (next) {
     code: data.captcha,
     time: new Date().getTime() // 记录时间
   };
-  this.body = template.render(200);
+  this.body = this.template.render(200);
 });
 
 // ajax 验证手机是否已经注册过
@@ -158,33 +158,107 @@ app.get('/account/exists', function * (next) {
   }
 });
 
+// ajax 找回密码验证码
+app.post('/forgot/captcha', function * (next) {
+  var form = this.request.body;
+  // 校验手机
+  if (!form.mobile || _.trim(form.mobile) === '') {
+    this.body = this.template.render(400, '请输入您的手机号码');
+    return;
+  }
+  var data = yield service.getCaptcha(form.mobile, 2);
+  this.session.captcha = {
+    code: data.captcha,
+    time: new Date().getTime() // 记录时间
+  };
+  this.body = this.template.render(200);
+});
+
 // http 忘记密码
 app.get('/account/forgot', function * (next) {
-  this.body = template.render('templates/forgot.html');
+  this.body = this.template.render('templates/forgot.html');
+});
+
+// http 忘记密码
+app.post('/account/forgot', function * (next) {
+
+  var form = this.request.body;
+  var error = null;
+
+  // 校验手机
+  if (!form.mobile || _.trim(form.mobile) === '') {
+    error = '请输入您的手机号码';
+  }
+  // 校验验证码
+  else if (!this.session.captcha || form.captcha !== this.session.captcha.code) {
+    error = '验证码不正确，请重新输入';
+  }
+  // 校验有效时间 为了防止网络延迟 这里处理成 3 分钟
+  else if (new Date().getTime() - this.session.captcha.time > 3 * 60 * 1000) {
+    error = '验证码已过期，请重新获取';
+  }
+  // 校验密码
+  else if (!form.password) {
+    error = '请输入您的登录密码';
+  }
+  // 校验密码长度
+  else if (form.password.length < 6) {
+    error = '密码长度至少为6位';
+  }
+
+  if (error) {
+    this.body = this.template.render('templates/forgot.html', form, {
+      error: error
+    });
+    return;
+  }
+
+  // 清除缓存的验证码
+  delete this.session.captcha;
+
+  // 验证手机账户是否存在
+  var exists = yield service.exists(form.mobile);
+  if (!exists) {
+    this.body = this.template.render('templates/forgot.html', form, {
+      error: '手机号尚不存在，<a class="text-gray" href="/register">点击注册</a>'
+    });
+  }
+  else {
+    var data = yield service.resetPassword(form.mobile, form.password);
+
+    if (data) {
+      // 保留选择的项目
+      _.forIn(this.session.inspect(), function (value, key) {
+        if (key !== 'projectId') {
+          delete this.session[key];
+        }
+      }, this);
+
+      // 跳转至完善信息页面
+      this.redirect('/login');
+    }
+    else {
+      this.body = this.template.render('templates/register.html', form, {
+        error: '重置密码失败'
+      });
+    }
+  }
 });
 
 // http 完善信息页面
 app.get('/account/refined', loginRequired, function * (next) {
-  this.body = template.render('templates/refined.html', this.session.user);
+  this.body = this.template.render('templates/refined.html', this.session.user);
 });
 
 // http 更新用户信息
 app.post('/account/refined', loginRequired, function * (next) {
   var form = this.request.body;
-  var user = yield service.update({
-    id: this.session.user.id,
-    name: form.name,
-    nick: form.name,
-    sex: form.sex,
-    mobile: form.mobile
-  });
-
-  // 刷新session
-  this.session.user = user;
+  delete form.mobile;
+  this.session.user = yield service.update(_.merge({}, this.session.user, form));
 
   // 是否保存为默认收货人
   if (form.address) {
-    yield service.createAddress(this.session.user.id, form.name, form.mobile, form.sex, 1);
+    yield service.createAddress(this.session.user.id, this.session.user.name, this.session.user.mobile, this.session.user.sex, 1);
   }
 
   this.redirect(this.query.next || '/');
@@ -192,8 +266,9 @@ app.post('/account/refined', loginRequired, function * (next) {
 
 // http 个人资料
 app.get('/account/settings', loginRequired, function * (next) {
-  this.body = template.render('templates/settings.html', {
-    user: this.session.user
+  this.body = this.template.render('templates/settings.html', {
+    user: this.session.user,
+    project: this.session.project
   });
 });
 
@@ -203,12 +278,12 @@ app.post('/account/update', loginRequired, function * (next) {
   // 手机号不允许更新
   delete form.mobile;
   this.session.user = yield service.update(_.merge({}, this.session.user, form));
-  return this.body = template.render(200, this.session.user);
+  return this.body = this.template.render(200, this.session.user);
 });
 
 // http 修改密码
 app.get('/account/password', loginRequired, function * (next) {
-  this.body = template.render('templates/password.html');
+  this.body = this.template.render('templates/password.html');
 });
 
 // http 修改密码
@@ -226,7 +301,7 @@ app.post('/account/password', loginRequired, function * (next) {
     error = '新密码至少为6位';
   }
   if (error) {
-    return this.body = template.render('templates/password.html', {
+    return this.body = this.template.render('templates/password.html', {
       error: error
     });
   }
@@ -237,7 +312,7 @@ app.post('/account/password', loginRequired, function * (next) {
     this.redirect('/profile');
   }
   else {
-    return this.body = template.render('templates/password.html', {
+    return this.body = this.template.render('templates/password.html', {
       error: '原密码输入不正确'
     });
   }

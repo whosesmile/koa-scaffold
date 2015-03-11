@@ -11,16 +11,17 @@
     "install": "^0.1.8",
     "koa": "^0.17.0",
     "koa-body": "^1.1.0",
+    "koa-flash": "^0.1.0",
     "koa-html-minifier": "^1.0.1",
     "koa-router": "^4.1.0",
     "koa-session": "^3.1.0",
     "lodash": "^3.1.0",
+    "mysql": "^2.5.4",
     "npm": "^2.6.1",
     "request": "^2.53.0",
+    "sequelize": "^2.0.1",
     "swig": "^1.4.2",
-    "upyun-legacy": "^0.4.0",
-    "mysql": "^2.5.4",
-    "sequelize": "^2.0.1"
+    "upyun-legacy": "^0.4.0"
   },
   "devDependencies": {
     "mocha": "*",

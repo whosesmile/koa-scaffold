@@ -17,6 +17,33 @@ exports.listCity = function () {
 };
 
 /**
+ * 根据城市ID返回城市实体
+ * @param  {number} cityId 查找的城市主键
+ * @return {promise}
+ */
+exports.getCity = function (cityId) {
+  return exports.listCity().then(function (data) {
+    var list = data.list;
+    for (var i = 0; i < list.length; i++) {
+      for (var letter in list[i]) {
+        if (list[i].hasOwnProperty(letter)) {
+          var citys = list[i][letter];
+          for (var j = 0; j < citys.length; j++) {
+            if (citys[j].id === cityId) {
+              return {
+                id: citys[j].id,
+                name: citys[j].name
+              };
+            }
+          }
+        }
+      }
+    }
+    return null;
+  });
+};
+
+/**
  * 根据城市姓名返回城市实体
  * @param  {string} city 查找的城市名称
  * @return {promise}
@@ -44,31 +71,6 @@ exports.findCity = function (city) {
 };
 
 /**
- * 根据经纬度获取城市信息
- * @param  {number} lat 维度
- * @param  {number} lng 精度
- * @return promise
- */
-exports.geolocation = function (lat, lng) {
-  return request({
-    url: 'http://apis.map.qq.com/ws/geocoder/v1/',
-    method: 'get',
-    qs: {
-      location: [lat, lng].join(','),
-      key: config.mapkey,
-      get_poi: 0
-    }
-  }).then(function (data) {
-    if (data.status === 0) {
-      return data.result.address_component;
-    }
-    return {
-      error: data.message
-    };
-  });
-};
-
-/**
  * 列举某个城市的社区列表
  * @param  {number} cityId 城市
  * @return {promise}
@@ -82,6 +84,26 @@ exports.listProject = function (cityId) {
       qdPlatform: 'weixin'
     }
   });
+};
+
+
+/**
+ * 根据项目ID获取项目信息
+ * @param  {number} projectId 城市
+ * @return {promise}
+ */
+exports.getProject = function (projectId) {
+  
+};
+
+
+/**
+ * 根据项目名称获取项目信息
+ * @param  {number} projectId 城市
+ * @return {promise}
+ */
+exports.findProject = function (projectId) {
+  
 };
 
 /**
@@ -117,5 +139,30 @@ exports.listRoom = function (cityId, projectId, buildingId) {
       projectId: projectId,
       buildingId: buildingId
     }
+  });
+};
+
+/**
+ * 根据经纬度获取城市信息
+ * @param  {number} lat 维度
+ * @param  {number} lng 精度
+ * @return promise
+ */
+exports.geolocation = function (lat, lng) {
+  return request({
+    url: 'http://apis.map.qq.com/ws/geocoder/v1/',
+    method: 'get',
+    qs: {
+      location: [lat, lng].join(','),
+      key: config.mapkey,
+      get_poi: 0
+    }
+  }).then(function (data) {
+    if (data.status === 0) {
+      return data.result.address_component;
+    }
+    return {
+      error: data.message
+    };
   });
 };
