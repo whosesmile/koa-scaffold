@@ -174,77 +174,6 @@ app.post('/forgot/captcha', function * (next) {
   this.body = this.template.render(200);
 });
 
-// http 忘记密码
-app.get('/account/forgot', function * (next) {
-  this.body = this.template.render('templates/forgot.html');
-});
-
-// http 忘记密码
-app.post('/account/forgot', function * (next) {
-
-  var form = this.request.body;
-  var error = null;
-
-  // 校验手机
-  if (!form.mobile || _.trim(form.mobile) === '') {
-    error = '请输入您的手机号码';
-  }
-  // 校验验证码
-  else if (!this.session.captcha || form.captcha !== this.session.captcha.code) {
-    error = '验证码不正确，请重新输入';
-  }
-  // 校验有效时间 为了防止网络延迟 这里处理成 3 分钟
-  else if (new Date().getTime() - this.session.captcha.time > 3 * 60 * 1000) {
-    error = '验证码已过期，请重新获取';
-  }
-  // 校验密码
-  else if (!form.password) {
-    error = '请输入您的登录密码';
-  }
-  // 校验密码长度
-  else if (form.password.length < 6) {
-    error = '密码长度至少为6位';
-  }
-
-  if (error) {
-    this.body = this.template.render('templates/forgot.html', form, {
-      error: error
-    });
-    return;
-  }
-
-  // 清除缓存的验证码
-  delete this.session.captcha;
-
-  // 验证手机账户是否存在
-  var exists = yield service.exists(form.mobile);
-  if (!exists) {
-    this.body = this.template.render('templates/forgot.html', form, {
-      error: '手机号尚不存在，<a class="text-gray" href="/register">点击注册</a>'
-    });
-  }
-  else {
-    var data = yield service.resetPassword(form.mobile, form.password);
-
-    if (data) {
-      // 保留选择的项目
-      _.forIn(this.session.inspect(), function (value, key) {
-        if (key !== 'projectId') {
-          delete this.session[key];
-        }
-      }, this);
-
-      // 跳转至完善信息页面
-      this.redirect('/login');
-    }
-    else {
-      this.body = this.template.render('templates/register.html', form, {
-        error: '重置密码失败'
-      });
-    }
-  }
-});
-
 // http 完善信息页面
 app.get('/account/refined', loginRequired, function * (next) {
   this.body = this.template.render('templates/refined.html', this.session.user);
@@ -252,8 +181,11 @@ app.get('/account/refined', loginRequired, function * (next) {
 
 // http 更新用户信息
 app.post('/account/refined', loginRequired, function * (next) {
-  var form = this.request.body;
+  // 清理无效的字段
+  var form = support.clean(this.request.body);
+  // 手机号不允许更新
   delete form.mobile;
+  // 更新用户
   this.session.user = yield service.update(_.merge({}, this.session.user, form));
 
   // 是否保存为默认收货人
@@ -264,6 +196,24 @@ app.post('/account/refined', loginRequired, function * (next) {
   this.redirect(this.query.next || '/');
 });
 
+// http 修改用户
+app.post('/account/update', loginRequired, function * (next) {
+  // 清理无效的字段
+  var form = support.clean(this.request.body);
+  // 手机号不允许更新
+  delete form.mobile;
+  // 更新用户
+  this.session.user = yield service.update(_.merge({}, this.session.user, form));
+
+  // isAjax
+  if (this.request.isAjax) {
+    this.body = this.template.render(200, this.session.user);
+  }
+  else {
+    this.redirect('/account/settings');
+  }
+});
+
 // http 个人资料
 app.get('/account/settings', loginRequired, function * (next) {
   this.body = this.template.render('templates/settings.html', {
@@ -272,13 +222,11 @@ app.get('/account/settings', loginRequired, function * (next) {
   });
 });
 
-// http 修改用户
-app.post('/account/update', loginRequired, function * (next) {
-  var form = support.clean(this.request.body);
-  // 手机号不允许更新
-  delete form.mobile;
-  this.session.user = yield service.update(_.merge({}, this.session.user, form));
-  return this.body = this.template.render(200, this.session.user);
+// 个人签名
+app.get('/account/signature', loginRequired, function * (next) {
+  this.body = this.template.render('templates/signature.html', {
+    signature: this.session.user.signature
+  });
 });
 
 // http 修改密码
@@ -315,5 +263,66 @@ app.post('/account/password', loginRequired, function * (next) {
     return this.body = this.template.render('templates/password.html', {
       error: '原密码输入不正确'
     });
+  }
+});
+
+// http 忘记密码
+app.get('/account/forgot', function * (next) {
+  this.body = this.template.render('templates/forgot.html');
+});
+
+// http 忘记密码
+app.post('/account/forgot', function * (next) {
+
+  var form = this.request.body;
+  var error = null;
+
+  // 校验手机
+  if (!form.mobile || _.trim(form.mobile) === '') {
+    error = '请输入您的手机号码';
+  }
+  // 校验验证码
+  else if (!this.session.captcha || form.captcha !== this.session.captcha.code) {
+    error = '验证码不正确，请重新输入';
+  }
+  // 校验有效时间 为了防止网络延迟 这里处理成 3 分钟
+  else if (new Date().getTime() - this.session.captcha.time > 3 * 60 * 1000) {
+    error = '验证码已过期，请重新获取';
+  }
+  // 校验密码
+  else if (!form.password) {
+    error = '请输入您的登录密码';
+  }
+  // 校验密码长度
+  else if (form.password.length < 6) {
+    error = '密码长度至少为6位';
+  }
+
+  if (error) {
+    return this.body = this.template.render('templates/forgot.html', form, {
+      error: error
+    });
+  }
+
+  // 清除缓存的验证码
+  delete this.session.captcha;
+
+  // 验证手机账户是否存在
+  var exists = yield service.exists(form.mobile);
+  if (!exists) {
+    this.body = this.template.render('templates/forgot.html', form, {
+      error: '手机号尚不存在，<a class="text-gray" href="/register">点击注册</a>'
+    });
+  }
+  else {
+    var success = yield service.resetPassword(form.mobile, form.password);
+    if (success) {
+      this.redirect('/logout');
+    }
+    else {
+      this.body = this.template.render('templates/register.html', form, {
+        error: '重置密码失败，请重新验证'
+      });
+    }
   }
 });

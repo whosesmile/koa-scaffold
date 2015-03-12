@@ -1,0 +1,28 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="sign">
+    <header class="bar fixed">
+      {{ macro.iconBack() }}
+      <h1>修改个性签名</h1>
+    </header>
+    <section class="has-header">
+      <form method="post" action="/account/update">
+        <div class="sign-box">
+          <textarea placeholder="修改您的个性签名，最多36个文字" maxlength="36" autofocus name="signature">{{ signature }}</textarea>
+        </div>
+        <div class="submit padding">
+          <button class="button button-warning button-block">修改</button>
+        </div>
+      </form>
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- // <script src="{{ shost }}/mobile/js/settings.js"></script> -->
+{% endblock %}

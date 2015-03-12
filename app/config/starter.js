@@ -47,7 +47,7 @@ module.exports = function (templateCache, shost, whost) {
           this.body = this.template.render(this.status, this.status === 404 ? '文件未找到' : '服务器异常');
         }
         else if (mime === 'html') {
-          this.body = this.template.render(this.status === 404 ? 'common/templates/404.html' : 'common/templates/500.html');
+          this.body = this.template.render(this.status === 404 ? '../app/modules/common/templates/404.html' : '../app/modules/common/templates/500.html');
         }
         else {
           this.type = 'text';
@@ -87,6 +87,9 @@ module.exports = function (templateCache, shost, whost) {
     if (!/^\/location(\/|$)/.test(this.path) && !this.session.projectId) {
       return this.redirect('/location');
     }
+
+    // 是否是Ajax
+    this.request.isAjax = this.headers['x-requested-with'] === 'XMLHttpRequest';
     yield next;
   });
 

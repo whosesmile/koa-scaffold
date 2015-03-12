@@ -7,7 +7,7 @@
 {% block content %}
   <div class="login">
     <header class="bar fixed">
-      <a class="left-icon" onclick="javascript:history.back();"><i class="icon icon-back"></i></a>
+      {{ macro.iconBack() }}
       <nav>
         <a href="{{ macro.url('/login', {next: next}) }}" class="active">登录</a>
         <a href="{{ macro.url('/register', {next: next}) }}">注册</a>

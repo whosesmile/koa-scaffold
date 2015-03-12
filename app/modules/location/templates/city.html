@@ -8,7 +8,7 @@
   <div class="city">
     <header class="bar fixed">
       {% if projectId %}
-        <a class="left-icon" onclick="javascript:history.back();"><i class="icon icon-back"></i></a>
+        {{ macro.iconBack() }}
       {% endif %}
       <h1>选择城市</h1>
     </header>

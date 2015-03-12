@@ -19,7 +19,8 @@ exports.login = function (mobile, password, projectId, ip) {
       pwd: password,
       projectId: projectId,
       ip: ip.replace('::ffff:', ''),
-      device: 'html5'
+      device: 'html5',
+      sourceType: 0
     }
   }).then(function (res) {
     // 重构数据
@@ -32,7 +33,8 @@ exports.login = function (mobile, password, projectId, ip) {
         mobile: data.user.mobile,
         sex: [0, 1, -1].indexOf(data.user.sex) === -1 ? 1 : data.user.sex,
         image: data.user.image,
-        thumb: data.user.thumb
+        thumb: data.user.thumb,
+        signature: data.user.signature
       },
       city: {
         id: data.project.region_id,
@@ -60,7 +62,8 @@ exports.register = function (mobile, password, projectId, ip) {
     form: {
       mobile: mobile,
       pwd: password,
-      projectId: projectId
+      projectId: projectId,
+      sourceType: 0
     }
   }).then(function (data) {
     // 注册返回的数据不完整 需要通过登录获取
@@ -78,7 +81,8 @@ exports.exists = function (mobile) {
     url: whost + '/user/app/user/isRegister.json',
     method: 'get',
     qs: {
-      mobile: _.trim(mobile)
+      mobile: _.trim(mobile),
+      sourceType: 0
     }
   }).then(function () {
     return true;
@@ -130,7 +134,8 @@ exports.update = function (form) {
       mobile: data.mobile,
       sex: [0, 1, -1].indexOf(data.sex) === -1 ? 1 : data.sex,
       image: data.image,
-      thumb: data.thumb
+      thumb: data.thumb,
+      signature: data.signature
     };
   });
 };
@@ -170,7 +175,8 @@ exports.resetPassword = function (mobile, newpwd) {
     method: 'post',
     form: {
       mobile: mobile,
-      newPwd: newpwd
+      newPwd: newpwd,
+      sourceType: 0
     }
   }).then(function () {
     return true;

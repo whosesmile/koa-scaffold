@@ -7,7 +7,7 @@
 {% block content %}
   <div class="settings">
     <header class="bar fixed">
-      <a class="left-icon" onclick="javascript:history.back();"><i class="icon icon-back"></i></a>
+      {{ macro.iconBack() }}
       <h1>个人资料</h1>
     </header>
     <section class="has-header">
@@ -37,13 +37,16 @@
           </div>
         </p>
       </a>
-      <a class="settings-name item-padding margin-bottom20">
-        <p>个性签名 <i class="icon icon-detail pull-right "></i></p>
+      <a class="settings-name item-padding margin-bottom20" href="/account/signature">
+        <p>
+          个性签名 <i class="icon icon-detail pull-right "></i>
+          <span class="text-gray signature ellipsis">{{ user.signature }}</span>
+        </p>
       </a>
       <a class="settings-name item-padding margin-bottom20" href="/location">
        <p>
           我的房屋 <i class="icon icon-detail pull-right  "></i>
-          <span class="gray-color">{{ project.name }}</span>
+          <span class="text-gray">{{ project.name }}</span>
         </p>
       </a>
       <a class="settings-name item-padding" href="/account/password">
