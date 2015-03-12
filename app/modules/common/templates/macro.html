@@ -42,6 +42,10 @@
 {% endmacro %}
 
 {# 返回按钮 #}
-{% macro iconBack() %}
-  <a class="left-icon" onclick="javascript:history.back();"><i class="icon icon-back"></i></a>
+{% macro iconBack(path) %}
+  {% if path %}
+    <a class="left-icon" href="{{ path }}"><i class="icon icon-back"></i></a>
+  {% else %}
+    <a class="left-icon" onclick="javascript:history.back();"><i class="icon icon-back"></i></a>
+  {% endif %}
 {% endmacro %}
