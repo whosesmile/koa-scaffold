@@ -232,7 +232,9 @@ exports.listCoupons = function (userId, status) {
     // 将有效数据标记将过期时间小于7天的
     data.expiring = 0; // 即将过期的数量
     var current = new Date().getTime();
-    data.list.forEach(function (item) {
+    data.list.sort(function (a, b) {
+      return a.price > b.price;
+    }).forEach(function (item) {
       if (item.status === 1) {
         if (current + 7 * 24 * 60 * 60 * 1000 > item.validEnd) {
           data.expiring += 1;
@@ -262,6 +264,10 @@ exports.addCoupon = function (userId, userName, code) {
       userName: userName,
       code: code
     }
+  }).then(function (data) {
+    return data;
+  }, function () {
+    return false;
   });
 };
 

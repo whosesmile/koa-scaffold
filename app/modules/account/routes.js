@@ -339,16 +339,22 @@ app.get('/account/coupon/:code', function * () {
   this.body = this.template.render('templates/coupon.html', data);
 });
 
+// 查看优惠券详情
+app.get('/account/addcoupon', function * () {
+  this.body = this.template.render('templates/addcoupon.html');
+});
+
 // 添加千丁券
-app.post('/account/coupon', function * () {
+app.post('/account/addcoupon', function * () {
   var form = this.request.body;
   var data = yield service.addCoupon(this.session.user.id, this.session.user.name, form.code);
 
-  // isAjax
-  if (this.request.isAjax) {
-    this.body = this.template.render(200, data);
+  if (data) {
+    this.redirect('/account/coupons');
   }
   else {
-    this.redirect('/account/coupons');
+    this.body = this.template.render('templates/addcoupon.html', {
+      error: '您输入的千丁券序列号不正确'
+    });
   }
 });

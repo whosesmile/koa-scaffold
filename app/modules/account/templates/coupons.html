@@ -7,7 +7,7 @@
 {% block content %}
   <div class="coupons">
     <header class="bar fixed">
-      <a class="left-icon" href=""><i class="icon icon-back"></i></a>
+      {{ macro.iconBack() }}
       <h1>我的千丁劵</h1>
     </header>
     <section class="has-header has-footer-btn">
@@ -69,7 +69,7 @@
     </section>
     {% if list.length %}
       <footer class="bar fixed bar-button">
-        <a href="" class="button button-warning button-block">添加新的千丁劵</a>
+        <a href="/account/addcoupon" class="button button-warning button-block">添加新的千丁劵</a>
       </footer>
     {% endif %}
   </div>
