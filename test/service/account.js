@@ -2,15 +2,30 @@ var assert = require('assert');
 var service = require('../../app/modules/account/service');
 var _ = require('lodash');
 
-describe('modules/account/service.js', function () {
+describe('account service', function () {
+  var user = {
+    id: 33208,
+    name: '李双宝'
+  };
 
-  it('updateUser 应该能够更新用户信息:', function(done) {
-    service.updateUser({
-      id: 68074,
-      name: '李双宝'
-    }).then(function(data) {
-      console.log(data)
-      assert(true);
+  // 优惠券相关
+  it('#listCoupons', function (done) {
+    service.listCoupons(user.id).then(function (data) {
+      assert(_.isArray(data.list));
+      done();
+    }, function (rej) {
+      done(rej);
+    });
+  });
+
+  it('#addCoupon', function (done) {
+    var code = '0271585854502';
+    service.addCoupon(user.id, user.name, code).then(function (data) {
+      assert(data.code, code)
+      assert(data.status, 1)
+      done();
+    }, function (rej) {
+      done(rej);
     });
   });
 

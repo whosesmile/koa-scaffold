@@ -16,6 +16,15 @@ module.exports = function (templateCache, shost, whost) {
     cache: templateCache // disabled for dev, should be commented on product
   });
 
+  // 东八区
+  swig.setDefaultTZOffset(-480);
+
+  // 添加优惠券过滤器
+  swig.setFilter('coupon', function (input) {
+    // 1:未使用 2,已使用 3：已过期 4：已作废 5：未生效 6：已锁定
+    return [null, '未使用', '已使用', '已过期', '已作废', '未生效', '已锁定'][Number(input)] || '已禁用';
+  });
+
   // 登录中间件 方便做登录验证跳转
   global.loginRequired = function * (next) {
     if (this.session.user) {

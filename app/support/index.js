@@ -59,7 +59,7 @@ function rebuild(res) {
   }
   res.code = parseInt(res.code, 10);
   res.code = res.code || 200;
-  res.data = res.data || {};
+  res.data = res.data2 || res.data || {}; // 奇葩的接口 绑定优惠券
   res.data.message = res.msg || res.message || res.data.msg || res.data.message;
   delete res.msg;
   delete res.message;

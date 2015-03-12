@@ -326,3 +326,29 @@ app.post('/account/forgot', function * (next) {
     }
   }
 });
+
+// 千丁券列表
+app.get('/account/coupons', function * () {
+  var data = yield service.listCoupons(this.session.user.id);
+  this.body = this.template.render('templates/coupons.html', data);
+});
+
+// 查看优惠券详情
+app.get('/account/coupon/:code', function * () {
+  var data = yield service.couponDetails(this.params.code);
+  this.body = this.template.render('templates/coupon.html', data);
+});
+
+// 添加千丁券
+app.post('/account/coupon', function * () {
+  var form = this.request.body;
+  var data = yield service.addCoupon(this.session.user.id, this.session.user.name, form.code);
+
+  // isAjax
+  if (this.request.isAjax) {
+    this.body = this.template.render(200, data);
+  }
+  else {
+    this.redirect('/account/coupons');
+  }
+});

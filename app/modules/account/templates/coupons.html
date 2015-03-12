@@ -1,0 +1,76 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="coupons">
+    <header class="bar fixed">
+      <a class="left-icon" href=""><i class="icon icon-back"></i></a>
+      <h1>我的千丁劵</h1>
+    </header>
+    <section class="has-header has-footer-btn">
+      {% if expiring %}
+        <div class="alert alert-warning text-center">您有 {{ expiring }} 张千丁劵即将过期</div>
+      {% endif %}
+
+      {# 如果有数据 #}
+      {% if list.length %}
+        <div class="tabs-box">
+          <div class="tabs">
+            <span class="tab active" onclick="$('#invalid').show();$(this).addClass('active').siblings().removeClass('active');">全部</span>
+            <span class="tab" onclick="$('#invalid').hide();$(this).addClass('active').siblings().removeClass('active');">未使用</span>
+          </div>
+        </div>
+        <div class="padding-horizontal">
+          {% if list.length !== expiring %}
+            {% for item in list %}
+              {% if item.status === 1 %}
+                <div class="coupon {% if item.expiring %}active{% endif %}" href="coupon.html">
+                  <a class="info" href="/account/coupon/{{ item.code }}">
+                    <div class="money">{{ item.price }}</div>
+                    <div class="details small text-gray">元优惠劵<p>{{ item.validStart|date('Y-m-d') }} ~ {{ item.validEnd|date('Y-m-d') }}</p></div>
+                  </a>
+                  <a class="used" href="/shopping">立即使用</a>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <div class="padding text-gray text-center">木有可用的千丁券</div>
+          {% endif %}
+
+          {% if invalid %}
+            <div id="invalid">
+              <div class="divider text-gray small">已失效的券</div>
+              {% for item in list %}
+                {% if item.status !== 1 %}
+                  <div class="coupon" href="coupon.html">
+                    <a class="info">
+                      <div class="money">{{ item.price }}</div>
+                      <div class="details small text-gray">元优惠劵<p>{{ item.validStart|date('Y-m-d') }} ~ {{ item.validEnd|date('Y-m-d') }}</p></div>
+                    </a>
+                    <a class="invalid"><i class="icon icon-invalid"></i><small>{{ item.status|coupon }}</small></a>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="blank">
+          <div class="wrap">
+            <i class="icon icon-nocoupon"></i>
+            <h3 class="text-gray">还木有千丁券哦，去添加吧！</h3>
+            <a href="" class="button button-warning">前去添加</a>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+    {% if list.length %}
+      <footer class="bar fixed bar-button">
+        <a href="" class="button button-warning button-block">添加新的千丁劵</a>
+      </footer>
+    {% endif %}
+  </div>
+{% endblock %}

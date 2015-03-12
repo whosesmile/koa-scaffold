@@ -187,7 +187,7 @@ exports.resetPassword = function (mobile, newpwd) {
 
 /**
  * 创建收货人地址
- * @param  {number} id  用户ID
+ * @param  {number} userId  用户ID
  * @param  {string} address   收货人姓名
  * @param  {string} mobile    收货人电话
  * @param  {number} sex       收货人性别
@@ -195,12 +195,12 @@ exports.resetPassword = function (mobile, newpwd) {
  * @return promise
  */
 // TODO: POST乱码
-exports.createAddress = function (id, name, mobile, sex, asdefault) {
+exports.createAddress = function (userId, name, mobile, sex, asdefault) {
   return request({
     url: whost + '/user/app/user/bindAddressee.json',
     method: 'get',
     qs: {
-      userId: id,
+      userId: userId,
       addresseeName: name,
       addresseePhone: mobile,
       addresseeSex: sex,
@@ -210,5 +210,104 @@ exports.createAddress = function (id, name, mobile, sex, asdefault) {
     }
   }).then(function (data) {
     return data.entity;
+  });
+};
+
+/**
+ * 获取优惠券列表
+ * @param  {number} userId 用户ID
+ * @param  {number} status 选传 1:未使用 2,已使用 3：已过期 4：已作废 5：未生效 6：已锁定
+ * @return {promise}
+ */
+exports.listCoupons = function (userId, status) {
+  return request({
+    url: whost + '/market/coupon/list',
+    method: 'get',
+    qs: {
+      userId: userId,
+      status: status
+    }
+  }).then(function (data) {
+    data.invalid = 0;
+    // 将有效数据标记将过期时间小于7天的
+    data.expiring = 0; // 即将过期的数量
+    var current = new Date().getTime();
+    data.list.forEach(function (item) {
+      if (item.status === 1) {
+        if (current + 7 * 24 * 60 * 60 * 1000 > item.validEnd) {
+          data.expiring += 1;
+        }
+      }
+      else {
+        data.invalid += 1;
+      }
+    });
+    return data;
+  });
+};
+
+/**
+ * 添加优惠券
+ * @param  {number} userId 用户ID
+ * @param  {string} userName 用户名称
+ * @param  {string} code 千丁券密码
+ * @return {promise}
+ */
+exports.addCoupon = function (userId, userName, code) {
+  return request({
+    url: whost + '/market/coupon/useCoupon',
+    method: 'post',
+    form: {
+      userId: userId,
+      userName: userName,
+      code: code
+    }
+  });
+};
+
+/**
+ * 绑定优惠券
+ * @param  {number} orderId 订单ID
+ * @param  {string} code 千丁券密码
+ * @return {promise}
+ */
+exports.bindCoupon = function (orderId, code) {
+  return request({
+    url: whost + '/market/coupon/bindCoupon',
+    method: 'post',
+    form: {
+      orderId: orderId,
+      code: code
+    }
+  });
+};
+
+/**
+ * 解绑优惠券
+ * @param  {string} code 千丁券密码
+ * @return {promise}
+ */
+exports.unbindCoupon = function (code) {
+  return request({
+    url: whost + '/market/coupon/unbindCoupon',
+    method: 'post',
+    form: {
+      code: code
+    }
+  });
+};
+
+/**
+ * 优惠券详情
+ * @param  {string} code 千丁券密码
+ * @return {promise}
+ */
+exports.couponDetails = function (code) {
+  return request({
+    url: whost + '/market/coupon/info',
+    method: 'get',
+    qs: {
+      code: code
+    }
   });
 };
