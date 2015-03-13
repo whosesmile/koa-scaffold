@@ -3,16 +3,6 @@ var config = require('../../config');
 var service = require('./service');
 var fs = require('fs');
 
-// http 登录重定向
-app.get('/account/login', function * (next) {
-  return this.redirect('/login');
-});
-
-// http 登出重定向
-app.get('/account/logout', function * (next) {
-  return this.redirect('/logout');
-});
-
 // http favicon
 app.get('/favicon.ico', function * (next) {
   this.set('Cache-Control', 'public, max-age=' + 7 * 60 * 60);

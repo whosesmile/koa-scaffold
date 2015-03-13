@@ -1,0 +1,48 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="addresses">
+    <header class="bar fixed">
+      {{ macro.iconBack('/profile') }}
+      <h1>管理收货地址</h1>
+    </header>
+    <section class="has-header has-footer">
+      {% if list.length %}
+        {% for item in list %}
+          <dl data-id="{{ item.id }}">
+            <dt>
+              <a href="/account/address/{{ item.id }}">
+                <span class="ellipsis">{{ item.name }}<i class="sex">({{ item.sex|sex }})</i>{{ item.phone }}</span>
+                <span class="ellipsis">地址：{{ item.address || '暂无地址' }}</span>
+              </a>
+              <i class="icon icon-detail"></i>
+            </dt>
+            <dd>
+              <label class="checkbox">
+                <input type="checkbox" name="asdefault" value="true" {% if item.defaultFlag === 1 %}checked disabled {% endif %} /> 设为默认
+              </label>
+              <div class="button-group">
+                <a href="/account/address/{{ item.id }}" class="button button-warning button-outline"><i class="icon icon-edit"></i>编辑</a>
+                <button class="button button-warning button-outline delete" {% if item.defaultFlag === 1 %}disabled{% endif %}><i class="icon icon-delete"></i>删除</button>
+              </div>
+            </dd>
+          </dl>
+        {% endfor %}
+      {% endif %}
+    </section>
+
+    {% if list.length %}
+      <footer class="bar fixed bar-button">
+        <a href="/account/address" class="button button-warning button-block">新建收货人</a>
+      </footer>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ shost }}/mobile/js/address.js"></script>
+{% endblock %}

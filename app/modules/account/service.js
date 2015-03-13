@@ -123,7 +123,9 @@ exports.update = function (form) {
   return request({
     url: whost + '/user/app/user/update.json',
     method: 'get',
-    qs: form
+    qs: _.merge({
+      sourceType: 0
+    }, form)
   }).then(function (data) {
     data = data.entity;
     // 后台返回的数据不准确
@@ -188,28 +190,107 @@ exports.resetPassword = function (mobile, newpwd) {
 /**
  * 创建收货人地址
  * @param  {number} userId  用户ID
- * @param  {string} address   收货人姓名
- * @param  {string} mobile    收货人电话
- * @param  {number} sex       收货人性别
- * @param  {number} asdefault 是否设为默认收货人
+ * @param  {object} address   收货人信息
  * @return promise
  */
 // TODO: POST乱码
-exports.createAddress = function (userId, name, mobile, sex, asdefault) {
+exports.createAddress = function (userId, address) {
   return request({
     url: whost + '/user/app/user/bindAddressee.json',
     method: 'get',
     qs: {
       userId: userId,
-      addresseeName: name,
-      addresseePhone: mobile,
-      addresseeSex: sex,
-      defaultFlag: asdefault || 0,
-      addresseeAddress: null,
-      addresseePostcode: null
+      addresseeName: address.name,
+      addresseePhone: address.phone,
+      addresseeSex: address.sex,
+      defaultFlag: address.defaultFlag || 0,
+      addresseeAddress: address.address,
+      addresseePostcode: address.postcode
     }
   }).then(function (data) {
     return data.entity;
+  }, function () {
+    return false;
+  });
+};
+
+/**
+ * 更新收货人地址
+ * @param  {number} userId    用户ID
+ * @param  {object} address 收货人详细信息
+ * @return {promise}
+ */
+exports.updateAddress = function (userId, address) {
+  return request({
+    url: whost + '/user/app/user/updateAddressee.json',
+    method: 'get',
+    qs: {
+      userId: userId,
+      addresseeId: address.id,
+      addresseeName: address.name,
+      addresseePhone: address.phone,
+      addresseeSex: address.sex,
+      defaultFlag: address.defaultFlag,
+      addresseeAddress: address.address,
+      addresseePostcode: address.postcode
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
+  });
+};
+
+/**
+ * 删除收货人信息
+ * @param  {[type]} userId    [description]
+ * @param  {[type]} addressId [description]
+ * @return {[type]}           [description]
+ */
+exports.deleteAddress = function (userId, addressId) {
+  return request({
+    url: whost + '/user/app/user/delAddressee.json',
+    method: 'get',
+    qs: {
+      userId: userId,
+      addresseeId: addressId
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
+  });
+};
+
+/**
+ * 列举收货人信息
+ * @param  {number} userId 用户ID
+ * @return {promise}
+ */
+exports.listAddress = function (userId) {
+  return request({
+    url: whost + '/user/app/user/getAddressee.json',
+    method: 'get',
+    qs: {
+      userId: userId
+    }
+  });
+};
+
+/**
+ * 获取指定的收货地址
+ * @param  {number} userId    用户ID
+ * @param  {number} addressId 地址ID
+ * @return {promise}
+ */
+exports.getAddress = function (userId, addressId) {
+  return exports.listAddress(userId).then(function (data) {
+    for (var i = 0; i < data.list.length; i++) {
+      if (data.list[i].id === Number(addressId)) {
+        return data.list[i];
+      }
+    }
+    return null;
   });
 };
 

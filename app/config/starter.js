@@ -25,13 +25,18 @@ module.exports = function (templateCache, shost, whost) {
     return [null, '未使用', '已使用', '已过期', '已作废', '未生效', '已锁定'][Number(input)] || '已禁用';
   });
 
+  // 添加性别过滤器
+  swig.setFilter('sex', function (input) {
+    return ['女士', '先生'][input] || '保密';
+  });
+
   // 登录中间件 方便做登录验证跳转
   global.loginRequired = function * (next) {
     if (this.session.user) {
       yield next;
     }
     else {
-      this.redirect('/login?next=' + encodeURIComponent(this.request.href));
+      this.redirect('/account/login?next=' + encodeURIComponent(this.request.href));
     }
   };
 

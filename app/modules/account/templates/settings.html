@@ -15,7 +15,9 @@
         <form id="upload">
           <p>
             头像 <i class="icon icon-detail pull-right head-detail"></i>
-            <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" id="head-pic"/>
+            <span class="head">
+              <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" id="head-pic"/>
+            </span>
           </p>
           <input id="fileselect" type="file" >
         </form>

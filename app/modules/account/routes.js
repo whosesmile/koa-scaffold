@@ -3,6 +3,10 @@ var support = require('../../support');
 var service = require('./service');
 var _ = require('lodash');
 
+app.redirect('/login', '/account/login');
+app.redirect('/logout', '/account/logout');
+app.redirect('/register', '/account/register');
+
 // http 个人主页
 app.get('/profile', function * (next) {
   this.body = this.template.render('templates/profile.html', {
@@ -11,14 +15,14 @@ app.get('/profile', function * (next) {
 });
 
 // http 获取登录页面
-app.get('/login', function * (next) {
+app.get('/account/login', function * (next) {
   this.body = this.template.render('templates/login.html', {
     next: this.query.next
   });
 });
 
 // http 登录逻辑
-app.post('/login', function * (next) {
+app.post('/account/login', function * (next) {
   var form = this.request.body;
   var error = null;
 
@@ -56,25 +60,25 @@ app.post('/login', function * (next) {
 });
 
 // http 登出
-app.get('/logout', function * (next) {
+app.get('/account/logout', function * (next) {
   // 保留选择的项目
   _.forIn(this.session.inspect(), function (value, key) {
     if (key !== 'projectId') {
       delete this.session[key];
     }
   }, this);
-  this.redirect('/login');
+  this.redirect('/account/login');
 });
 
 // http 获取注册页面
-app.get('/register', function * (next) {
+app.get('/account/register', function * (next) {
   this.body = this.template.render('templates/register.html', {
     next: this.query.next
   });
 });
 
 // http 注册逻辑
-app.post('/register', function * (next) {
+app.post('/account/register', function * (next) {
   var form = this.request.body;
   var error = null;
 
@@ -158,6 +162,67 @@ app.get('/account/exists', function * (next) {
   }
 });
 
+// http 忘记密码
+app.get('/account/forgot', function * (next) {
+  this.body = this.template.render('templates/forgot.html');
+});
+
+// http 忘记密码
+app.post('/account/forgot', function * (next) {
+
+  var form = this.request.body;
+  var error = null;
+
+  // 校验手机
+  if (!form.mobile || _.trim(form.mobile) === '') {
+    error = '请输入您的手机号码';
+  }
+  // 校验验证码
+  else if (!this.session.captcha || form.captcha !== this.session.captcha.code) {
+    error = '验证码不正确，请重新输入';
+  }
+  // 校验有效时间 为了防止网络延迟 这里处理成 3 分钟
+  else if (new Date().getTime() - this.session.captcha.time > 3 * 60 * 1000) {
+    error = '验证码已过期，请重新获取';
+  }
+  // 校验密码
+  else if (!form.password) {
+    error = '请输入您的登录密码';
+  }
+  // 校验密码长度
+  else if (form.password.length < 6) {
+    error = '密码长度至少为6位';
+  }
+
+  if (error) {
+    return this.body = this.template.render('templates/forgot.html', form, {
+      error: error
+    });
+  }
+
+  // 清除缓存的验证码
+  delete this.session.captcha;
+
+  // 验证手机账户是否存在
+  var exists = yield service.exists(form.mobile);
+  if (!exists) {
+    this.body = this.template.render('templates/forgot.html', form, {
+      error: '手机号尚不存在，<a class="text-gray" href="/account/register">点击注册</a>'
+    });
+  }
+  else {
+    var success = yield service.resetPassword(form.mobile, form.password);
+    if (success) {
+      this.redirect('/account/logout');
+    }
+    else {
+      this.body = this.template.render('templates/register.html', form, {
+        error: '重置密码失败，请重新验证'
+      });
+    }
+  }
+});
+
 // ajax 找回密码验证码
 app.post('/forgot/captcha', function * (next) {
   var form = this.request.body;
@@ -190,14 +255,19 @@ app.post('/account/refined', loginRequired, function * (next) {
 
   // 是否保存为默认收货人
   if (form.address) {
-    yield service.createAddress(this.session.user.id, this.session.user.name, this.session.user.mobile, this.session.user.sex, 1);
+    yield service.createAddress(this.session.user.id, {
+      name: this.session.user.name,
+      phone: this.session.user.mobile,
+      sex: this.session.user.sex,
+      defaultFlag: 1
+    });
   }
 
   this.redirect(this.query.next || '/');
 });
 
 // http 修改用户
-app.post('/account/update', loginRequired, function * (next) {
+app.register('/account/update', ['put', 'post'], loginRequired, function * (next) {
   // 清理无效的字段
   var form = support.clean(this.request.body);
   // 手机号不允许更新
@@ -266,86 +336,25 @@ app.post('/account/password', loginRequired, function * (next) {
   }
 });
 
-// http 忘记密码
-app.get('/account/forgot', function * (next) {
-  this.body = this.template.render('templates/forgot.html');
-});
-
-// http 忘记密码
-app.post('/account/forgot', function * (next) {
-
-  var form = this.request.body;
-  var error = null;
-
-  // 校验手机
-  if (!form.mobile || _.trim(form.mobile) === '') {
-    error = '请输入您的手机号码';
-  }
-  // 校验验证码
-  else if (!this.session.captcha || form.captcha !== this.session.captcha.code) {
-    error = '验证码不正确，请重新输入';
-  }
-  // 校验有效时间 为了防止网络延迟 这里处理成 3 分钟
-  else if (new Date().getTime() - this.session.captcha.time > 3 * 60 * 1000) {
-    error = '验证码已过期，请重新获取';
-  }
-  // 校验密码
-  else if (!form.password) {
-    error = '请输入您的登录密码';
-  }
-  // 校验密码长度
-  else if (form.password.length < 6) {
-    error = '密码长度至少为6位';
-  }
-
-  if (error) {
-    return this.body = this.template.render('templates/forgot.html', form, {
-      error: error
-    });
-  }
-
-  // 清除缓存的验证码
-  delete this.session.captcha;
-
-  // 验证手机账户是否存在
-  var exists = yield service.exists(form.mobile);
-  if (!exists) {
-    this.body = this.template.render('templates/forgot.html', form, {
-      error: '手机号尚不存在，<a class="text-gray" href="/register">点击注册</a>'
-    });
-  }
-  else {
-    var success = yield service.resetPassword(form.mobile, form.password);
-    if (success) {
-      this.redirect('/logout');
-    }
-    else {
-      this.body = this.template.render('templates/register.html', form, {
-        error: '重置密码失败，请重新验证'
-      });
-    }
-  }
-});
-
 // 千丁券列表
-app.get('/account/coupons', function * () {
+app.get('/account/coupons', loginRequired, function * () {
   var data = yield service.listCoupons(this.session.user.id);
   this.body = this.template.render('templates/coupons.html', data);
 });
 
 // 查看优惠券详情
-app.get('/account/coupon/:code', function * () {
+app.get('/account/coupon/:code', loginRequired, function * () {
   var data = yield service.couponDetails(this.params.code);
   this.body = this.template.render('templates/coupon.html', data);
 });
 
 // 查看优惠券详情
-app.get('/account/addcoupon', function * () {
+app.get('/account/addcoupon', loginRequired, function * () {
   this.body = this.template.render('templates/addcoupon.html');
 });
 
 // 添加千丁券
-app.post('/account/addcoupon', function * () {
+app.post('/account/addcoupon', loginRequired, function * () {
   var form = this.request.body;
   var data = yield service.addCoupon(this.session.user.id, this.session.user.name, form.code);
 
@@ -355,6 +364,78 @@ app.post('/account/addcoupon', function * () {
   else {
     this.body = this.template.render('templates/addcoupon.html', {
       error: '您输入的千丁券序列号不正确'
+    });
+  }
+});
+
+// 收货人信息
+app.get('/account/addresses', loginRequired, function * () {
+  var data = yield service.listAddress(this.session.user.id);
+  this.body = this.template.render('templates/addresses.html', data);
+});
+
+// 编辑收货人
+app.get('/account/address/:addressId', loginRequired, function * () {
+  var address = yield service.getAddress(this.session.user.id, this.params.addressId);
+  this.body = this.template.render('templates/address.html', address);
+});
+
+// 编辑收货人
+app.register('/account/address/:addressId', ['put', 'post'], loginRequired, function * () {
+  var address = _.merge(yield service.getAddress(this.session.user.id, this.params.addressId), support.clean(this.request.body));
+  var result = yield service.updateAddress(this.session.user.id, address);
+  if (result) {
+    if (this.request.isAjax) {
+      this.body = this.template.render(200);
+    }
+    else {
+      this.redirect('/account/addresses');
+    }
+  }
+  else {
+    if (this.request.isAjax) {
+      this.body = this.template.render(500, '更新收货人失败');
+    }
+    else {
+      this.body = this.template.render('templates/address.html', address, {
+        error: '更新收货人失败'
+      });
+    }
+  }
+});
+
+// 删除收货人
+app.delete('/account/address/:addressId', loginRequired, function * () {
+  var address = yield service.getAddress(this.session.user.id, this.params.addressId);
+  if (address.defaultFlag === 1) {
+    this.body = this.template.render(400, '默认收货人不能删除');
+  }
+  else {
+    var result = yield service.deleteAddress(this.session.user.id, this.params.addressId);
+    if (result) {
+      this.body = this.template.render(200);
+    }
+    else {
+      this.body = this.template.render(500, '删除收货人失败');
+    }
+  }
+});
+
+// 新建收货人
+app.get('/account/address', loginRequired, function * () {
+  this.body = this.template.render('templates/address.html');
+});
+
+// 新建收货人
+app.post('/account/address', loginRequired, function * () {
+  var address = support.clean(this.request.body);
+  var result = yield service.createAddress(this.session.user.id, address);
+  if (result) {
+    this.redirect('/account/addresses');
+  }
+  else {
+    this.body = this.template.render('templates/address.html', {
+      error: '创建收货人失败'
     });
   }
 });
