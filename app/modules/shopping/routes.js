@@ -1,29 +1,47 @@
 var app = require('../../app');
-var shoppingService = require('./service');
+var service = require('./service');
 
 // 团购首页
 app.get('/shopping', function * (next) {
-  var data = yield shoppingService.shopping(this.session.projectId);
+  var data = yield service.shopping(this.session.projectId);
   this.body = this.template.render('templates/shopping.html', data);
 });
 
 // 团购分类
 app.get('/shopping/category', function * (next) {
-  var data = yield shoppingService.listCategory(this.session.projectId);
+  var data = yield service.listCategory(this.session.projectId);
   this.body = this.template.render('templates/category.html', data);
 });
 
 // 分类频道
 app.get('/shopping/channel/:id', function * (next) {
-  var data = yield shoppingService.listGoods(this.session.projectId, this.params.id);
+  var data = yield service.listGoods(this.session.projectId, this.params.id);
   this.body = this.template.render('templates/channel.html', data);
 });
 
 // 商品详情
 app.get('/shopping/details/:id', function * (next) {
   var user = this.session.user;
-  var data = yield shoppingService.details(this.params.id, user ? user.id : null);
+  var data = yield service.details(this.params.id, user ? user.id : null);
   this.body = this.template.render('templates/details.html', data);
+});
+
+// 加入购物车
+app.post('/shopping/add2Cart', loginRequired, function * (next) {
+  var form = this.request.body;
+  var result = service.add2Cart(this.session.user.id, this.session.projectId, form.id, form.count || 1);
+  if (result) {
+    this.body = this.template.render(200);
+  }
+  else {
+    this.body = this.template.render(500, '添加至购物车失败');
+  }
+});
+
+// 列举购物车
+app.get('/shopping/cart', loginRequired, function * (next) {
+  var data = yield service.listCart(this.session.user.id, this.session.projectId);
+  this.body = this.template.render('templates/cart.html', data);
 });
 
 // 推荐频道
@@ -69,4 +87,34 @@ app.get('/shopping/success', function * (next) {
 // 支付失败
 app.get('/shopping/failure', function * (next) {
   this.body = this.template.render('templates/failure.html');
+});
+
+// 收藏商品
+app.post('/shopping/collect', loginRequired, function * () {
+  var form = this.request.body;
+  var result = yield service.collect(this.session.user.id, this.session.projectId, form.id);
+  if (result) {
+    this.body = this.template.render(200);
+  }
+  else {
+    this.body = this.template.render(500, '收藏商品失败');
+  }
+});
+
+// 取消收藏
+app.post('/shopping/uncollect', loginRequired, function * () {
+  var form = this.request.body;
+  var result = yield service.cancelCollect(this.session.user.id, this.session.projectId, form.id);
+  if (result) {
+    this.body = this.template.render(200);
+  }
+  else {
+    this.body = this.template.render(500, '取消收藏失败');
+  }
+});
+
+// 列举收藏
+app.get('/shopping/collect', loginRequired, function * () {
+  var data = yield service.listCollect(this.session.user.id, this.session.projectId);
+  this.body = this.template.render('templates/collect.html', data);
 });

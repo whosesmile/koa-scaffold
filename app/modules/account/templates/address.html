@@ -8,7 +8,7 @@
   <div class="addresses">
     <form method="post" autocomplete="off">
       <header class="bar fixed">
-        {{ macro.iconBack('/profile') }}
+        {{ macro.iconBack('/account/addresses') }}
         {% if id %}
           <h1>编辑收货人信息</h1>
         {% else %}
@@ -26,7 +26,7 @@
           </label>
           <label class="item-input has-label">
             <span class="label">性别：</span>
-            <div class="track-options two-options">
+            <div class="track-options">
               <span data-value="1" {% if sex !== 0 %}class="active"{% endif %}>男</span>
               <span data-value="0" {% if sex === 0 %}class="active"{% endif %}>女</span>
               <input type="hidden" name="sex" value="{{ sex|default(1) }}" />

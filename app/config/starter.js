@@ -30,13 +30,23 @@ module.exports = function (templateCache, shost, whost) {
     return ['女士', '先生'][input] || '保密';
   });
 
+  // 添加小数点
+  swig.setFilter('currency', function (input, size, symbol) {
+    return _.isUndefined(input) ? '' : (symbol || '￥') + Number(input).toFixed(size || 2);
+  });
+
   // 登录中间件 方便做登录验证跳转
   global.loginRequired = function * (next) {
     if (this.session.user) {
       yield next;
     }
     else {
-      this.redirect('/account/login?next=' + encodeURIComponent(this.request.href));
+      if (this.request.isAjax) {
+        return this.body = this.template.render(403, '请先登录');
+      }
+      else {
+        this.redirect('/account/login?next=' + encodeURIComponent(this.request.href));
+      }
     }
   };
 
@@ -111,21 +121,28 @@ module.exports = function (templateCache, shost, whost) {
   app.use(function * (next) {
     this.template = {
       render: function (template) {
+
         // 合并数据模型 
         var data = {};
-        for (var i = 1; i < arguments.length; i++) {
-          if (_.isObject(arguments[i])) {
-            _.merge(data, arguments[i]);
+        if (arguments.length === 2 && _.isString(arguments[1])) {
+          data.message = arguments[1];
+        }
+        else {
+          for (var i = 1; i < arguments.length; i++) {
+            if (_.isObject(arguments[i])) {
+              _.merge(data, arguments[i]);
+            }
           }
         }
-        // 确定回调函数
-        var callback = arguments[arguments.length - 1];
-        callback = _.isFunction(callback) ? callback : null;
 
         // 兼容JSON响应
         if (_.isNumber(template)) {
-          return this.renderJSON.apply(this, _.toArray(arguments));
+          return this.renderJSON(template, data);
         }
+
+        // 确定回调函数
+        var callback = arguments[arguments.length - 1];
+        callback = _.isFunction(callback) ? callback : null;
 
         // 根据相对位置查找模板
         if (/^[^./]/i.test(template)) {
@@ -143,14 +160,6 @@ module.exports = function (templateCache, shost, whost) {
 
       // 用来渲染JSON
       renderJSON: function (code, data) {
-        if (_.isUndefined(data)) {
-          data = {};
-        }
-        if (_.isString(data)) {
-          data = {
-            message: data
-          };
-        }
         return {
           code: code,
           data: data

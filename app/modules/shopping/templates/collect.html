@@ -1,0 +1,45 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="collect">
+    <header class="bar fixed">
+      {{ macro.iconBack('/profile') }}
+      <h1>我的收藏</h1>
+      <a class="action small text-warning">编辑</a>
+    </header>
+    <section class="has-header">
+      {% if list.length %}
+        {% for item in list %}
+          <div class="graphic clearfix">
+            <div class="piece">
+              <label class="checkbox">
+                <input type="checkbox" value="{{ item.id }}" />
+              </label>
+              <div class="figure row">
+                <img class="col" src="{{ item.goodsImg }}" />
+              </div>
+              <div class="information">
+                <h3 class="ellipsis text-gray small">{{ item.publishName }}</h3>
+                <div class="price">
+                  <span class="text-danger">{{ item.price|currency }}</span>
+                  <span class="tiny text-gray through">{{ item.originalPrice|currency }}</span>
+                  <span class="tiny text-gray pull-right counts">
+                    <i class="icon icon-fav-gray"></i> 98
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- // <script src="{{ shost }}/mobile/js/register.js"></script> -->
+{% endblock %}

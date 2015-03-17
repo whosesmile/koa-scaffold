@@ -5,16 +5,16 @@
 {% endblock %}
 
 {% block content %}
-  <div class="sign">
+  <div class="signature">
     <header class="bar fixed">
       {{ macro.iconBack('/account/settings') }}
       <h1>修改个性签名</h1>
     </header>
     <section class="has-header">
       <form method="post" action="/account/update">
-        <div class="sign-box">
-          <textarea placeholder="修改您的个性签名，最多36个文字" maxlength="36" autofocus name="signature">{{ signature }}</textarea>
-        </div>
+        <label class="textarea">
+          <textarea placeholder="修改您的个性签名，最多36个文字" maxlength="36" name="signature">{{ signature }}</textarea>
+        </label>
         <div class="submit padding">
           <button class="button button-warning button-block">修改</button>
         </div>

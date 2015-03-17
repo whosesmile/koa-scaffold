@@ -17,7 +17,7 @@
             <dt>
               <a href="/account/address/{{ item.id }}">
                 <span class="ellipsis">{{ item.name }}<i class="sex">({{ item.sex|sex }})</i>{{ item.phone }}</span>
-                <span class="ellipsis">地址：{{ item.address || '暂无地址' }}</span>
+                <span class="ellipsis">地址：{{ item.address || '<i class="text-gray">暂未填写</i>'|safe }}</span>
               </a>
               <i class="icon icon-detail"></i>
             </dt>

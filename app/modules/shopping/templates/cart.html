@@ -1,0 +1,57 @@
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="cart">
+    <header class="bar fixed">
+      {{ macro.iconBack('/profile') }}
+      <h1>我的购物车</h1>
+    </header>
+    <section class="has-header has-footer">
+
+      {% if list.length %}
+        {% for item in list %}
+          <div class="list">
+            <div class="item item-checkbox item-thumbnail">
+              <label class="checkbox">
+                <input type="checkbox" name="goods" value="" checked />
+              </label>
+              <div class="thumbnail">
+                <img src="{{ item.img }}" />
+              </div>
+              <div class="information">
+                <h3 class="ellipsis">韩版中长韩版中长韩版中长韩版中长韩版中长</h3>
+                <div class="price">
+                  <span class="text-danger">{{ item.price|currency }}</span>
+                  <span class="small text-grayer through">{{ item.originalPrice|currency }}</span>
+                </div>
+                <div class="counter">
+                  <span><i class="icon icon-minus"></i></span>
+                  <span class="number text-center text-gray">{{ item.count }}</span>
+                  <span><i class="icon icon-plus"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </section>
+
+    <footer class="bar fixed footer-item-btn">
+      <div class="cart-foot">
+        <span class="checkbox active"></span>
+        <p class="all-check ">全选</p>
+        <div class="totle-money">
+          <p>合计:<span>￥92212</span></p>
+          <p>节省:<span>￥998</span></p>
+        </div>
+        <div class="cart-btn">
+          <div class="btn"><p>去结算</p></div>
+        </div>
+      </div>
+    </footer>
+  </div>
+{% endblock %}

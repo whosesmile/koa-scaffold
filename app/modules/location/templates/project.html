@@ -16,7 +16,7 @@
       </div>
       <div class="list list-padding">
         {% for item in list %}
-          <a href="/location/choose/{{ item.id }}" class="item" data-query="{{ item.projectKey }}"><span>{{ item.name }}</span></a>
+          <a href="/location/choose/{{ item.id }}" class="item oneline" data-query="{{ item.projectKey }}"><span>{{ item.name }}</span></a>
         {% endfor %}
       </div>
 
@@ -26,5 +26,5 @@
 {% endblock %}
 
 {% block script %}
-  <!-- // <script src="{{ shost }}/mobile/js/home.js"></script> -->
+  <script src="{{ shost }}/mobile/js/location.js"></script>
 {% endblock %}

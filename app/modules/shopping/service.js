@@ -82,16 +82,107 @@ exports.listPromotes = function (ids) {
   return {};
 };
 
-exports.placeOrder = function () {
-
+/**
+ * 添加商品到购物车
+ * @param  {number} userId    用户主键
+ * @param  {number} projectId 项目主键
+ * @param  {number} goodsId   商品主键
+ * @param  {number} count     商品数量
+ * @return {promise}
+ */
+exports.add2Cart = function (userId, projectId, goodsId, count) {
+  return request({
+    url: whost + '/market/goods/addCart',
+    method: 'get',
+    qs: {
+      userId: userId,
+      projectId: projectId,
+      goodsId: goodsId,
+      count: count
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
+  });
 };
 
-// var counter = {};
+/**
+ * 获取购物车列表
+ * @param  {number} userId    用户主键
+ * @param  {number} projectId 项目主键
+ * @return {promise}
+ */
+exports.listCart = function (userId, projectId) {
+  return request({
+    url: whost + '/market/goods/getCartGoods',
+    method: 'get',
+    qs: {
+      userId: userId,
+      projectId: projectId
+    }
+  });
+};
 
-// var i = 10;
-// while (i--) {
-//   request('http://127.0.0.1:8000', function (err, res) {
-//     counter[res.body] = (counter[res.body] || 0) + 1;
-//     console.log(counter)
-//   });
-// }
+/**
+ * 收藏商品
+ * @param  {number} userId    用户ID
+ * @param  {number} projectId 项目ID
+ * @param  {number} goodsId   商品ID
+ * @return {promise}
+ */
+exports.collect = function (userId, projectId, goodsId) {
+  return request({
+    url: whost + '/market/goods/collect',
+    method: 'post',
+    qs: {
+      userId: userId,
+      goodsId: goodsId,
+      projectId: projectId
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
+  });
+};
+
+/**
+ * 取消收藏
+ * @param  {number} userId    用户ID
+ * @param  {number} projectId 项目ID
+ * @param  {number} goodsId   商品ID
+ * @return {promise}
+ */
+exports.cancelCollect = function (userId, projectId, goodsId) {
+  return request({
+    url: whost + '/market/goods/delCollect',
+    method: 'post',
+    qs: {
+      userId: userId,
+      goodsId: goodsId,
+      projectId: projectId
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
+  });
+};
+
+/**
+ * 列举收藏列表
+ * @param  {number} userId    用户ID
+ * @param  {number} projectId 项目ID
+ * @return {promise}
+ */
+exports.listCollect = function (userId, projectId) {
+  return request({
+    url: whost + '/market/goods/getColGoods',
+    method: 'get',
+    qs: {
+      userId: userId,
+      projectId: projectId
+    }
+  });
+};

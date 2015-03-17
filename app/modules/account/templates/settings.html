@@ -11,60 +11,59 @@
       <h1>个人资料</h1>
     </header>
     <section class="has-header">
-      <a class="settings-head item-padding">
-        <form id="upload">
-          <p>
-            头像 <i class="icon icon-detail pull-right head-detail"></i>
-            <span class="head">
-              <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" id="head-pic"/>
-            </span>
-          </p>
-          <input id="fileselect" type="file" >
-        </form>
-      </a>
-      <a class="settings-name item-padding">
-        <p>
-          姓名 <i class="icon icon-cancel pull-right setting-cancel hide"></i>
-          <span class="name-area-span">{{ user.name }}</span>
-          <input type="text" class="name-area-input pull-right"/>
-        </p>
-      </a>
-      <a class="settings-name item-padding">
-        <p>
-          性别 
-          <div class="three-options">
+      <div class="list">
+        <div class="item item-icon-right oneline figure">
+          <span class="pull-left">头像</span>
+          <span class="pull-right head">
+            <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" id="head-pic" />
+          </span>
+          <i class="icon icon-detail"></i>
+          <input type="file" name="file" id="upload" />
+        </div>
+        <a class="item item-icon-right oneline">
+          <span class="pull-left">姓名</span>
+          <span class="pull-right">李双宝</span>
+          <i class="icon icon-detail"></i>
+        </a>
+        <div class="item oneline">
+          <span class="pull-left">性别</span>
+          <div class="track-options">
             <span {% if user.sex === 1 %}class="active"{% endif %}>男</span>
             <span {% if user.sex === 0 %}class="active"{% endif %}>女</span>
             <span {% if user.sex === -1 %}class="active"{% endif %}>保密</span>
           </div>
-        </p>
-      </a>
-      <a class="settings-name item-padding margin-bottom20" href="/account/signature">
-        <p>
-          个性签名 <i class="icon icon-detail pull-right "></i>
-          <span class="text-gray signature ellipsis">{{ user.signature }}</span>
-        </p>
-      </a>
-      <a class="settings-name item-padding margin-bottom20" href="/location">
-       <p>
-          我的房屋 <i class="icon icon-detail pull-right  "></i>
-          <span class="text-gray">{{ project.name }}</span>
-        </p>
-      </a>
-      <a class="settings-name item-padding" href="/account/password">
-        <p>修改密码 <i class="icon icon-detail pull-right "></i></p>
-      </a>
-      <a class="settings-name item-padding" {% if !user.mobile %}href="/account/refined"{% endif %}>
-        <p>
-          {% if user.mobile %}
-            绑定手机
-            <span>{{ user.mobile }}</span>  
-          {% else %}
-            绑定手机 <i class="icon icon-detail pull-right "></i>
-            <span>未绑定</span>
-          {% endif %}
-        </p>
-      </a>
+        </div>
+        <a class="item item-icon-right oneline" href="/account/signature">
+          <span class="pull-left">个性签名</span>
+          <span class="pull-right text-gray signature ellipsis">{{ user.signature }}</span>
+          <i class="icon icon-detail"></i>
+        </a>
+      </div>
+
+      <div class="list border">
+        <a class="item item-icon-right oneline" href="/location">
+          <span class="pull-left">我的房屋</span>
+          <span class="pull-right text-gray signature ellipsis">{{ project.name }}</span>
+          <i class="icon icon-detail"></i>
+        </a>
+      </div>
+
+      <div class="list border">
+        <a class="item item-icon-right oneline" href="/account/password">
+          修改密码 <i class="icon icon-detail"></i>
+        </a>
+        {% if user.mobile %}
+          <div class="item oneline">
+            <span class="pull-left">绑定手机</span>
+            <span class="pull-right">{{ user.mobile }}</span>  
+          </div>
+        {% else %}
+          <a class="item item-icon-right oneline" href="/account/refined">
+            <span class="pull-left">未绑定</span>
+            <i class="icon icon-detail"></i>
+          </a>
+        {% endif %}
+      </div>
     </section>
   </div>
 {% endblock %}

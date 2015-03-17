@@ -16,7 +16,7 @@
       <div class="geo">
         <h3>定位到您当前所在的城市是：</h3>
         <div class="list list-padding geo">
-          <i class="item text-gray">正在定位城市...</i>
+          <i class="item oneline text-gray">正在定位城市...</i>
         </div>
         <!-- <div class="city"><i class="text-gray">正在定位城市...</i></div> -->
       </div>
@@ -26,7 +26,7 @@
           {% for letter, citys in item %}
             <div class="item-divider">{{ letter }}</div>
             {% for city in citys %}
-              <a href="/location/{{ city.id }}" class="item"><span>{{ city.name }}</span></a>
+              <a href="/location/{{ city.id }}" class="item oneline"><span>{{ city.name }}</span></a>
             {% endfor %}
           {% endfor %}
         </div>

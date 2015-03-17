@@ -16,7 +16,9 @@ module.exports = {
   // 静态域名地址
   // shost: 'http://devfront.qdingnet.com',
 
-  shost: 'http://127.0.0.1',
+  shost: 'http://10.37.63.51',
+  
+  // shost: 'http://127.0.0.1',
 
   // Web接口域名
   whost: 'http://devboss.qdingnet.com',

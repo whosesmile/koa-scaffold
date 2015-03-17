@@ -1,6 +1,28 @@
-{% for item in list %}
-  <a href="/shopping/channel/{{ item.id }}" class="item">
-    <img src="{{ item.icon }}" />
-    <span>{{ item.name }}</span>
-  </a>
-{% endfor %}
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="category">
+    <header class="bar fixed">
+      {{ macro.iconBack() }}
+      <h1>所有分类</h1>
+    </header>
+    <section class="has-header">
+      <div class="list border">
+        {% for item in list %}
+          <a href="/shopping/channel/{{ item.id }}" class="item oneline">
+            <img src="{{ item.icon }}" />
+            <span>{{ item.name }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- // <script src="{{ shost }}/mobile/js/home.js"></script> -->
+{% endblock %}

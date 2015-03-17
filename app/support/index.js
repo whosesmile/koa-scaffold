@@ -60,7 +60,15 @@ function rebuild(res) {
   res.code = parseInt(res.code, 10);
   res.code = res.code || 200;
   res.data = res.data2 || res.data || {}; // 奇葩的接口 绑定优惠券
-  res.data.message = res.msg || res.message || res.data.msg || res.data.message;
+  if (_.isArray(res.data)) {
+    res.data = {
+      list: res.data
+    };
+  }
+  if (_.isPlainObject(res.data)) {
+    res.data.message = res.msg || res.message || res.data.msg || res.data.message;
+  }
+
   delete res.msg;
   delete res.message;
   delete res.data.msg;
@@ -70,9 +78,11 @@ function rebuild(res) {
 // request proxy to return promise 
 exports.request = function (options, unpack) {
   return new Promise(function (resolve, reject) {
+
+    console.info('\n**********');
+    var st = new Date();
+    console.info('request', options);
     request(options, function (err, res) {
-      console.info('\n**********');
-      console.info('request:', options);
 
       if (err) {
         console.log('error:', err);
@@ -81,6 +91,7 @@ exports.request = function (options, unpack) {
       }
       // 打印数据
       console.info('response:', res.body);
+      console.info('spend time:', (new Date().getTime() - st.getTime()) / 1000, 's');
       console.info('**********\n');
 
       try {
