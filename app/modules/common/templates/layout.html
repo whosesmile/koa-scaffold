@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{{ shost }}/mobile/css/base.css" />
   {% block style %}{% endblock %}
 </head>
-<body>
+<body {% if lightbg %}class="lightbg"{% endif %}>
   {% block header %}{% endblock %}
   {% block content %}{% endblock %}
   {% block footer %}{% endblock %}

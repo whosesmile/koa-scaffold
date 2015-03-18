@@ -14,10 +14,10 @@ module.exports = {
   upload: path.resolve(__dirname, '../../node_upload/'),
 
   // 静态域名地址
-  shost: 'http://devfront.qdingnet.com',
+  // shost: 'http://devfront.qdingnet.com',
 
-  // shost: 'http://10.37.63.51',
-  
+  shost: 'http://10.37.63.51',
+
   // shost: 'http://127.0.0.1',
 
   // Web接口域名

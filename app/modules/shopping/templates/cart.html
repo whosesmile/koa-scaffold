@@ -1,3 +1,4 @@
+{% set lightbg = list.length > 0; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
@@ -11,7 +12,6 @@
       <h1>我的购物车</h1>
     </header>
     <section class="has-header has-footer">
-
       {% if list.length %}
         {% for item in list %}
           <div class="list">
@@ -37,6 +37,14 @@
             </div>
           </div>
         {% endfor %}
+      {% else %}
+        <div class="blank">
+          <div class="wrap">
+            <i class="icon icon-nocart"></i>
+            <h3 class="text-gray">购物车还是空的，去挑选宝贝吧！</h3>
+            <a href="/shopping" class="button button-warning">去逛逛</a>
+          </div>
+        </div>
       {% endif %}
     </section>
 

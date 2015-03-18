@@ -1,14 +1,15 @@
+{% set lightbg = true; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
-  <link rel="stylesheet" href="{{ shost }}/mobile/css/register.css" />
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
 {% endblock %}
 
 {% block content %}
   <div class="register">
     <header class="bar fixed">
       {{ macro.iconBack() }}
-      <nav>
+      <nav class="entry">
         <a href="{{ macro.url('/account/login', {next: next}) }}">登录</a>
         <a href="{{ macro.url('/account/register', {next: next}) }}" class="active">注册</a>
       </nav>
@@ -17,9 +18,9 @@
       {% if error %}
         <center class="alert alert-warning">{{ error }}</center>  
       {% endif %}
-      <div class="tips text-gray small padding-horizontal">*请输入您自己的手机号码 (将用此号码登录千丁)</div>
+      <div class="tips text-gray small padding-horizontal ellipsis">* 请输入您用户登录的手机号码</div>
       <form method="post" autocomplete="off">
-        <div class="list">
+        <div class="list border">
           <label class="item-input">
             <input type="tel" name="mobile" placeholder="请输入手机号" maxlength="11" value="{{ mobile }}" required />
             <a class="getcapture text-warning" onclick="getCaptcha()">获取验证码</a>

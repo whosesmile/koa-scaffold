@@ -1,14 +1,15 @@
+{% set lightbg = true; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
-  <link rel="stylesheet" href="{{ shost }}/mobile/css/login.css" />
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
 {% endblock %}
 
 {% block content %}
   <div class="login">
     <header class="bar fixed">
       {{ macro.iconBack() }}
-      <nav>
+      <nav class="entry">
         <a href="{{ macro.url('/account/login', {next: next}) }}" class="active">登录</a>
         <a href="{{ macro.url('/account/register', {next: next}) }}">注册</a>
         <!-- <a href="">邀请码</a> -->

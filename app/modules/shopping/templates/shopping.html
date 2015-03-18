@@ -7,12 +7,13 @@
 {% block content %}
   <div class="shopping-home">
     <header class="bar fixed">
+      {{ macro.iconBack() }}
       <h1>乐购</h1>
       <a class="icon-cart right-item" href=""></a>
     </header>
     <section class="has-header has-footer">
       <div class="slider">
-        <img src="http://front.qdingnet.com/mobile/images/slider.jpg">
+        <img src="{{ shost }}/mobile/images/slider.jpg">
       </div>
 
       {% if category %}
