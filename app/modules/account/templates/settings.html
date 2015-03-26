@@ -16,14 +16,14 @@
         <div class="item item-icon-right oneline figure">
           <span class="pull-left">头像</span>
           <span class="pull-right head">
-            <img src="{{ user.image || shost + '/mobile/images/profile/icon_head.png' }}" id="head-pic" />
+            <img src="{{ user.image || shost + '/mobile/images/profile/user.png' }}" id="head-pic" />
           </span>
           <i class="icon icon-detail"></i>
           <input type="file" name="file" id="upload" />
         </div>
-        <a class="item item-icon-right oneline">
+        <a class="item item-icon-right oneline" href="/account/username">
           <span class="pull-left">姓名</span>
-          <span class="pull-right">李双宝</span>
+          <span class="pull-right">{{ user.name }}</span>
           <i class="icon icon-detail"></i>
         </a>
         <div class="item oneline">

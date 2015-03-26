@@ -1,0 +1,92 @@
+{% set lightbg = true; %}
+{% extends './modules/common/templates/layout.html' %}
+
+{% block title %}确认订单{% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="confirm">
+    <header class="bar fixed">
+      {{ macro.iconBack() }}
+      <h1 class="ellipsis">确认订单</h1>
+    </header>
+    <section class="has-header has-footer">
+      <div class="list">
+        {% for item in list%}
+          <div class="item item-thumbnail">
+            <a class="thumbnail">
+              <img src="{{ item.goodsImg }}" alt="" />
+            </a>
+            <div class="information">
+              <h3 class="ellipsis">{{ item.publishName }}</h3>
+              <div class="price">
+                <span class="text-danger">{{ item.price|currency }}</span>
+                <span class="small text-grayer through">{{ item.originalPrice|currency }}</span>
+              </div>
+              <div class="count small text-gray">数量：1</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="list">
+        <div class="item-divider">订单金额</div>
+        <div class="item oneline text-gray">总价:{{ '19.0'|currency }} 运费:{{ 0|currency }}</div>
+      </div>
+      <div class="list payment">
+        <div class="item-divider">支付方式</div>
+        <div class="item oneline">
+          <label class="checkbox">
+            <input type="checkbox" name="paytype" value="1" checked />
+            <img src="{{ shost }}/mobile/images/alipay.png" alt="支付宝" />
+          </label>
+        </div>
+        <div class="item oneline">
+          <label class="checkbox">
+            <input type="checkbox" name="paytype" value="2" />
+            <img src="{{ shost }}/mobile/images/wxpay.png" alt="微信支付" />
+          </label>
+        </div>
+        <div class="item oneline">
+          <label class="checkbox">
+            <input type="checkbox" name="paytype" value="3" />
+            <img src="{{ shost }}/mobile/images/cashpay.png" alt="现金支付" />
+          </label>
+        </div>
+      </div>
+      <div class="list">
+        <div class="item-divider">收货人信息</div>
+        <a class="item item-icon-right oneline text-gray" href="/shopping/address">选择姓名和电话<i class="icon icon-detail"></i></a>
+        {% if address %}
+          <div class="item oneline">{{ address.name }}</div>
+          <div class="item oneline">{{ address.phone }}</div>
+        {% endif %}
+        
+        <a class="item item-icon-right oneline text-gray" href="/shopping/paddress">选择物业地址作为收货地址<i class="icon icon-detail"></i></a>
+        <div class="item multiline">
+          {% if paddress %}
+            {{ paddress.address }} 电话: {{ phones|join(', ') }}
+          {% else %}
+            非常抱歉，物业地址缺失，您暂时无法下单，请等待我们修复
+          {% endif %}
+        </div>
+      </div>
+    </section>
+    <footer class="bar fixed">
+      <div class="charge">
+        <div class="pull-left total">
+          实付款:<i class="text-danger">{{ total|currency }}</i><br />
+        </div>
+        <div class="pull-right">
+          <button class="button button-warning pull-left">提交订单</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ shost }}/mobile/js/shopping.js"></script>
+{% endblock %}

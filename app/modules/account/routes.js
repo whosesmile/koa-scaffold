@@ -244,6 +244,11 @@ app.get('/account/refined', loginRequired, function * (next) {
   this.body = this.template.render('templates/refined.html', this.session.user);
 });
 
+// http 更新用户名字
+app.get('/account/username', loginRequired, function * (next) {
+  this.body = this.template.render('templates/username.html', this.session.user);
+});
+
 // http 更新用户信息
 app.post('/account/refined', loginRequired, function * (next) {
   // 清理无效的字段

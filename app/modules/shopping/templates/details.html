@@ -1,82 +1,90 @@
+{% set lightbg = true; %}
 {% extends './modules/common/templates/layout.html' %}
 
+{% block title %}{{ goods.publishName }}{% endblock %}
+
 {% block style %}
-  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping-detail.css" />
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
 {% endblock %}
 
 {% block content %}
-  <header class="bar fixed">
-    {{ macro.iconBack('/account/addresses') }}
-    <h1 class="ellipsis">{{ goods.publishName }}</h1>
-    <a class="right-icon" href="">
-      <i class="icon icon-fav"></i>
-      <i class="icon icon-cart"></i>
-    </a>
-  </header>
-  <section class="has-header has-footer">
-    <div class="slider">
-      <img src="{{ goods.img }}" />
-    </div>
-    <div class="information">
-      <p class="title">{{ goods.publishName }}</p>
-      <p class="subtitle">{{ goods.name }}</p>
-      <p class="price">
-        <span class="discount-price">￥{{ goods.price }}</span>
-        <span class="original-price">￥{{ goods.originalPrice }}</span>
-        <!-- <span class="discount">{{ (goods.price/goods.originalPrice * 10).toFixed(1) }}折</span> -->
-        <span class="discount">{{ goods.discount }}折</span>
-        <span class="shipping">包邮</span>
-      </p>
-    </div>
-    
-    <div class="numerics row small text-center">
-      <div class="col">
-        已售出 <i>{{ goods.soldCount }}</i> 件
-      </div>
-      <div class="col collect" data-id="{{ goods.id }}" data-collect="{{ goods.isCollect }}">
-        <span>
-          {% if goods.isCollect %}
-            <i class="icon icon-fav"></i>
-          {% else %}
-            <i class="icon icon-fav-gray"></i>
+  <div class="details">
+    <form name="confirm" method="post" action="/shopping/confirm">
+      <header class="bar fixed">
+        {{ macro.iconBack() }}
+        <h1 class="ellipsis">{{ goods.publishName }}</h1>
+        <a class="right-icon" href="">
+          <i class="icon icon-fav"></i>
+          <i class="icon icon-cart"></i>
+        </a>
+      </header>
+      <section class="has-header has-footer">
+        <div class="slider">
+          <img src="{{ goods.img }}" />
+        </div>
+        <div class="information">
+          <p class="title">{{ goods.publishName }}</p>
+          <p class="subtitle">{{ goods.name }}</p>
+          <p class="summary">
+            <span class="price">{{ goods.price|currency }}</span>
+            <span class="text-gray small through">{{ goods.originalPrice|currency }}</span>
+            <span class="discount">{{ goods.discount }}折</span>
+            <span class="shipping">包邮</span>
+          </p>
+        </div>
+        
+        <div class="numerics row small text-center">
+          <div class="col">
+            已售出 <i>{{ goods.soldCount }}</i> 件
+          </div>
+          <div class="col collect" data-id="{{ goods.id }}" data-collect="{{ goods.isCollect }}">
+            <span>
+              {% if goods.isCollect %}
+                <i class="icon icon-fav"></i>
+              {% else %}
+                <i class="icon icon-fav-gray"></i>
+              {% endif %}
+              收藏 0 人
+            </span>
+          </div>
+        </div>
+
+        <div class="promotion text-center">
+          <i class="icon icon-timer"></i>
+          <span>距打折结束还有<i>2</i>天<i>12</i>小时<i>48</i>分</span>
+        </div>
+
+        <div class="list border">
+          {% if goods.activityInfo.length %}
+          <div class="item oneline">
+            优惠活动
+            {% for item in goods.activityInfo %}
+              <span class="tag">{{ item }}</span>
+            {% endfor %}
+          </div>
           {% endif %}
-          收藏 0 人
-        </span>
-      </div>
-    </div>
-
-    <div class="promotion text-center">
-      <i class="icon icon-timer"></i>
-      <span>距打折结束还有<i>2</i>天<i>12</i>小时<i>48</i>分</span>
-    </div>
-
-    <div class="list border">
-      {% if goods.activityInfo.length %}
-      <div class="item oneline">
-        优惠活动
-        {% for item in goods.activityInfo %}
-          <span class="tag">{{ item }}</span>
-        {% endfor %}
-      </div>
-      {% endif %}
-      <div class="item oneline item-icon-right">规格/尺寸<i class="icon icon-detail"></i></div>
-      <div class="item oneline item-icon-right">购买须知<i class="icon icon-detail"></i></div>
-      <div class="item oneline item-icon-right details">
-        商品详情<i class="icon icon-detail"></i>
-        <div class="desc text-gray hide">{{ goods.detail|safe }}</div>
-      </div>
-    </div>
-  </section>
-  <footer class="bar fixed bar-buttons">
-    <div class="row">
-      <div class="col">
-        <a class="button button-warning button-block button-outline cart" data-id="{{ goods.id }}">加入购物车</a>
-      </div>
-      <div class="col">
-        <a href="/account/address" class="button button-warning button-block">立即购买</a>
-      </div>
-    </div>
-  </footer>
+          <div class="item oneline item-icon-right">规格/尺寸<i class="icon icon-detail"></i></div>
+          <div class="item oneline item-icon-right">购买须知<i class="icon icon-detail"></i></div>
+          <div class="item oneline item-icon-right details">
+            商品详情<i class="icon icon-detail"></i>
+            <div class="desc text-gray hide">{{ goods.detail|safe }}</div>
+          </div>
+        </div>
+      </section>
+      <footer class="bar fixed bar-buttons">
+        <div class="row">
+          <div class="col">
+            <a class="button button-warning button-block button-outline cart" data-id="{{ goods.id }}">加入购物车</a>
+          </div>
+          <div class="col">
+            <input type="hidden" name="goods" value="{{ goods.id  }}" />
+            <input type="hidden" name="count" value="1" />
+            <button class="button button-warning button-block">立即购买</button>
+          </div>
+        </div>
+      </footer>
+    </form>
+  </div>
 {% endblock %}
 
 {% block script %}

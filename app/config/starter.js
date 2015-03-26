@@ -42,12 +42,37 @@ module.exports = function (templateCache, shost, whost) {
     }
     else {
       if (this.request.isAjax) {
-        return this.body = this.template.render(403, '请先登录');
+        this.body = this.template.render(403, '请先登录');
+      }
+      else if (this.request.method === 'GET') {
+        this.redirect('/account/login?next=' + encodeURIComponent(this.request.url));
       }
       else {
-        this.redirect('/account/login?next=' + encodeURIComponent(this.request.href));
+        this.redirect('/account/login?next=' + encodeURIComponent(this.headers.referer || '/home'));
       }
     }
+  };
+
+  // 验证
+  global.validator = function () {
+    var rules = _.toArray(arguments).splice(0, arguments.length - 1);
+    var handler = arguments[arguments.length - 1];
+    return function * (next) {
+      var errors = [];
+      for (var i = 0; i < rules.length; i++) {
+        var rule = rules[i].split(':');
+        // 数字校验
+        if (rule[0].toLowerCase() === 'number' && !/^\d+(.\d+)?$/.test(this.params[rule[1]])) {
+          errors.push([rule[0], this.path, this.params[rule[1]]]);
+        }
+      }
+      if (errors.length === 0) {
+        yield handler;
+      }
+      else {
+        yield next;
+      }
+    };
   };
 
   var app = koa();
@@ -99,6 +124,7 @@ module.exports = function (templateCache, shost, whost) {
 
   // 解析form
   app.use(koaBody({
+    strict: false,
     multipart: true,
     formidable: {
       uploadDir: path.join(__dirname, '../../upload')

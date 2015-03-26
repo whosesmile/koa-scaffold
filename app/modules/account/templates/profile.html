@@ -14,7 +14,7 @@
     <section class="has-header has-footer">
       <a class="user {% if user %}logined{% endif %}" href="/account/settings">
         <div class="head">
-          <img src="{{ user.thumb || shost + '/mobile/images/profile/icon_head.png' }}" />
+          <img src="{{ user.thumb || shost + '/mobile/images/profile/user.png' }}" />
         </div>
         <h3 class="name">{{ user.name || '未登录，点击登录或注册'}}</h3>
         <i class="icon icon-more-white settings"></i>

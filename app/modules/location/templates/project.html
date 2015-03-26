@@ -8,17 +8,21 @@
   <div class="project">
     <header class="bar fixed">
       {{ macro.iconBack() }}
-      <h1>选择小区-北京</h1>
+      <h1>选择小区-{{ city.name }}</h1>
     </header>
     <section class="has-header">
       <div class="filter">
         <input type="text" placeholder="请输入小区名字" />
       </div>
-      <div class="list list-padding">
-        {% for item in list %}
-          <a href="/location/choose/{{ item.id }}" class="item oneline" data-query="{{ item.projectKey }}"><span>{{ item.name }}</span></a>
-        {% endfor %}
-      </div>
+      {% if list.length %}
+        <div class="list list-padding">
+          {% for item in list %}
+            <a href="/location/choose/{{ item.id }}" class="item oneline" data-query="{{ item.projectKey }}"><span>{{ item.name }}</span></a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center text-gray small padding">未在当前城市找到开放的社区</div>
+      {% endif %}
 
       <div class="text-center small notfound">没有找到自己的小区或房屋？<a href="tel:4007080080" class="text-warning">电话联系我们</a></div>
     </section>

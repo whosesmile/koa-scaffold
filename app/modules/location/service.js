@@ -11,7 +11,7 @@ exports.listCity = function () {
     url: whost + '/brick/app/data/city.json',
     method: 'get',
     qs: {
-      qdPlatform: 'weixin'
+      qdPlatform: config.platform
     }
   });
 };
@@ -29,7 +29,7 @@ exports.getCity = function (cityId) {
         if (list[i].hasOwnProperty(letter)) {
           var citys = list[i][letter];
           for (var j = 0; j < citys.length; j++) {
-            if (citys[j].id === cityId) {
+            if (citys[j].id === Number(cityId)) {
               return {
                 id: citys[j].id,
                 name: citys[j].name
@@ -81,11 +81,10 @@ exports.listProject = function (cityId) {
     method: 'get',
     qs: {
       cityId: cityId,
-      qdPlatform: 'weixin'
+      qdPlatform: config.platform
     }
   });
 };
-
 
 /**
  * 根据项目ID获取项目信息
@@ -93,9 +92,8 @@ exports.listProject = function (cityId) {
  * @return {promise}
  */
 exports.getProject = function (projectId) {
-  
-};
 
+};
 
 /**
  * 根据项目名称获取项目信息
@@ -103,7 +101,7 @@ exports.getProject = function (projectId) {
  * @return {promise}
  */
 exports.findProject = function (projectId) {
-  
+
 };
 
 /**

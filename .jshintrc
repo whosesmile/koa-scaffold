@@ -19,6 +19,7 @@
   "eqnull": true,
   "globals": {
     "template": true,
-    "loginRequired":true
+    "loginRequired":true,
+    "validator": true
   }
 }

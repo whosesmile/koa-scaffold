@@ -1,0 +1,45 @@
+{% set lightbg = list.length > 0; %}
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="address">
+    <header class="bar fixed">
+      {{ macro.iconBack('/shopping/confirm') }}
+      <h1>收货人信息</h1>
+    </header>
+    <section class="has-header has-footer">
+      {% if list.length %}
+        <div class="list">
+          {% for item in list %}
+            <a class="item item-icon-right" href="/shopping/address/{{ item.id }}">
+              <p class="clearfix">
+                <span class="pull-left">{{ item.name }} <i class="sex">({{ item.sex|sex }})</i></span>
+                <span class="pull-right text-gray small">{{ item.phone }}</span>
+              </p>
+              <p class="text-gray small">{{ item.address || '暂未填写' }}</p>
+              <i class="icon icon-detail"></i>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="blank">
+          <div class="wrap">
+            <i class="icon icon-nofavorite"></i>
+            <h3 class="text-gray">还没有收货人哦，去添加一个吧！</h3>
+            <a href="/account/address" class="button button-warning">前去添加</a>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+
+    {% if list.length %}
+      <footer class="bar fixed bar-button">
+        <a href="/account/address" class="button button-warning button-block">新建收货人</a>
+      </footer>
+    {% endif %}
+  </div>
+{% endblock %}

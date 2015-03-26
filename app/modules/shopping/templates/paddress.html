@@ -1,0 +1,27 @@
+{% set lightbg = list.length > 0; %}
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="address">
+    <header class="bar fixed">
+      {{ macro.iconBack('/shopping/confirm') }}
+      <h1>物业地址</h1>
+    </header>
+    <section class="has-header has-footer">
+      {% if list.length %}
+        <div class="list">
+          {% for item in list %}
+            <a class="item item-icon-right small" href="/shopping/paddress/{{ item.id }}">
+              {{ item.address }}
+              <i class="icon icon-detail"></i>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section>
+  </div>
+{% endblock %}

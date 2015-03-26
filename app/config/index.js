@@ -7,6 +7,9 @@ module.exports = {
   // 服务端口
   port: 9000,
 
+  // 挂接平台
+  platform: 'app',
+
   // 模板是否缓存
   templateCache: false,
 
@@ -16,9 +19,10 @@ module.exports = {
   // 静态域名地址
   // shost: 'http://devfront.qdingnet.com',
 
-  shost: 'http://10.37.63.51',
+  // shost: 'http://10.37.63.22',
+  shost: 'http://127.0.0.1',
 
-  // shost: 'http://127.0.0.1',
+  // shost: 'http://192.168.0.102',
 
   // Web接口域名
   whost: 'http://devboss.qdingnet.com',

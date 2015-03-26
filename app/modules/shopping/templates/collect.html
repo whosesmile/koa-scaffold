@@ -1,5 +1,7 @@
 {% extends './modules/common/templates/layout.html' %}
 
+{% block title %}我的收藏{% endblock %}
+
 {% block style %}
   <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
 {% endblock %}
@@ -9,18 +11,20 @@
     <header class="bar fixed">
       {{ macro.iconBack('/profile') }}
       <h1>我的收藏</h1>
-      <a class="action small text-warning">编辑</a>
+      {% if list.length %}<a class="action small text-warning">编辑</a>{% endif %}
     </header>
     <section class="has-header">
       {% if list.length %}
-        {% for item in list %}
-          <div class="graphic clearfix">
+        <div class="graphic clearfix">
+          {% for item in list %}
             <div class="piece">
               <label class="checkbox">
                 <input type="checkbox" value="{{ item.id }}" />
               </label>
               <div class="figure row">
-                <img class="col" src="{{ item.goodsImg }}" />
+                <div class="col">
+                  <img src="{{ item.goodsImg }}" />
+                </div>
               </div>
               <div class="information">
                 <h3 class="ellipsis text-gray small">{{ item.publishName }}</h3>
@@ -33,8 +37,8 @@
                 </div>
               </div>
             </div>
-          </div>
-        {% endfor %}
+          {% endfor %}
+        </div>
       {% else %}
         <div class="blank">
           <div class="wrap">

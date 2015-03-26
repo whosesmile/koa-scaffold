@@ -27,7 +27,10 @@ app.get('/location', function * (next) {
 // http 列出城市开通的项目
 app.get('/location/:cityId', function * (next) {
   var data = yield service.listProject(this.params.cityId);
-  this.body = this.template.render('templates/project.html', data);
+  var city = yield service.getCity(this.params.cityId);
+  this.body = this.template.render('templates/project.html', data, {
+    city: city
+  });
 });
 
 // http 选择项目

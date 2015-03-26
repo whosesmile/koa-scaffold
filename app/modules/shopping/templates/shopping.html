@@ -1,5 +1,7 @@
 {% extends './modules/common/templates/layout.html' %}
 
+{% block title %}乐购{% endblock %}
+
 {% block style %}
   <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping-home.css" />
 {% endblock %}
@@ -9,11 +11,18 @@
     <header class="bar fixed">
       {{ macro.iconBack() }}
       <h1>乐购</h1>
-      <a class="icon-cart right-item" href=""></a>
+      <a class="right-icon"><i class="icon icon-cart"></i></a>
     </header>
     <section class="has-header has-footer">
       <div class="slider">
-        <img src="{{ shost }}/mobile/images/slider.jpg">
+        <div class="swiper-wrapper">
+          {% for item in [1,2,3,4,5]%}
+            <div class="swiper-slide">
+              <img src="{{ shost }}/mobile/images/slider.png">
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
       </div>
 
       {% if category %}
@@ -73,5 +82,5 @@
 {% endblock %}
 
 {% block script %}
-  <!-- // <script src="{{ shost }}/mobile/js/register.js"></script> -->
+  <script src="{{ shost }}/mobile/js/shopping.js"></script>
 {% endblock %}

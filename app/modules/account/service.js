@@ -78,14 +78,14 @@ exports.register = function (mobile, password, projectId, ip) {
  */
 exports.exists = function (mobile) {
   return request({
-    url: whost + '/user/app/user/isRegister.json',
+    url: whost + '/user/app/user/isExitis.json',
     method: 'get',
     qs: {
       mobile: _.trim(mobile),
       sourceType: 0
     }
-  }).then(function () {
-    return true;
+  }).then(function (data) {
+    return Boolean(data.entity.exitisFlag);
   }, function () {
     return false;
   });
@@ -188,6 +188,41 @@ exports.resetPassword = function (mobile, newpwd) {
 };
 
 /**
+ * 列举收货人信息
+ * @param  {number} userId 用户ID
+ * @return {promise}
+ */
+exports.listAddress = function (userId) {
+  return request({
+    url: whost + '/user/app/user/addressee/get.json',
+    method: 'get',
+    qs: {
+      userId: userId
+    }
+  });
+};
+
+/**
+ * 获取默认收货人
+ * @param  {number} userId 用户ID
+ * @return {promise}
+ */
+exports.defaultAddress = function (userId) {
+  return exports.listAddress(userId).then(function (res) {
+    var address = null;
+    var list = res.list || [];
+    list.forEach(function (item) {
+      if (Number(item.defaultFlag) === 1) {
+        address = item;
+      }
+    });
+    return address;
+  }, function () {
+    return null;
+  });
+};
+
+/**
  * 创建收货人地址
  * @param  {number} userId  用户ID
  * @param  {object} address   收货人信息
@@ -196,17 +231,12 @@ exports.resetPassword = function (mobile, newpwd) {
 // TODO: POST乱码
 exports.createAddress = function (userId, address) {
   return request({
-    url: whost + '/user/app/user/bindAddressee.json',
+    url: whost + '/user/app/user/addressee/bind.json',
     method: 'get',
-    qs: {
+    qs: _.merge({
       userId: userId,
-      addresseeName: address.name,
-      addresseePhone: address.phone,
-      addresseeSex: address.sex,
-      defaultFlag: address.defaultFlag || 0,
-      addresseeAddress: address.address,
-      addresseePostcode: address.postcode
-    }
+      defaultFlag: 0
+    }, address)
   }).then(function (data) {
     return data.entity;
   }, function () {
@@ -222,18 +252,12 @@ exports.createAddress = function (userId, address) {
  */
 exports.updateAddress = function (userId, address) {
   return request({
-    url: whost + '/user/app/user/updateAddressee.json',
+    url: whost + '/user/app/user/addressee/update.json',
     method: 'get',
-    qs: {
+    qs: _.merge({
       userId: userId,
-      addresseeId: address.id,
-      addresseeName: address.name,
-      addresseePhone: address.phone,
-      addresseeSex: address.sex,
-      defaultFlag: address.defaultFlag,
-      addresseeAddress: address.address,
-      addresseePostcode: address.postcode
-    }
+      defaultFlag: 0
+    }, address)
   }).then(function () {
     return true;
   }, function () {
@@ -249,31 +273,16 @@ exports.updateAddress = function (userId, address) {
  */
 exports.deleteAddress = function (userId, addressId) {
   return request({
-    url: whost + '/user/app/user/delAddressee.json',
-    method: 'get',
-    qs: {
+    url: whost + '/user/app/user/addressee/delete.json',
+    method: 'post',
+    form: {
       userId: userId,
-      addresseeId: addressId
+      id: addressId
     }
   }).then(function () {
     return true;
   }, function () {
     return false;
-  });
-};
-
-/**
- * 列举收货人信息
- * @param  {number} userId 用户ID
- * @return {promise}
- */
-exports.listAddress = function (userId) {
-  return request({
-    url: whost + '/user/app/user/getAddressee.json',
-    method: 'get',
-    qs: {
-      userId: userId
-    }
   });
 };
 

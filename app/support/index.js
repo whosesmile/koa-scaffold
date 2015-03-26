@@ -72,6 +72,14 @@ function rebuild(res) {
   delete res.msg;
   delete res.message;
   delete res.data.msg;
+
+  // 防止数据结构异常
+  _.forIn(res, function (val, key) {
+    if (key !== 'code' && key !== 'data') {
+      res.data[key] = val;
+      delete res[key];
+    }
+  });
   return res;
 }
 

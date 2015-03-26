@@ -72,14 +72,17 @@ exports.details = function (id, userId) {
 
 /**
  * 根据商品主键列表返回推荐商品列表
- * @param  {string} ids [商品主键列表]
- * @return {type}         [description]
+ * @param  {array:goodsId} list [商品主键列表]
+ * @return promise
  */
-// proxy: /market/getGoodsByIds
-// goodsId
-exports.listPromotes = function (ids) {
-  // TODO
-  return {};
+exports.findsGoods = function (list) {
+  return request({
+    url: whost + '/market/getGoodsByIds',
+    method: 'get',
+    qs: {
+      goodsId: list.join(',')
+    }
+  });
 };
 
 /**
@@ -90,15 +93,38 @@ exports.listPromotes = function (ids) {
  * @param  {number} count     商品数量
  * @return {promise}
  */
-exports.add2Cart = function (userId, projectId, goodsId, count) {
+exports.addCart = function (userId, projectId, goodsId, count) {
   return request({
     url: whost + '/market/goods/addCart',
-    method: 'get',
-    qs: {
+    method: 'post',
+    form: {
       userId: userId,
       projectId: projectId,
       goodsId: goodsId,
       count: count
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
+  });
+};
+
+/**
+ * 删除购物车中的指定商品
+ * @param  {number} userId    用户主键
+ * @param  {number} projectId 项目主键
+ * @param  {number} goodsId   商品主键
+ * @return {promise}
+ */
+exports.deleteCart = function (userId, projectId, goodsId) {
+  return request({
+    url: whost + '/market/goods/delCart',
+    method: 'post',
+    form: {
+      userId: userId,
+      projectId: projectId,
+      goodsIds: [].concat(goodsId).join(',')
     }
   }).then(function () {
     return true;
@@ -154,7 +180,7 @@ exports.collect = function (userId, projectId, goodsId) {
  * @param  {number} goodsId   商品ID
  * @return {promise}
  */
-exports.cancelCollect = function (userId, projectId, goodsId) {
+exports.delcollect = function (userId, projectId, goodsId) {
   return request({
     url: whost + '/market/goods/delCollect',
     method: 'post',

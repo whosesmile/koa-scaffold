@@ -5,7 +5,8 @@ var _ = require('lodash');
 describe('account service', function () {
   var user = {
     id: 33208,
-    name: '李双宝'
+    name: '李双宝',
+    mobile: '18610535297'
   };
 
   // 优惠券相关
@@ -28,5 +29,42 @@ describe('account service', function () {
       done(rej);
     });
   });
+
+  it('#exists method should return true for ' + user.mobile, function (done) {
+    service.exists(user.mobile).then(function (exist) {
+      assert(exist === true);
+      done();
+    }, function (rej) {
+      done(rej);
+    });
+  });
+
+  it('#exists method should return false for 18600000000', function (done) {
+    service.exists('18600000000').then(function (exist) {
+      assert(exist === false);
+      done();
+    }, function (rej) {
+      done(rej);
+    });
+  });
+
+  it('#exists method should return false for 123456', function (done) {
+    service.exists('777').then(function (exist) {
+      assert(exist === false);
+      done();
+    }, function (rej) {
+      done(rej);
+    });
+  });
+
+  it('#defaultAddress should return default address', function (done) {
+    service.defaultAddress(user.id).then(function (address) {
+      assert(address);
+      done();
+    }, function (rej) {
+      done(rej);
+    });
+  });
+
 
 });
