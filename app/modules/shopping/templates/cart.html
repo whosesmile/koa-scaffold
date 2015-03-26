@@ -11,7 +11,7 @@
 {% set saved = 0; %}
 {% block content %}
   <div class="cart">
-    <form method="post" name="cart">
+    <form method="post" name="cart" action="/shopping/confirm">
       <header class="bar fixed">
         {{ macro.iconBack('/profile') }}
         <h1>我的购物车</h1>
@@ -20,8 +20,8 @@
       <section class="has-header has-footer">
         {% if list.length %}
           {% for item in list %}
-            {% set total += item.price; %}
-            {% set saved += item.originalPrice - item.price; %}
+            {% set total += item.price * item.count; %}
+            {% set saved += item.originalPrice * item.count - item.price * item.count; %}
             <div class="list {% if !loop.first %}border{% endif %}">
               <div class="item item-checkbox item-thumbnail">
                 <label class="checkbox">
@@ -37,9 +37,9 @@
                     <span class="small text-grayer through">{{ item.originalPrice|currency }}</span>
                   </div>
                   <div class="counter">
-                    <span><i class="icon icon-minus"></i></span>
-                    <span class="number text-center text-gray">{{ item.count }}</span>
-                    <span><i class="icon icon-plus"></i></span>
+                    <span class="minus"><i class="icon icon-minus"></i></span>
+                    <input type="number" class="number text-center text-gray" name="count" value="{{ item.count }}" readonly="readonly" />
+                    <span class="plus"><i class="icon icon-plus"></i></span>
                   </div>
                 </div>
               </div>

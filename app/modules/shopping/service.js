@@ -1,5 +1,6 @@
 var whost = require('../../config').whost;
 var request = require('../../support').request;
+var _ = require('lodash');
 
 /**
  * 获取乐购数据
@@ -102,6 +103,31 @@ exports.addCart = function (userId, projectId, goodsId, count) {
       projectId: projectId,
       goodsId: goodsId,
       count: count
+    }
+  }).then(function () {
+    return true;
+  }, function () {
+    return false;
+  });
+};
+
+/**
+ * 更新购物车
+ * @param  {number} userId    用户主键
+ * @param  {number} projectId 项目主键
+ * @param  {number} goodsId   商品主键
+ * @param  {number} count     商品数量
+ * @return {promise}
+ */
+exports.updateCart = function (userId, projectId, goodsId, count) {
+  return request({
+    url: whost + '/market/goods/updateCart',
+    method: 'post',
+    form: {
+      userId: userId,
+      projectId: projectId,
+      goodsIds: _.flatten([goodsId]).join(','),
+      counts: _.flatten([count]).join(',')
     }
   }).then(function () {
     return true;

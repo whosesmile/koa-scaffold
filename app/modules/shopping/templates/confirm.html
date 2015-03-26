@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
 {% endblock %}
 
+{% set total = 0; %}
 {% block content %}
   <div class="confirm">
     <header class="bar fixed">
@@ -15,7 +16,8 @@
     </header>
     <section class="has-header has-footer">
       <div class="list">
-        {% for item in list%}
+        {% for i, item in list%}
+          {% set total += item.price * counts[i]; %}
           <div class="item item-thumbnail">
             <a class="thumbnail">
               <img src="{{ item.goodsImg }}" alt="" />
@@ -26,7 +28,7 @@
                 <span class="text-danger">{{ item.price|currency }}</span>
                 <span class="small text-grayer through">{{ item.originalPrice|currency }}</span>
               </div>
-              <div class="count small text-gray">数量：1</div>
+              <div class="count small text-gray">数量：{{ counts[i] }}</div>
             </div>
           </div>
         {% endfor %}
@@ -40,19 +42,19 @@
         <div class="item oneline">
           <label class="checkbox">
             <input type="checkbox" name="paytype" value="1" checked />
-            <img src="{{ shost }}/mobile/images/alipay.png" alt="支付宝" />
+            <img src="{{ shost }}/mobile/images/shopping/alipay.png" alt="支付宝" />
           </label>
         </div>
         <div class="item oneline">
           <label class="checkbox">
             <input type="checkbox" name="paytype" value="2" />
-            <img src="{{ shost }}/mobile/images/wxpay.png" alt="微信支付" />
+            <img src="{{ shost }}/mobile/images/shopping/wxpay.png" alt="微信支付" />
           </label>
         </div>
         <div class="item oneline">
           <label class="checkbox">
             <input type="checkbox" name="paytype" value="3" />
-            <img src="{{ shost }}/mobile/images/cashpay.png" alt="现金支付" />
+            <img src="{{ shost }}/mobile/images/shopping/cashpay.png" alt="现金支付" />
           </label>
         </div>
       </div>
