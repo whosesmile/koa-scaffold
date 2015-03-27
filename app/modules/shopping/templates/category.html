@@ -1,3 +1,4 @@
+{% set title = "所有分类"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block title %}所有分类{% endblock %}
@@ -10,7 +11,7 @@
   <div class="category">
     <header class="bar fixed">
       {{ macro.iconBack() }}
-      <h1>所有分类</h1>
+      <h1>{{ title }}</h1>
     </header>
     <section class="has-header">
       <div class="list">

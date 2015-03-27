@@ -4,10 +4,20 @@ var _ = require('lodash');
 
 describe('account service', function () {
   var user = {
-    id: 33208,
+    id: 33249,
     name: '李双宝',
     mobile: '18610535297'
   };
+
+  var address = {
+    "id": 2431,
+    "sex": 1,
+    "phone": "18610535297",
+    "address": "阿猫家",
+    "name": "梁山伯",
+    "defaultFlag": 1,
+    "postcode": "18610535297"
+  }
 
   // 优惠券相关
   it('#listCoupons', function (done) {
@@ -66,5 +76,36 @@ describe('account service', function () {
     });
   });
 
+  it('#listAddress should return all address', function (done) {
+    service.listAddress(user.id).then(function (data) {
+      assert(_.isArray(data.list));
+      done();
+    }, function (rej) {
+      done(rej);
+    });
+  });
+
+  it('#listAddress should return all address', function (done) {
+    service.listAddress(user.id).then(function (data) {
+      assert(_.isArray(data.list));
+      done();
+    }, function (rej) {
+      done(rej);
+    });
+  });
+
+  it('#createAddress should success', function (done) {
+    service.createAddress(user.id, {
+      "sex": 1,
+      "phone": "18610535297",
+      "address": "阿猫家",
+      "name": "梁山伯"
+    }).then(function (address) {
+      assert(_.isObject(address));
+      done();
+    }, function (rej) {
+      done(rej);
+    });
+  });
 
 });

@@ -8,7 +8,7 @@ module.exports = {
   port: 9000,
 
   // 挂接平台
-  platform: 'app',
+  platform: 'weixin',
 
   // 模板是否缓存
   templateCache: false,

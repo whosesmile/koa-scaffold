@@ -1,4 +1,5 @@
 {% set lightbg = false; %}
+{% set title = "千丁劵详情"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
@@ -9,7 +10,7 @@
   <div class="coupon">
     <header class="bar fixed">
       {{ macro.iconBack('/account/coupons') }}
-      <h1>千丁劵详情</h1>
+      <h1>{{ title }}</h1>
     </header>
     <section class="has-header has-footer">
       <div class="item-padding coupon-title"><p>劵状态：<span>{{ status|coupon }}</span></p></div>

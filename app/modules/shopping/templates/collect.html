@@ -1,6 +1,5 @@
+{% set title = "我的收藏"; %}
 {% extends './modules/common/templates/layout.html' %}
-
-{% block title %}我的收藏{% endblock %}
 
 {% block style %}
   <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
@@ -10,7 +9,7 @@
   <div class="collect">
     <header class="bar fixed">
       {{ macro.iconBack('/profile') }}
-      <h1>我的收藏</h1>
+      <h1>{{ title }}</h1>
       {% if list.length %}<a class="action small text-warning">编辑</a>{% endif %}
     </header>
     <section class="has-header">

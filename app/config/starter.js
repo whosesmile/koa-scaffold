@@ -30,6 +30,16 @@ module.exports = function (templateCache, shost, whost) {
     return ['女士', '先生'][input] || '保密';
   });
 
+  // 添加支付方式过滤器
+  swig.setFilter('payment', function (input) {
+    return {
+      '11': '现金支付',
+      '21': '刷卡支付',
+      '31': '支付宝',
+      '41': '微信支付'
+    }[input] || '其他';
+  });
+
   // 添加小数点
   swig.setFilter('currency', function (input, size, symbol) {
     return _.isUndefined(input) ? '' : (symbol || '￥') + Number(input).toFixed(size || 2);

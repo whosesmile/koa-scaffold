@@ -1,7 +1,6 @@
 {% set lightbg = list.length > 0; %}
+{% set title = "我的购物车"; %}
 {% extends './modules/common/templates/layout.html' %}
-
-{% block title %}我的购物车{% endblock %}
 
 {% block style %}
   <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
@@ -14,7 +13,7 @@
     <form method="post" name="cart" action="/shopping/confirm">
       <header class="bar fixed">
         {{ macro.iconBack('/profile') }}
-        <h1>我的购物车</h1>
+        <h1>{{ title }}</h1>
         {% if list.length %}<span class="right-icon"><i class="icon icon-trash"></i></span>{% endif %}
       </header>
       <section class="has-header has-footer">

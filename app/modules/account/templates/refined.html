@@ -1,4 +1,5 @@
 {% set lightbg = true; %}
+{% set title = "完善个人信息"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
@@ -8,7 +9,7 @@
 {% block content %}
   <div class="refined">
     <header class="bar fixed">
-      <h1>完善个人信息</h1>
+      <h1>{{ title }}</h1>
     </header>
     <section class="has-header">
       {% if error %}

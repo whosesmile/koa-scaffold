@@ -1,3 +1,4 @@
+{% set title = "选择小区"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
@@ -8,7 +9,7 @@
   <div class="project">
     <header class="bar fixed">
       {{ macro.iconBack() }}
-      <h1>选择小区-{{ city.name }}</h1>
+      <h1>{{ title }}-{{ city.name }}</h1>
     </header>
     <section class="has-header">
       <div class="filter">

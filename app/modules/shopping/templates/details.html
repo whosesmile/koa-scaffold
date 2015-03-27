@@ -1,4 +1,5 @@
 {% set lightbg = true; %}
+{% set title = goods.publishName; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block title %}{{ goods.publishName }}{% endblock %}
@@ -12,7 +13,7 @@
     <form name="confirm" method="post" action="/shopping/confirm">
       <header class="bar fixed">
         {{ macro.iconBack() }}
-        <h1 class="ellipsis">{{ goods.publishName }}</h1>
+        <h1 class="ellipsis">{{ title }}</h1>
         <a class="right-icon" href="">
           <i class="icon icon-fav"></i>
           <i class="icon icon-cart"></i>

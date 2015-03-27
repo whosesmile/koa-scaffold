@@ -1,3 +1,4 @@
+{% set title = "选择城市"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
@@ -10,7 +11,7 @@
       {% if projectId %}
         {{ macro.iconBack() }}
       {% endif %}
-      <h1>选择城市</h1>
+      <h1>{{ title }}</h1>
     </header>
     <section class="has-header">
       <div class="geo">

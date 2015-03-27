@@ -109,17 +109,18 @@ app.get('/shopping/confirm', loginRequired, multiformRequired, function * (next)
   var data = yield service.findsGoods(_.flatten([form.goods]), this.session.user.id);
 
   // 收货人
-  var address = form.address;
-  if (!address) {
-    address = yield accountService.defaultAddress(this.session.user.id);
+  if (!form.address) {
+    form.address = yield accountService.defaultAddress(this.session.user.id);
   }
   // 物业地址
-  var paddress = form.paddress || this.session.project.addresses[0];
+  if (!form.paddress) {
+    form.paddress = this.session.project.addresses[0];
+  }
 
   this.body = this.template.render('templates/confirm.html', data, {
     counts: counts,
-    address: address,
-    paddress: paddress,
+    address: form.address,
+    paddress: form.paddress,
     phones: this.session.project.phones
   });
 });
@@ -157,19 +158,53 @@ app.get('/shopping/paddress/:id', loginRequired, multiformRequired, function * (
 
 /*- 确认订单相关逻辑结束 -*/
 
-// 推荐频道
-app.get('/shopping/promotes', function * (next) {
-  this.body = this.template.render('templates/promotes.html');
+/*+ 订单相关逻辑 +*/
+
+// 下单逻辑
+app.post('/shopping/order', loginRequired, multiformRequired, function * (next) {
+  var form = this.session.form;
+
+  var list = [];
+  var goods = _.flatten([form.goods]);
+  var counts = _.flatten([form.count || 1]);
+
+  // 拼接商品数据
+  goods.forEach(function (item, index) {
+    list.push({
+      goodsId: item,
+      count: counts[index]
+    })
+  });
+
+  // 下单
+  var data = yield service.placeOrder(list, this.request.body.paytype, form.address, form.paddress, this.session.user, this.session.city, this.session.project);
+  // 重要：下单成功 删除session中的表单
+  if (data && data.orderId && data.orderCode) {
+    delete this.session.form;
+    this.redirect('/shopping/payment/' + data.orderId);
+  }
+  else {
+    // TODO flash message 
+    this.redirect('/shopping/confirm');
+  }
 });
 
-// 确定下单
-app.post('/shopping/placeorder', function * (next) {
-  // TODO
+// 支付订单
+app.get('/shopping/payment/:id', function * (next) {
+  var data = yield service.getOrder(this.params.id);
+  this.body = this.template.render('templates/payment.html', data);
 });
 
 // 订单详情
 app.get('/shopping/order', function * (next) {
   this.body = this.template.render('templates/order.html');
+});
+
+/*- 下单逻辑结束 -*/
+
+// 推荐频道
+app.get('/shopping/promotes', function * (next) {
+  this.body = this.template.render('templates/promotes.html');
 });
 
 // 现金支付

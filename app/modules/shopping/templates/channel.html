@@ -1,4 +1,5 @@
 {% set lightbg = true; %}
+{% set title = categoryName || '精选'; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block title %}{{ channel || '精选' }}{% endblock %}
@@ -11,7 +12,7 @@
   <div class="shopping-selected">
     <header class="bar fixed">
       {{ macro.iconBack() }}
-      <h1>{{ categoryName || '精选' }}</h1>
+      <h1>{{ title }}</h1>
       {% if list.length %}<a class="right-icon"><i class="icon icon-cart"></i></a>{% endif %}
     </header>
     <section class="has-header has-footer">

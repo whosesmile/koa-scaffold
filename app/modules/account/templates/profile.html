@@ -1,4 +1,5 @@
 {% set lightbg = true; %}
+{% set title = "我的"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
@@ -9,7 +10,7 @@
   <div class="profile">
     <header class="bar fixed">
       {{ macro.iconBack() }}
-      <h1>我的</h1>
+      <h1>{{ title }}</h1>
     </header>
     <section class="has-header has-footer">
       <a class="user {% if user %}logined{% endif %}" href="/account/settings">

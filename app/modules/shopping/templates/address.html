@@ -1,3 +1,4 @@
+{% set title = "收货人信息"; %}
 {% set lightbg = list.length > 0; %}
 {% extends './modules/common/templates/layout.html' %}
 
@@ -9,7 +10,7 @@
   <div class="address">
     <header class="bar fixed">
       {{ macro.iconBack('/shopping/confirm') }}
-      <h1>收货人信息</h1>
+      <h1>{{ title }}</h1>
     </header>
     <section class="has-header has-footer">
       {% if list.length %}

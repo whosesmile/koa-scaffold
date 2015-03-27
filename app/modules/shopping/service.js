@@ -1,5 +1,6 @@
 var whost = require('../../config').whost;
 var request = require('../../support').request;
+var serialize = require('../../support').serialize;
 var _ = require('lodash');
 
 /**
@@ -236,5 +237,96 @@ exports.listCollect = function (userId, projectId) {
       userId: userId,
       projectId: projectId
     }
+  });
+};
+
+/**
+ * 下单
+ * @param  {array}  goods       下单商品列表 包含goodsId和count两个字段
+ * @param  {number} paymentType 支付方式 11现金 21 pos 31支付宝 41微信
+ * @param  {object} address     收货地址
+ * @param  {object} paddress    物业地址
+ * @param  {object} user        下单人
+ * @param  {object} city      所在城市
+ * @param  {object} project     所在项目
+ * @return {promise}
+ */
+exports.placeOrder = function (goods, paymentType, address, paddress, user, city, project) {
+  // 后端格式要求 这里做下适配
+  var params = {};
+  goods.forEach(function (goods, index) {
+    params['goodsList[' + index + '].goodsId'] = goods.goodsId;
+    params['goodsList[' + index + '].count'] = goods.count;
+  });
+
+  return request({
+    url: whost + '/market/goods/addOrder',
+    method: 'post',
+    form: _.merge(params, {
+      userId: user.id,
+      UserName: user.name,
+      userPhone: user.mobile,
+      paymentType: paymentType,
+      addressId: address.id,
+      addressName: address.name + '测试中文',
+      addressPhone: address.phone,
+      projectId: project.id,
+      projectName: project.name,
+      paddressId: paddress.id,
+      paddressName: paddress.address,
+      regionId: city.id,
+      regionName: city.name,
+      orderType: 1 // 1 APP 2 WX
+    })
+  }).then(function (res) {
+    return res;
+  }, function (rej) {
+    return rej || {
+      message: '下单失败，请您检查输入项'
+    };
+  });
+};
+
+/**
+ * 列举用户订单
+ * @param  {number} userId    用户ID
+ * @param  {number} projectId 项目ID
+ * @param  {number} page      页码 默认为 1
+ * @param  {number} size      每页数量 默认为 10
+ * @param  {number} status    status: 状态  (1,6,7)待处理 (2,3,4)其他
+ * @return {promise}
+ */
+exports.listOrder = function (userId, projectId, page, size, status) {
+  return request({
+    url: whost + '/market/goods/getOrder',
+    method: 'get',
+    qs: {
+      userId: userId,
+      projectId: projectId,
+      pageNo: page || 1,
+      pageSize: size || 10,
+      status: status
+    }
+  });
+};
+
+/**
+ * 获取订单详情
+ * @param  {number} id 订单ID
+ * @return {promise}
+ */
+exports.getOrder = function (id) {
+  return request({
+    url: whost + '/market/goods/getOrderInfo',
+    method: 'get',
+    qs: {
+      orderId: id
+    }
+  }).then(function (order) {
+    return {
+      order: order
+    };
+  }, function () {
+    return null;
   });
 };

@@ -1,4 +1,5 @@
 {% set lightbg = true; %}
+{% set title = "忘记密码"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
@@ -9,7 +10,7 @@
   <div class="register">
     <header class="bar fixed">
       {{ macro.iconBack('/account/login') }}
-      <h1>忘记密码</h1>
+      <h1>{{ title }}</h1>
     </header>
     <section class="has-header">
       {% if error %}

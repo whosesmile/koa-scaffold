@@ -1,3 +1,4 @@
+{% set title = "乐购"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block title %}乐购{% endblock %}
@@ -10,7 +11,7 @@
   <div class="shopping-home">
     <header class="bar fixed">
       {{ macro.iconBack() }}
-      <h1>乐购</h1>
+      <h1>{{ title }}</h1>
       <a class="right-icon"><i class="icon icon-cart"></i></a>
     </header>
     <section class="has-header has-footer">
@@ -18,7 +19,7 @@
         <div class="swiper-wrapper">
           {% for item in [1,2,3,4,5]%}
             <div class="swiper-slide">
-              <img src="{{ shost }}/mobile/images/slider.png">
+              <img src="{{ shost }}/mobile/images/holder/slider.png">
             </div>
           {% endfor %}
         </div>
@@ -76,7 +77,6 @@
         {% endfor %}
       {% endif %}
     </section>
-
     {{ macro.footer('shopping') }}
   </div>
 {% endblock %}
