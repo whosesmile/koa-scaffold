@@ -267,7 +267,7 @@ exports.placeOrder = function (goods, paymentType, address, paddress, user, city
       userPhone: user.mobile,
       paymentType: paymentType,
       addressId: address.id,
-      addressName: address.name + '测试中文',
+      addressName: address.name,
       addressPhone: address.phone,
       projectId: project.id,
       projectName: project.name,
