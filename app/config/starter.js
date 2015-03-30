@@ -25,6 +25,12 @@ module.exports = function (templateCache, shost, whost) {
     return [null, '未使用', '已使用', '已过期', '已作废', '未生效', '已锁定'][Number(input)] || '已禁用';
   });
 
+  // 订单状态
+  swig.setFilter('order', function (input) {
+    // 1:已下单待付款 2,已退单 过期已取消 4:已付全款 5:全部签收 6:付款中 7:支付失败
+    return [null, '待付款', '已退单', '已过期', '已付款', '已签收', '付款中', '支付失败', null, '部分到货', '全部到货', '部分签收', null, '部分退款', '全部退款', '现金部分退款', '现金全部退款'][Number(input)] || '已禁用';
+  });
+
   // 添加性别过滤器
   swig.setFilter('sex', function (input) {
     return ['女士', '先生'][input] || '保密';

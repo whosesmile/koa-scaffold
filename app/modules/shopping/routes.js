@@ -173,7 +173,7 @@ app.post('/shopping/order', loginRequired, multiformRequired, function * (next) 
     list.push({
       goodsId: item,
       count: counts[index]
-    })
+    });
   });
 
   // 下单
@@ -195,9 +195,16 @@ app.get('/shopping/payment/:id', function * (next) {
   this.body = this.template.render('templates/payment.html', data);
 });
 
+// 订单列表
+app.get('/shopping/orders', loginRequired, function * (next) {
+  var data = yield service.listOrder(this.session.user.id, this.session.project.id);
+  this.body = this.template.render('templates/orders.html', data);
+});
+
 // 订单详情
-app.get('/shopping/order', function * (next) {
-  this.body = this.template.render('templates/order.html');
+app.get('/shopping/order/:id', function * (next) {
+  var order = yield service.getOrder(this.params.id);
+  this.body = this.template.render('templates/order.html', order);
 });
 
 /*- 下单逻辑结束 -*/

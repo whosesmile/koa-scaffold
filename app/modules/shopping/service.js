@@ -1,6 +1,5 @@
 var whost = require('../../config').whost;
 var request = require('../../support').request;
-var serialize = require('../../support').serialize;
 var _ = require('lodash');
 
 /**
@@ -303,9 +302,9 @@ exports.listOrder = function (userId, projectId, page, size, status) {
     qs: {
       userId: userId,
       projectId: projectId,
-      pageNo: page || 1,
-      pageSize: size || 10,
-      status: status
+      // pageNo: page || 1,
+      // pageSize: size || 10,
+      // status: status || ''
     }
   });
 };

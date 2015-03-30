@@ -1,8 +1,9 @@
+{% set lightbg = list.length > 0; %}
 {% set title = "我的收藏"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
-  <link rel="stylesheet" href="{{ shost }}/mobile/css/profile.css" />
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
 {% endblock %}
 
 {% block content %}
@@ -21,9 +22,9 @@
                 <input type="checkbox" value="{{ item.id }}" />
               </label>
               <div class="figure row">
-                <div class="col">
+                <a class="col" href="/shopping/details/{{ item.id }}">
                   <img src="{{ item.goodsImg }}" />
-                </div>
+                </a>
               </div>
               <div class="information">
                 <h3 class="ellipsis text-gray small">{{ item.publishName }}</h3>
