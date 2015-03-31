@@ -2,14 +2,12 @@
 {% set title = categoryName || '精选'; %}
 {% extends './modules/common/templates/layout.html' %}
 
-{% block title %}{{ channel || '精选' }}{% endblock %}
-
 {% block style %}
   <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
 {% endblock %}
 
 {% block content %}
-  <div class="shopping-selected">
+  <div class="channel">
     <header class="bar fixed">
       {{ macro.iconBack() }}
       <h1>{{ title }}</h1>
@@ -34,7 +32,7 @@
                   <span class="text-danger">{{ item.price|currency }}</span>
                   <span class="tiny text-gray through">{{ item.originalPrice|currency }}</span>
                   <span class="tiny text-gray pull-right counts">
-                    <i class="icon icon-fav-gray"></i> 98
+                    <i class="icon icon-fav-gray"></i>98
                   </span>
                 </div>
               </div>

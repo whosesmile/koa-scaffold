@@ -1,33 +1,47 @@
+{% set lightbg = true; %}
 {% set title = "乐购"; %}
 {% extends './modules/common/templates/layout.html' %}
 
-{% block title %}乐购{% endblock %}
-
 {% block style %}
-  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping-home.css" />
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/shopping.css" />
 {% endblock %}
 
 {% block content %}
-  <div class="shopping-home">
+  <div class="shopping">
     <header class="bar fixed">
-      {{ macro.iconBack() }}
+      {{ macro.iconBack('/home') }}
       <h1>{{ title }}</h1>
       <a class="right-icon"><i class="icon icon-cart"></i></a>
     </header>
     <section class="has-header has-footer">
       <div class="slider">
         <div class="swiper-wrapper">
-          {% for item in [1,2,3,4,5]%}
-            <div class="swiper-slide">
-              <img src="{{ shost }}/mobile/images/holder/slider.png">
-            </div>
+          <!-- 0:单品 1:活动单品 2:活动列表 3:列表 4:首页活动 5:乐购首页链接 -->
+          {% for item in activity %}
+            {% if item.type == 0 || item.type == 1 %}
+              <a class="swiper-slide" href="/shopping/details/{{ item.goodsId }}">
+                <img src="{{ item.navigation }}">
+              </a>
+            {% elif item.type == 3 %}
+              <a class="swiper-slide" href="/shopping/activity/{{ item.id }}">
+                <img src="{{ item.navigation }}">
+              </a>
+            {% elif item.type == 5 %}
+            <a class="swiper-slide" href="{{ item.url }}">
+                <img src="{{ item.navigation }}">
+              </a>
+            {% else %}
+              <a class="swiper-slide">
+                <img src="{{ item.navigation }}">
+              </a>
+            {% endif %}
           {% endfor %}
         </div>
         <div class="swiper-pagination"></div>
       </div>
 
       {% if category %}
-        <div class="myapps clearfix">
+        <div class="channels clearfix">
           {% if category.length > 4 %}
             {% for item in category %}
               {% if loop.index < 4 %}
@@ -54,24 +68,33 @@
 
       {% if recommend%}
         {% for group in recommend %}
-          {% if group.rg.length %}
-            <div class="itemblock">
-              <h3><a class="more-btn">更多</a> {{ group.name }}</h3>
-              <ul class="clearfix">
+          {% if group.rg.length && loop.index <= 4 %}
+            <div class="promotes">
+              <div class="header clearfix">
+                <h3 class="pull-left text-warning">{{ group.name }}</h3>
+                <a class="pull-right small more" href="/shopping/promotes/{{ group.id }}">更多</a>
+              </div>
+              <div class="graphic clearfix">
                 {% for item in group.rg %}
-                  <li>
-                    <a href="/shopping/details/{{ item.id }}">
-                      <p class="img"><img src="{{ item.goodsImg }}"></p>
-                      <p class="tit">{{ item.publishName }}</p>
-                      <p class="price">
-                        <em>￥<i>{{ item.price }}</i></em> 
-                        <span>￥<i>{{ item.originalPrice }}</i></span>
-                      </p>
-                      <span class="liked"> <em class="icon icon-icon-like"></em>0</span>
-                    </a>
-                  </li>
+                  <a class="piece" href="/shopping/details/{{ item.id }}">
+                    <div class="figure row">
+                      <div class="col">
+                        <img src="{{ item.goodsImg }}" />
+                      </div>
+                    </div>
+                    <div class="information">
+                      <h3 class="ellipsis text-gray small">{{ item.publishName }}</h3>
+                      <div class="price">
+                        <span class="text-danger">{{ item.price|currency }}</span>
+                        <span class="tiny text-gray through">{{ item.originalPrice|currency }}</span>
+                        <span class="tiny text-gray pull-right counts">
+                          <i class="icon icon-fav-gray"></i>98
+                        </span>
+                      </div>
+                    </div>
+                  </a>
                 {% endfor %}
-              </ul>
+              </div>
             </div>
           {% endif %}
         {% endfor %}

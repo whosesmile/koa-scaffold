@@ -18,6 +18,50 @@ exports.shopping = function (projectId) {
 };
 
 /**
+ * 获取推荐的商品数据
+ */
+exports.listPromotes = function (projectId, id) {
+  return exports.shopping(projectId).then(function (res) {
+    var list = res.recommend;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === Number(id)) {
+        return {
+          name: list[i].name,
+          list: list[i].rg
+        };
+      }
+    }
+    return {};
+  }, function (rej) {
+    return null;
+  });
+};
+
+/**
+ * 获取首页BANNER推荐的多商品
+ */
+exports.listActivity = function (projectId, id) {
+  return exports.shopping(projectId).then(function (res) {
+    var name = null;
+    var goodsId = '';
+    res.activity.forEach(function (item) {
+      if (item.id === Number(id)) {
+        name = item.name;
+        goodsId = item.goodsId;
+      }
+    });
+    return exports.findsGoods(goodsId).then(function (res) {
+      return {
+        name: name,
+        list: res.list
+      };
+    });
+  }, function (rej) {
+    return null;
+  });
+};
+
+/**
  * 获取乐购商品分类
  * @param  {number} projectId 所选择的项目
  * @return promise
@@ -81,7 +125,7 @@ exports.findsGoods = function (list) {
     url: whost + '/market/getGoodsByIds',
     method: 'get',
     qs: {
-      goodsId: list.join(',')
+      goodsId: _.flatten([list]).join(',')
     }
   });
 };

@@ -25,6 +25,18 @@ app.get('/shopping/category', function * (next) {
   this.body = this.template.render('templates/category.html', data);
 });
 
+// 首页推荐更多
+app.get('/shopping/promotes/:id', function * (next) {
+  var data = yield service.listPromotes(this.session.projectId, this.params.id);
+  this.body = this.template.render('templates/promotes.html', data);
+});
+
+// 首页BANNER多商品
+app.get('/shopping/activity/:id', function * (next) {
+  var data = yield service.listActivity(this.session.projectId, this.params.id);
+  this.body = this.template.render('templates/promotes.html', data);
+});
+
 // 分类频道
 app.get('/shopping/channel/:id', validator('number:id', function * () {
   var data = yield service.listGoods(this.session.projectId, this.params.id);
@@ -208,11 +220,6 @@ app.get('/shopping/order/:id', function * (next) {
 });
 
 /*- 下单逻辑结束 -*/
-
-// 推荐频道
-app.get('/shopping/promotes', function * (next) {
-  this.body = this.template.render('templates/promotes.html');
-});
 
 // 现金支付
 app.get('/shopping/cashpay', function * (next) {
