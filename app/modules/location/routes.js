@@ -20,7 +20,7 @@ app.get('/location/geosearch', function * (next) {
 app.get('/location', function * (next) {
   var data = yield service.listCity();
   this.body = this.template.render('templates/city.html', data, {
-    projectId: this.session.projectId
+    projectId: this.session.project && this.session.project.id
   });
 });
 
@@ -35,6 +35,14 @@ app.get('/location/:cityId', function * (next) {
 
 // http 选择项目
 app.get('/location/choose/:projectId', function * (next) {
-  this.session.projectId = this.params.projectId;
+  var data = null;
+  if (this.session.user) {
+    data = yield service.refreshProject(this.session.user.id, this.params.projectId);
+  }
+  else {
+    data = yield service.getProject(this.params.projectId);
+  }
+  this.session.city = data.city;
+  this.session.project = data.project;
   this.redirect('/');
 });

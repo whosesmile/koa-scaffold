@@ -42,7 +42,7 @@ app.post('/account/login', function * (next) {
     });
   }
 
-  var data = yield service.login(form.mobile, form.password, this.session.projectId, this.ip);
+  var data = yield service.login(form.mobile, form.password, this.session.project.id, this.ip);
 
   // 登录成功  
   if (data) {
@@ -62,11 +62,12 @@ app.post('/account/login', function * (next) {
 // http 登出
 app.get('/account/logout', function * (next) {
   // 保留选择的项目
-  _.forIn(this.session.inspect(), function (value, key) {
-    if (key !== 'projectId') {
-      delete this.session[key];
-    }
-  }, this);
+  // _.forIn(this.session.inspect(), function (value, key) {
+  //   if (key !== 'project') {
+  //     delete this.session[key];
+  //   }
+  // }, this);
+  this.session = null;
   this.redirect('/account/login');
 });
 
@@ -117,7 +118,7 @@ app.post('/account/register', function * (next) {
   // 验证手机账户是否存在
   var exists = yield service.exists(form.mobile);
   if (!exists) {
-    var data = yield service.register(form.mobile, form.password, this.session.projectId, this.ip);
+    var data = yield service.register(form.mobile, form.password, this.session.project.id, this.ip);
 
     // 缓存数据
     this.session.user = data.user;

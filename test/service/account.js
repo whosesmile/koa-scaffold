@@ -17,7 +17,17 @@ describe('account service', function () {
     "name": "梁山伯",
     "defaultFlag": 1,
     "postcode": "18610535297"
-  }
+  };
+
+  var project = {
+    id: 62,
+    name: '水晶郦城',
+    phones: ['010-6627159'],
+    addresses: [{
+      id: 247,
+      address: '重庆水晶郦城物业管理处-test'
+    }]
+  };
 
   // 优惠券相关
   it('#listCoupons', function (done) {

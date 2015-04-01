@@ -1,3 +1,5 @@
+{% set lightbg = true; %}
+{% set title = "千丁小区"; %}
 {% extends './modules/common/templates/layout.html' %}
 
 {% block style %}
@@ -7,50 +9,55 @@
 {% block content %}
   <div class="home">
     <header class="bar fixed">
-      <h1>千丁小区</h1>
+      <h1>{{ title }}</h1>
     </header>
     <section class="has-header has-footer">
       <div class="slider">
-        <img src="{{ shost }}/mobile/images/slider.png" />
-      </div>
-      <div class="notes">
-        <div class="note">
-          <p class="desc ellipsis"><i class="icon icon-notice"></i>今天13点至13:30分小区自来水停水今天13点至13:30分小区自来水停水</p>
-          <span class="date text-gray">11月25日</span>
+        <div class="swiper-wrapper">
+          {% for item in banners %}
+            <a class="swiper-slide">
+              <img src="{{ item.pic }}" alt="{{ item.title }}" />
+            </a>
+          {% endfor %}
         </div>
+        <div class="swiper-pagination"></div>
       </div>
-      <div class="cells clearfix">
-        <a class="cell" href="">
-          <i class="icon icon-phone"></i>
-          <span>管家电话</span>
-        </a>
-        <a class="cell" href="">
-          <i class="icon icon-pass"></i>
-          <span>访客通行</span>
-        </a>
-        <a class="cell" href="">
-          <i class="icon icon-key"></i>
-          <span>我的钥匙</span>
-        </a>
-        <a class="cell" href="">
-          <i class="icon icon-where"></i>
-          <span>周末去哪</span>
-        </a>
-        <a class="cell" href="">
-          <i class="icon icon-food"></i>
-          <span>天天美食</span>
-        </a>
-        <a class="cell" href="">
-          <i class="icon icon-house"></i>
-          <span>我的房屋</span>
-        </a>
+
+      {% if services %}
+        <div class="channels row clearfix">
+          {% for item in services %}
+            {% if loop.index <= 4 %}
+              <a href="/shopping/channel/{{ item.id }}" class="item col">
+                <img src="{{ item.imageUrl }}" />
+                <span>{{ item.name }}</span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="actions">
+        <a class="pull-left text-warning"><i class="icon icon-telephone"></i>管家电话</a>
+        <a class="pull-right text-success"><i class="icon icon-passport"></i>访客通行</a>
       </div>
+
+      {% if communitySales.length %}
+        <div class="goods clearfix">
+          {% for item in communitySales%}
+            <a href="">
+              <h3 class="ellipsis {{ ['text-danger', 'text-success', 'text-warning'][loop.index0] }}">{{ item.title }}</h3>
+              <small class="text-gray ellipsis">{{ item.desc }}</small>
+              <img src="{{ item.imageUrl }}" alt="{{ item.title }}" />
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
     </section>
-    
     {{ macro.footer('home') }}
   </div>
 {% endblock %}
 
 {% block script %}
-  <script src="{{ shost }}/mobile/js/home.js"></script>
+  <script src="{{ shost }}/mobile/js/shopping.js"></script>
 {% endblock %}

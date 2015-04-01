@@ -88,20 +88,64 @@ exports.listProject = function (cityId) {
 
 /**
  * 根据项目ID获取项目信息
- * @param  {number} projectId 城市
+ * @param  {number} projectId 项目主键
  * @return {promise}
  */
 exports.getProject = function (projectId) {
-
+  return request({
+    url: whost + '/brickadmin/web/project/list.json',
+    method: 'get',
+    qs: {
+      id: projectId
+    }
+  }).then(function (res) {
+    var data = res.list[0];
+    return {
+      city: {
+        id: res.regionId,
+        name: res.regionName
+      },
+      project: {
+        id: data.id,
+        name: data.name,
+      }
+    };
+  });
 };
 
 /**
  * 根据项目名称获取项目信息
- * @param  {number} projectId 城市
+ * @param  {number} userId    用户主键
+ * @param  {number} projectId 项目主键
  * @return {promise}
  */
-exports.findProject = function (projectId) {
-
+exports.refreshProject = function (userId, projectId) {
+  return request({
+    url: whost + '/user/app/user/refresh.json',
+    method: 'get',
+    qs: {
+      userId: userId,
+      projectId: projectId,
+      sourceType: 0
+    }
+  }).then(function (res) {
+    // 重构数据
+    var data = res.entity;
+    return {
+      city: {
+        id: data.project.region_id,
+        name: data.project.region_name
+      },
+      project: {
+        id: data.project.id,
+        name: data.project.name,
+        phones: data.project.phones,
+        addresses: data.project.addresses
+      }
+    };
+  }, function (rej) {
+    return null;
+  });
 };
 
 /**

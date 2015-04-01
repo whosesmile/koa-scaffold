@@ -8,7 +8,7 @@ module.exports = {
   port: 9000,
 
   // 挂接平台
-  platform: 'weixin',
+  platform: 'app',
 
   // 模板是否缓存
   templateCache: false,
@@ -19,13 +19,13 @@ module.exports = {
   // 静态域名地址
   // shost: 'http://devfront.qdingnet.com',
 
-  // shost: 'http://10.37.63.22',
-  shost: 'http://127.0.0.1',
+  shost: 'http://10.37.63.41',
+  // shost: 'http://127.0.0.1',
 
   // shost: 'http://192.168.0.102',
 
   // Web接口域名
-  whost: 'http://devboss.qdingnet.com',
+  whost: 'http://qaboss.qdingnet.com',
 
   // favicon路径
   favicon: path.resolve(__dirname, '../favicon.ico'),
@@ -35,6 +35,11 @@ module.exports = {
 
   // 又拍云
   storage: storage,
+
+  // 接口信息
+  api: {
+    version: '1.2.0'
+  },
 
   // 启动器
   init: function () {

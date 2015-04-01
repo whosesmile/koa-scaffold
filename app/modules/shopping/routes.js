@@ -15,31 +15,31 @@ var multiformRequired = function * (next) {
 
 // 团购首页
 app.get('/shopping', function * (next) {
-  var data = yield service.shopping(this.session.projectId);
+  var data = yield service.shopping(this.session.project.id);
   this.body = this.template.render('templates/shopping.html', data);
 });
 
 // 团购分类
 app.get('/shopping/category', function * (next) {
-  var data = yield service.listCategory(this.session.projectId);
+  var data = yield service.listCategory(this.session.project.id);
   this.body = this.template.render('templates/category.html', data);
 });
 
 // 首页推荐更多
 app.get('/shopping/promotes/:id', function * (next) {
-  var data = yield service.listPromotes(this.session.projectId, this.params.id);
+  var data = yield service.listPromotes(this.session.project.id, this.params.id);
   this.body = this.template.render('templates/promotes.html', data);
 });
 
 // 首页BANNER多商品
 app.get('/shopping/activity/:id', function * (next) {
-  var data = yield service.listActivity(this.session.projectId, this.params.id);
+  var data = yield service.listActivity(this.session.project.id, this.params.id);
   this.body = this.template.render('templates/promotes.html', data);
 });
 
 // 分类频道
 app.get('/shopping/channel/:id', validator('number:id', function * () {
-  var data = yield service.listGoods(this.session.projectId, this.params.id);
+  var data = yield service.listGoods(this.session.project.id, this.params.id);
   this.body = this.template.render('templates/channel.html', data);
 }));
 
@@ -53,28 +53,28 @@ app.get('/shopping/details/:id', validator('number:id', function * (next) {
 
 // 列举
 app.get('/shopping/cart', loginRequired, function * (next) {
-  var data = yield service.listCart(this.session.user.id, this.session.projectId);
+  var data = yield service.listCart(this.session.user.id, this.session.project.id);
   this.body = this.template.render('templates/cart.html', data);
 });
 
 // 添加
 app.post('/shopping/cart', loginRequired, function * (next) {
   var form = this.request.body;
-  var result = yield service.addCart(this.session.user.id, this.session.projectId, form.goods, form.count || 1);
+  var result = yield service.addCart(this.session.user.id, this.session.project.id, form.goods, form.count || 1);
   this.body = result ? this.template.render(200) : this.template.render(500, '添加商品失败');
 });
 
 // 更新
 app.put('/shopping/cart', loginRequired, function * (next) {
   var form = this.request.body;
-  var result = yield service.updateCart(this.session.user.id, this.session.projectId, form.goods, form.count || 1);
+  var result = yield service.updateCart(this.session.user.id, this.session.project.id, form.goods, form.count || 1);
   this.body = result ? this.template.render(200) : this.template.render(500, '更新购物车失败');
 });
 
 // 删除
 app.delete('/shopping/cart', loginRequired, function * (next) {
   var form = this.request.body;
-  var result = yield service.deleteCart(this.session.user.id, this.session.projectId, form.ids);
+  var result = yield service.deleteCart(this.session.user.id, this.session.project.id, form.ids);
   this.body = result ? this.template.render(200) : this.template.render(500, '删除商品失败');
 });
 
@@ -84,21 +84,21 @@ app.delete('/shopping/cart', loginRequired, function * (next) {
 
 // 列举
 app.get('/shopping/collect', loginRequired, function * () {
-  var data = yield service.listCollect(this.session.user.id, this.session.projectId);
+  var data = yield service.listCollect(this.session.user.id, this.session.project.id);
   this.body = this.template.render('templates/collect.html', data);
 });
 
 // 添加
 app.post('/shopping/collect', loginRequired, function * () {
   var form = this.request.body;
-  var result = yield service.collect(this.session.user.id, this.session.projectId, form.id);
+  var result = yield service.collect(this.session.user.id, this.session.project.id, form.id);
   this.body = result ? this.template.render(200) : this.template.render(500, '收藏商品失败');
 });
 
 // 删除
 app.delete('/shopping/collect', loginRequired, function * () {
   var form = this.request.body;
-  var result = yield service.delcollect(this.session.user.id, this.session.projectId, form.id);
+  var result = yield service.delcollect(this.session.user.id, this.session.project.id, form.id);
   this.body = result ? this.template.render(200) : this.template.render(500, '取消收藏失败');
 });
 
@@ -126,7 +126,8 @@ app.get('/shopping/confirm', loginRequired, multiformRequired, function * (next)
   }
   // 物业地址
   if (!form.paddress) {
-    form.paddress = this.session.project.addresses[0];
+    // 由于数据可能异常 导致物业没有地址 这里需要判断下
+    form.paddress = this.session.project.addresses && this.session.project.addresses[0];
   }
 
   this.body = this.template.render('templates/confirm.html', data, {

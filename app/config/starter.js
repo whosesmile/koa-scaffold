@@ -150,7 +150,7 @@ module.exports = function (templateCache, shost, whost) {
   // 读取project信息
   app.use(function * (next) {
     // 防止循环重定向
-    if (!/^\/location(\/|$)/.test(this.path) && !this.session.projectId) {
+    if (!/^\/location(\/|$)/.test(this.path) && !this.session.project) {
       return this.redirect('/location');
     }
 

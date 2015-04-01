@@ -34,6 +34,14 @@
             </dd>
           </dl>
         {% endfor %}
+      {% else %}
+        <div class="blank">
+          <div class="wrap">
+            <i class="icon icon-noorder"></i>
+            <h3 class="text-gray">还没有收货人哦，去添加一个吧！</h3>
+            <a href="/account/address" class="button button-warning">前去添加</a>
+          </div>
+        </div>
       {% endif %}
     </section>
 
