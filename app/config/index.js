@@ -20,9 +20,7 @@ module.exports = {
   // shost: 'http://devfront.qdingnet.com',
 
   shost: 'http://10.37.63.41',
-  // shost: 'http://127.0.0.1',
-
-  // shost: 'http://192.168.0.102',
+  // shost: 'http://192.168.0.103',
 
   // Web接口域名
   whost: 'http://qaboss.qdingnet.com',

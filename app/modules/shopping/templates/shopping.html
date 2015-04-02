@@ -72,7 +72,9 @@
             <div class="promotes">
               <div class="header clearfix">
                 <h3 class="pull-left text-warning">{{ group.name }}</h3>
-                <a class="pull-right small more" href="/shopping/promotes/{{ group.id }}">更多</a>
+                {% if group.rg.length > 4%}
+                  <a class="pull-right small more" href="/shopping/promotes/{{ group.id }}">更多</a>
+                {% endif %}
               </div>
               <div class="graphic clearfix">
                 {% for item in group.rg %}
