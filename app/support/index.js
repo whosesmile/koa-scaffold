@@ -171,21 +171,6 @@ exports.request = function (options, unpack) {
   });
 };
 
-// 响应快捷方式
-exports.response = {
-
-  // 参数不正确
-  badRequest: function (message) {
-    return {
-      code: 400,
-      data: {
-        message: message || '请求参数不正确'
-      }
-    };
-  }
-
-};
-
 // 将数据中的空数据或未定义数据清除
 exports.clean = function (data) {
   _.forIn(data, function (val, key) {
@@ -195,3 +180,6 @@ exports.clean = function (data) {
   });
   return data;
 };
+
+// 发送邮件
+exports.sendMail = require('./mail').sendMail;

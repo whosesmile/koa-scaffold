@@ -142,21 +142,22 @@ app.post('/register/captcha', function * (next) {
   // 校验手机
   if (!form.mobile || _.trim(form.mobile) === '') {
     this.body = this.template.render(400, '请输入您的手机号码');
-    return;
   }
-  var data = yield service.getCaptcha(form.mobile, 1);
-  this.session.captcha = {
-    code: data.captcha,
-    time: new Date().getTime() // 记录时间
-  };
-  this.body = this.template.render(200);
+  else {
+    var data = yield service.getCaptcha(form.mobile, 1);
+    this.session.captcha = {
+      code: data.captcha,
+      time: new Date().getTime() // 记录时间
+    };
+    this.body = this.template.render(200);
+  }
 });
 
 // ajax 验证手机是否已经注册过
 app.get('/account/exists', function * (next) {
   var mobile = this.request.query.mobile;
   if (_.isUndefined(mobile)) {
-    this.body = support.response.badRequest('请输入手机号码');
+    this.body = this.template.render(400, '请输入您的手机号码');
   }
   else {
     this.body = yield service.exists(mobile);
