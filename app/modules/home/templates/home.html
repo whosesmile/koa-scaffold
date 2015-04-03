@@ -44,7 +44,11 @@
       {% if communitySales.length %}
         <div class="goods clearfix">
           {% for item in communitySales%}
-            <a href="">
+            {% if item.type == 1%}
+              <a href="/shopping/sales/{{ loop.index }}">
+            {% else %}
+              <a href="{{ item.url }}">
+            {% endif %}
               <h3 class="ellipsis {{ ['text-danger', 'text-success', 'text-warning'][loop.index0] }}">{{ item.title }}</h3>
               <small class="text-gray ellipsis">{{ item.desc }}</small>
               <img src="{{ item.imageUrl }}" alt="{{ item.title }}" />

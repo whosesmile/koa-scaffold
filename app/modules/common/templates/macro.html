@@ -21,11 +21,11 @@
 {% macro footer(type) %}
   <footer class="bar fixed">
     <nav>
-      <a href="/" {% if type === 'home' %}class="active"{% endif %}>
+      <a href="/home" {% if type === 'home' %}class="active"{% endif %}>
         <i class="icon icon-tab-home"></i>
         <span>首页</span>
       </a>
-      <a href="/" {% if type === '' %}class="active"{% endif %}>
+      <a href="/assistant" {% if type === 'assistant' %}class="active"{% endif %}>
         <i class="icon icon-tab-housekeep"></i>
         <span>管家</span>
       </a>

@@ -25,15 +25,22 @@ app.get('/shopping/category', function * (next) {
   this.body = this.template.render('templates/category.html', data);
 });
 
-// 首页推荐更多
+// 乐购首页推荐更多
 app.get('/shopping/promotes/:id', function * (next) {
   var data = yield service.listPromotes(this.session.project.id, this.params.id);
   this.body = this.template.render('templates/promotes.html', data);
 });
 
-// 首页BANNER多商品
+// 乐购首页BANNER多商品
 app.get('/shopping/activity/:id', function * (next) {
   var data = yield service.listActivity(this.session.project.id, this.params.id);
+  this.body = this.template.render('templates/promotes.html', data);
+});
+
+// 千丁首页促销
+app.get('/shopping/sales/:index', function * (next) {
+  // Index 从1开始，此处减1
+  var data = yield service.listSales(this.session.project.id, this.params.index - 1);
   this.body = this.template.render('templates/promotes.html', data);
 });
 

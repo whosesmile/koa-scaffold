@@ -1,6 +1,7 @@
 var whost = require('../../config').whost;
 var request = require('../../support').request;
 var _ = require('lodash');
+var shoppingService = require('../home/service');
 
 /**
  * 获取乐购数据
@@ -53,6 +54,20 @@ exports.listActivity = function (projectId, id) {
     return exports.findsGoods(goodsId).then(function (res) {
       return {
         name: name,
+        list: res.list
+      };
+    });
+  }, function (rej) {
+    return null;
+  });
+};
+
+exports.listSales = function (projectId, index) {
+  return shoppingService.home(projectId).then(function (res) {
+    var sales = res.communitySales[index];
+    return exports.findsGoods(sales.id).then(function (res) {
+      return {
+        name: sales.title,
         list: res.list
       };
     });

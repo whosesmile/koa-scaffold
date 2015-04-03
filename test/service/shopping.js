@@ -34,9 +34,18 @@ describe('account service', function () {
     });
   });
 
-  it('#getOrder should return order', function (done) {
-    service.getOrder(order.orderId).then(function (data) {
-      assert(data.order.id === order.orderId);
+  // it('#getOrder should return order', function (done) {
+  //   service.getOrder(order.orderId).then(function (data) {
+  //     assert(data.order.id === order.orderId);
+  //     done();
+  //   }, function (rej) {
+  //     done(rej);
+  //   });
+  // });
+
+  it('#listSales should return home recommand', function (done) {
+    service.listSales(project.id, 1).then(function (data) {
+      assert(_.isArray(data.list));
       done();
     }, function (rej) {
       done(rej);
