@@ -13,14 +13,9 @@ module.exports = {
   // 模板是否缓存
   templateCache: false,
 
-  // 上传文件路径
-  upload: path.resolve(__dirname, '../../node_upload/'),
-
   // 静态域名地址
-  // shost: 'http://devfront.qdingnet.com',
-
-  shost: 'http://10.37.63.41',
-  // shost: 'http://192.168.0.103',
+  shost: 'http://devfront.qdingnet.com',
+  // shost: 'http://10.37.63.28',
 
   // Web接口域名
   whost: 'http://qaboss.qdingnet.com',

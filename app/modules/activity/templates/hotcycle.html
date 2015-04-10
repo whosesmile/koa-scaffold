@@ -1,0 +1,69 @@
+{% set lightbg = false; %}
+{% set title = "邻聚有礼"; %}
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <style type="text/css">
+    .text-yellow {color: #feff8f;}
+    .hotcycle {background-color: #0ba175;}
+    .hotcycle .banner {width:100%;}
+    .box {margin-top: 1.40625rem;position: relative;}
+    .box h2 {font-size:1.1875rem; padding: 0 0.625rem;}
+    .mobile {position: absolute;top:-1.6875rem;right:1.71875rem;width:82;height:3.5rem;}
+    .text {margin:0.625rem;padding:0.46875rem;background-color: #108d68;color:#fff8e0;line-height:1.40625rem;border-radius: 0.46875rem;}
+    .introduce li {position:relative;border-bottom: 1px dashed #51a38b;padding:0.3125rem 0 0.3125rem 1.625rem;}
+    .circle {position:absolute;left:0;top:0.4375rem;display: inline-block;font-weight:bold;width: 1.25rem;height: 1.25rem;text-align: center;line-height: 1.25rem;background-color: #feff8f;color: #0d8a65;border-radius: 0.625rem;margin-right: 0.375rem;}
+    .holder img {float:left;width: 2.75rem;height:2.75rem;border:0.09375rem solid #ffc939;margin-right: 0.625rem;border-radius: 0.09375rem;}
+    .qrcode {height: 8.90625rem;background:transparent url({{ shost + '/mobile/images/storage/hotcycle/footer.png'}}) center center no-repeat;background-size: cover;}
+    .qrcode img {margin:0 auto;display: block;padding-top: 1.09375rem;width:5.21875rem;}
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section class="hotcycle">
+    <img class="banner" src="{{ shost + '/mobile/images/storage/hotcycle/banner.png'}}" />
+
+    <div class="small text">
+      <p>首次下载千丁APP并且实名注册既送<i class="text-yellow">10元代金券</i></p>
+      <p>首次在邻聚发表附和要求主题图片既送<i class="text-yellow">10元代金券</i></p>
+    </div>
+
+    <div class="box">
+      <h2 class="text-yellow">参与活动要求</h2>
+      <img class="mobile" src="{{ shost + '/mobile/images/storage/hotcycle/mobile.png'}}" />
+      <div class="small text">
+        <ul>
+          <li>1.本活动仅限<i class="text-yellow">重庆水晶郦城、大城小院、紫都城</i>三个社区参与。</li>
+          <li>2.本次活动上传主题必须包含"流行"、"美食"、"旅游"标签。
+            <p class="holder clearfix">
+              <img src="{{ shost + '/mobile/images/storage/hotcycle/popular.png' }}" />
+              <img src="{{ shost + '/mobile/images/storage/hotcycle/delicious.png' }}" />
+              <img src="{{ shost + '/mobile/images/storage/hotcycle/tourism.png' }}" />
+            </p>
+          </li>
+          <li>3.照片尽量清晰，不限自拍、美食、萌宝等内容。</li>
+          <li>4.严禁上传国家法律法规禁止或道德不容的图片。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2 class="text-yellow">奖券使用说明</h2>
+      <div class="small text">
+        <ul class="introduce">
+          <li><i class="circle">01</i>本次活动获得的千丁代金券仅限乐购专区。</li>
+          <li><i class="circle">02</i>千丁代金券可叠加使用但使用金额不得大于订单50%。</li>
+          <li><i class="circle">03</i>相关奖励会在附和要求后三个工作日内自动冲入千丁账户。</li>
+          <li><i class="circle">04</i>千丁代金券有效期为一个月，过期失效，不退不换。</li>
+          <li><i class="circle">05</i>具体使用方法请查看<br />
+            <i class="text-yellow">千丁APP &rarr; 我的 &rarr; 我的千丁券 &rarr; 详细规则</i>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qrcode">
+      <a href="http://dl.qdingnet.com"><img src="{{ shost + '/mobile/images/storage/hotcycle/qrcode.png'}}" /></a>
+    </div>
+  </section>
+{% endblock %}

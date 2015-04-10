@@ -13,12 +13,17 @@
       <h1>{{ title }}</h1>
     </header>
     <section class="has-header has-footer">
-      <a class="user {% if user %}logined{% endif %}" href="/account/settings">
-        <div class="head">
-          <img src="{{ user.thumb || shost + '/mobile/images/profile/user.png' }}" />
+      <a class="user" href="/account/settings">
+        <div class="cover">
+          <div><img src="{{ user.image || user.thumb || shost + '/mobile/images/profile/bg-default.png' }}" /></div>
         </div>
-        <h3 class="name">{{ user.name || '未登录，点击登录或注册'}}</h3>
-        <i class="icon icon-more-white settings"></i>
+        <div class="info">
+          <div class="head">
+            <img src="{{ user.thumb || shost + '/mobile/images/profile/user.png' }}" />
+          </div>
+          <h3 class="name">{{ user.name || '未登录，点击登录或注册'  }}</h3>
+          <i class="icon icon-more-white settings"></i>
+        </div>
       </a>
       <div class="list">
         <a class="item oneline item-icon-right" href="/shopping/orders">

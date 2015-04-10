@@ -27,7 +27,7 @@ module.exports = function (templateCache, shost, whost) {
 
   // 订单状态
   swig.setFilter('order', function (input) {
-    // 1:已下单待付款 2,已退单 过期已取消 4:已付全款 5:全部签收 6:付款中 7:支付失败
+    // 1:已下单待付款 2:已退单 3:过期已取消 4:已付全款 5:全部签收 6:付款中 7:支付失败
     return [null, '待付款', '已退单', '已过期', '已付款', '已签收', '付款中', '支付失败', null, '部分到货', '全部到货', '部分签收', null, '部分退款', '全部退款', '现金部分退款', '现金全部退款'][Number(input)] || '已禁用';
   });
 
@@ -44,6 +44,12 @@ module.exports = function (templateCache, shost, whost) {
       '31': '支付宝',
       '41': '微信支付'
     }[input] || '其他';
+  });
+
+  // 通知类型
+  swig.setFilter('notice', function (input) {
+    // 1:紧急通知 2:通知 3:社区活动
+    return [null, '紧急通知', '通知', '社区活动'][Number(input)] || '公告';
   });
 
   // 添加小数点
@@ -149,8 +155,19 @@ module.exports = function (templateCache, shost, whost) {
 
   // 读取project信息
   app.use(function * (next) {
-    // 防止循环重定向
-    if (!/^\/location(\/|$)/.test(this.path) && !this.session.project) {
+    var except = [/^\/location(\/|$)/, /^\/activity\//];
+
+    // 是否允许项目为空
+    var disallow = true;
+    for (var i = 0; i < except.length; i++) {
+      if (except[i].test(this.path)) {
+        disallow = false;
+        break;
+      }
+    }
+
+    // 如果不允许
+    if (disallow && !this.session.project) {
       return this.redirect('/location');
     }
 

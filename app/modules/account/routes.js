@@ -61,13 +61,10 @@ app.post('/account/login', function * (next) {
 
 // http 登出
 app.get('/account/logout', function * (next) {
-  // 保留选择的项目
-  // _.forIn(this.session.inspect(), function (value, key) {
-  //   if (key !== 'project') {
-  //     delete this.session[key];
-  //   }
-  // }, this);
-  this.session = null;
+  // 登出时 保留项目信息
+  this.session = {
+    project: this.session.project
+  };
   this.redirect('/account/login');
 });
 

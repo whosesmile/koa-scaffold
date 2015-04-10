@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var request = require('request');
 var _ = require('lodash');
+var moment = require('moment');
 
 // 递归遍历目录
 var walk = exports.walk = function (dir, done) {
@@ -128,12 +129,11 @@ function rebuild(res) {
 // request proxy to return promise 
 exports.request = function (options, unpack) {
   return new Promise(function (resolve, reject) {
-
     console.info('\n**********');
     var st = new Date();
+    console.info('start time: ', moment().format('YYYY-MM-DD HH:mm:ss'));
     console.info('request', options);
     request(options, function (err, res) {
-
       if (err) {
         console.log('error:', err);
         console.info('**********\n');

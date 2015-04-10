@@ -34,3 +34,4 @@ _gh_pages
 _site
 upload
 test.html
+.svnignore

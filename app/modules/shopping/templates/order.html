@@ -50,16 +50,25 @@
             </span>
           </div>
           <div class="pull-right">
-            <button class="button button-warning pull-left">去支付</button>
+            <button class="button button-warning">去支付</button>
           </div>
         </div>
       </footer>
     {% else %}
       <footer class="bar fixed">
-        <div class="oneline text-center">
-          <span>总价:<i class="text-danger">{{ order.total|currency }}</i></span>
-          <span>实付款:<i class="text-danger">{{ order.totalRealpay|currency }}</i></span>
+        <footer class="bar fixed">
+        <div class="charge">
+          <div class="pull-left total">
+            <span class="small pull-left">
+              总价:<i class="text-danger">{{ order.total|currency }}</i><br />
+              实付:<i class="text-danger">{{ order.totalRealpay|currency }}</i>
+            </span>
+          </div>
+          <div class="pull-right">
+            <button class="button button-default">删除订单</button>
+          </div>
         </div>
+      </footer>
       </footer>
     {% endif %}
   </div>

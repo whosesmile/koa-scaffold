@@ -1,0 +1,28 @@
+{% set title = "公告详情"; %}
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <link rel="stylesheet" href="{{ shost }}/mobile/css/assistant.css" />
+{% endblock %}
+
+{% block content %}
+  <div class="notice">
+    <header class="bar fixed">
+      {{ macro.iconBack('/assistant/notices') }}
+      <h1>{{ title }}</h1>
+    </header>
+    <section class="has-header">
+      <h2 class="text-center padding">{{ notice.title }}</h2>
+      <h4 class="text-center">
+        <small class="text-gray">{{ notice.createAt|date('Y-m-d')}}</small>
+        <small class="{% if notice.noticeType == 1%}text-danger{% else %}text-gray{% endif %}">{{ notice.noticeType|notice }}</small>
+      </h4>
+      {% if notice.pic%}
+        <div class="banner">
+          <img src="{{ notice.pic }}" alt="{{ notice.title }}" />
+        </div>
+      {% endif %}
+      <div class="content">{{ notice.content|safe }}</div>
+    </section>
+  </div>
+{% endblock %}
