@@ -43,3 +43,14 @@ app.post('/common/upload', function * (next) {
     this.body = this.template.render(400, e);
   }
 });
+
+// api proxy
+app.all(/\/proxy\/(.+)/, function * (next) {
+  var data = yield service.proxyRequest({
+    url: config.whost + this.path.replace('/proxy', ''),
+    method: this.method,
+    qs: this.query,
+    form: this.request.body
+  });
+  this.body = data;
+});

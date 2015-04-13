@@ -7,10 +7,13 @@
 
 {% block content %}
   <div class="notice">
-    <header class="bar fixed">
-      {{ macro.iconBack('/assistant/notices') }}
-      <h1>{{ title }}</h1>
-    </header>
+    <!-- APP和H5公用一套模板，但是APP不需要头 -->
+    {% if header !== false%}
+      <header class="bar fixed">
+        {{ macro.iconBack('/assistant/notices') }}
+        <h1>{{ title }}</h1>
+      </header>
+    {% endif %}
     <section class="has-header">
       <h2 class="text-center padding">{{ notice.title }}</h2>
       <h4 class="text-center">

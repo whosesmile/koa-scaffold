@@ -49,7 +49,7 @@ module.exports = function (templateCache, shost, whost) {
   // 通知类型
   swig.setFilter('notice', function (input) {
     // 1:紧急通知 2:通知 3:社区活动
-    return [null, '紧急通知', '通知', '社区活动'][Number(input)] || '公告';
+    return [null, '紧急通知', '通知', '社区活动'][Number(input)] || '';
   });
 
   // 添加小数点
@@ -155,7 +155,7 @@ module.exports = function (templateCache, shost, whost) {
 
   // 读取project信息
   app.use(function * (next) {
-    var except = [/^\/location(\/|$)/, /^\/activity\//];
+    var except = [/^\/location(\/|$)/, /^\/activity\//, /^\/mobile\//];
 
     // 是否允许项目为空
     var disallow = true;

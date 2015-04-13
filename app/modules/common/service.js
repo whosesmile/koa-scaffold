@@ -1,4 +1,5 @@
 var fs = require('fs');
+var request = require('../../support').request;
 
 /**
  * 读取文件
@@ -11,4 +12,9 @@ exports.readFile = function (path) {
       resolve(data);
     });
   });
+};
+
+// 通用代理
+exports.proxyRequest = function (options) {
+  return request(options, false);
 };

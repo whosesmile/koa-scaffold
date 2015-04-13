@@ -1,0 +1,163 @@
+{% set title = "风筝彩绘"; %}
+{% extends './modules/common/templates/layout.html' %}
+
+{% block style %}
+  <style type="text/css">
+    .qinzi {padding: 1.25rem;}
+    h1 {line-height: 1;color: #666;}
+    h2 {color: #666;margin:0.46875rem 0 1.5625rem;font-weight: normal;}
+    .details {color: #ff7800;}
+    .details {margin-top: 1.25rem;}
+    .details li {margin-bottom: 0.46875rem;color: #ff7800;}
+    .tab {border-bottom: 0.09375rem solid #ffba00;margin-top: 1.5625rem;margin-bottom: 1.25rem;}
+    .tab span {display: block;width:6.875rem;height: 1.875rem;line-height: 1.875rem;color: #fff;background-color:#ffba00;  border-radius: 0.3125rem 0.3125rem 0 0;}
+    .form-control {margin-bottom: 0.9375rem;}
+    .form-control input, .form-control select {display: block;width: 100%;height:1.875rem;padding: 0 0.3125rem;border-radius: 0.15625rem;border:1px solid #ddd;}
+    .form-control select {background-color: #fff;}
+    .form-control button {background:transparent;border:none;padding: 0;}
+    button img {width: 7.84375rem;height:2.1875rem;}
+    .phone img {width:0.96875rem;height:1.15625rem;}
+    .footer {margin-top: 0.9375rem;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding: 0.625rem 0;}
+    .footer img {width: 100%;}
+    .prevent {pointer-events: none;background-color: #fafafa!important;}
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section class="qinzi">
+    <h1 class="text-center">龙湖亲子风筝彩绘DIY</h1>
+    <h2 class="text-center">&amp;亲子旅行分享</h2>
+    <p class="small">亲子同行，放飞春天，画一个属于自己的风筝。</p>
+    <ul class="details small">
+      <li><label>活动时间：</label>4月18日 14:30-17:00</li>
+      <li><label>活动地点：</label>唐宁one社区居委会阳光房</li>
+      <li><label>礼品内容：</label>冰激凌券、洗车卡、儿童旅行图书...参与就有礼！</li>
+    </ul>
+
+    <div class="register">
+      <div class="tab text-center">
+        <span>报名信息</span>
+      </div>
+      <form class="small">
+        <div class="form-control">
+          <input type="text" placeholder="请联系输入人姓名" maxlength="20" name="name" value="{{ entity.name }}" required />
+        </div>
+        <div class="form-control">
+          <input type="tel" placeholder="请输入联系人电话" maxlength="11" name="mobile" value="{{ entity.mobile }}" pattern="^\d{11}$" required />
+        </div>
+        <div class="form-control">
+          <select class="count" name="count" required>
+            <option value="">请选择儿童人数</option>
+            <option value="1" {% if entity.childAge.length == 1%}selected{% endif %}>1人</option>
+            <option value="2" {% if entity.childAge.length == 2%}selected{% endif %}>2人</option>
+            <option value="3" {% if entity.childAge.length == 3%}selected{% endif %}>3人</option>
+            <option value="4" {% if entity.childAge.length == 4%}selected{% endif %}>4人</option>
+            <option value="5" {% if entity.childAge.length == 5%}selected{% endif %}>5人</option>
+          </select>
+        </div>
+        {% for i in [1,2,3,4,5]%}
+          <div class="form-control child-age">
+            <input type="number" name="age" placeholder="请填写儿童年龄" class="age" required min="1" max="16" value="{{ entity.childAge[loop.index0] }}" />
+          </div>
+        {% endfor %}
+        <div class="form-control">
+          <select name="adults" required>
+            <option value="">请选择陪同人数</option>
+            <option value="1" {% if entity.accompanyNum == 1%}selected{% endif %}>1人</option>
+            <option value="2" {% if entity.accompanyNum == 2%}selected{% endif %}>2人</option>
+            <option value="3" {% if entity.accompanyNum == 3%}selected{% endif %}>3人</option>
+            <option value="4" {% if entity.accompanyNum == 4%}selected{% endif %}>4人</option>
+            <option value="5" {% if entity.accompanyNum == 5%}selected{% endif %}>5人</option>
+          </select>
+        </div>
+
+        <div class="form-control text-center">
+          <button><img src="{{ shost + '/mobile/images/storage/sjdiy/join.png' }}" /></button>
+        </div>
+      </form>
+      <div class="phone text-center text-gray">
+        <img src="{{ shost + '/mobile/images/storage/sjdiy/phone.png'}}" />
+        咨询热线：<a class="tel" href="tel:010-59427316">010-59427316</a>
+      </div>
+
+      <div class="footer text-center">
+        <img src="{{ shost + '/mobile/images/storage/sjdiy/footer.jpg'}}" />
+      </div>
+    </div>
+  </section>
+
+
+  <!-- <div class="js-cover"></div> -->
+
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+    var form = $('form');
+
+    // 不填写儿童数量 不允许填写年龄
+    $('.count').change(function() {
+      var val = $(this).val();
+
+      if (val === '') {
+        $('.age').val('');
+        $('.age').addClass('prevent');
+      }
+      else {
+        $('.age').removeClass('prevent');
+      }
+
+      // 启用禁用表单
+      var list = $('.child-age');
+      var count = (val && parseInt(val, 10)) || 1;
+      
+      for (var i=1;i<count;i++) {
+        list.eq(i).show().find('input').prop('disabled', false);
+      }
+      for (var i=count;i<list.length;i++) {
+        list.eq(i).hide().find('input').prop('disabled', true);
+      }
+
+    }).triggerHandler('change');
+
+    form.submit(function() {
+      var data = form.serialize();
+
+      var ages = [];
+      $('.age').each(function(i, item) {
+        if ($(item).is(':disabled') === false) {
+          ages.push(item.value);
+        }
+      });
+
+      var data = {
+        name: form[0].name.value,
+        mobile: form[0].mobile.value,
+        accompanyNum: form[0].adults.value,
+        childAge: ages.join(',')
+      };
+
+      {% if entity %}
+        data.id = "{{ entity.id }}";
+      {% endif %}
+
+      $.ajax({
+        url: '/activity/qinzidiy/register',
+        type: 'post',
+        data: {
+          data: JSON.stringify(data)
+        },
+        dataType: 'json',
+        success: function(res) {
+          if(res.code === 200) {
+            location.href = '/activity/qinzidiy';
+          }
+          else {
+            notice.failure(res.message || res.data.message || '签到失败');
+          }
+        }
+      })
+      return false;
+    });
+  </script>
+{% endblock%}

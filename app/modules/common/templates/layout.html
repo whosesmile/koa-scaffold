@@ -17,13 +17,13 @@
   {# 默认加载基础样式表 #}
   {% if style !== false %}<link rel="stylesheet" href="{{ shost }}/mobile/css/base.css" />{% endif %}
   {% block style %}{% endblock %}
+  {# 默认加载基础脚本 #}
+  {% if script !== false %}<script src="{{ shost }}/mobile/js/base.js"></script>{% endif %}
 </head>
 <body {% if lightbg %}class="lightbg"{% endif %}>
   {% block header %}{% endblock %}
   {% block content %}{% endblock %}
   {% block footer %}{% endblock %}
-  {# 默认加载基础脚本 #}
-  {% if script !== false %}<script src="{{ shost }}/mobile/js/base.js"></script>{% endif %}
   {% block script %}{% endblock %}
 </body>
 </html>

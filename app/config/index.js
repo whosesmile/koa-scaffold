@@ -16,9 +16,10 @@ module.exports = {
   // 静态域名地址
   shost: 'http://devfront.qdingnet.com',
   // shost: 'http://10.37.63.28',
+  // shost: 'http://127.0.0.1',
 
   // Web接口域名
-  whost: 'http://qaboss.qdingnet.com',
+  whost: 'http://devboss.qdingnet.com',
 
   // favicon路径
   favicon: path.resolve(__dirname, '../favicon.ico'),
