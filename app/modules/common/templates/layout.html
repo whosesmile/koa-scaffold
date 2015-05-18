@@ -3,27 +3,19 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
-  <title data-whost="{{ whost }}">{{ title || '千丁小区'}}</title>
-  <meta content="yes" name="apple-touch-fullscreen" />
-  <meta content="yes" name="apple-mobile-web-app-capable" />
-  <meta content="black" name="apple-mobile-web-app-status-bar-style" />
-  <meta content="telephone=no,email=no,address=no" name="format-detection" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <title>{{ title || '工单申请'}}</title>
   <link rel="shortcut icon" href="{{ shost }}/mobile/images/favicon.ico" />
-  <link rel="apple-touch-icon" href="{{ shost }}/mobile/images/touch-icon-iphone.png" />  
-  <link rel="apple-touch-icon" sizes="76x76" href="{{ shost }}/mobile/images/touch-icon-ipad.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="{{ shost }}/mobile/images/touch-icon-iphone-retina.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="{{ shost }}/mobile/images/touch-icon-ipad-retina.png">
-  {# 默认加载基础样式表 #}
-  {% if style !== false %}<link rel="stylesheet" href="{{ shost }}/mobile/css/base.css" />{% endif %}
+  <link rel="stylesheet" href="{{ shost }}/public/bootstrap/dist/css/bootstrap.min.css" />
   {% block style %}{% endblock %}
-  {# 默认加载基础脚本 #}
-  {% if script !== false %}<script src="{{ shost }}/mobile/js/base.js"></script>{% endif %}
 </head>
-<body {% if lightbg %}class="lightbg"{% endif %}>
+<body>
   {% block header %}{% endblock %}
   {% block content %}{% endblock %}
   {% block footer %}{% endblock %}
+
+  <script src="{{ shost }}/public/jquery/dist/jquery.min.js"></script>
+  <script src="{{ shost }}/public/bootstrap/dist/js/bootstrap.min.js"></script>
   {% block script %}{% endblock %}
 </body>
 </html>

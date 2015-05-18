@@ -16,36 +16,3 @@
     {{ path }}
   {% endif %}
 {% endmacro %}
-
-{# 底部菜单 #}
-{% macro footer(type) %}
-  <footer class="bar fixed">
-    <nav>
-      <a href="/home" {% if type === 'home' %}class="active"{% endif %}>
-        <i class="icon icon-tab-home"></i>
-        <span>首页</span>
-      </a>
-      <a href="/assistant" {% if type === 'assistant' %}class="active"{% endif %}>
-        <i class="icon icon-tab-housekeep"></i>
-        <span>管家</span>
-      </a>
-      <a href="/shopping" {% if type === 'shopping' %}class="active"{% endif %}>
-        <i class="icon icon-tab-shopping"></i>
-        <span>乐购</span>
-      </a>
-      <a href="/profile" {% if type === 'profile' %}class="active"{% endif %}>
-        <i class="icon icon-tab-neighbour"></i>
-        <span>我的</span>
-      </a>
-    </nav>
-  </footer>
-{% endmacro %}
-
-{# 返回按钮 #}
-{% macro iconBack(path) %}
-  {% if path %}
-    <a class="left-icon" href="{{ path }}"><i class="icon icon-back"></i></a>
-  {% else %}
-    <a class="left-icon" onclick="history.go(-1);"><i class="icon icon-back"></i></a>
-  {% endif %}
-{% endmacro %}

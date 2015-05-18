@@ -20,17 +20,20 @@ app.post('/common/upload', function * (next) {
         var files = this.request.body.files[name];
         files = files.constructor === Array ? files : [files];
         for (var i = 0; i < files.length; i++) {
-          var file = files[i];
-          if (file.size) {
-            var path = yield config.storage.uploadImage(file.name, file.type, file.path);
-            list.push({
-              name: name,
-              path: path
-            });
+          try {
+            var file = files[i];
+            if (file.size) {
+              var path = yield config.storage.upload(file.name, file.type, file.path);
+              list.push({
+                name: name,
+                path: path
+              });
+            }
           }
-
           // 移除本地缓存文件
-          fs.unlink(file.path);
+          finally {
+            fs.unlink(file.path);
+          }
         }
       }
     }

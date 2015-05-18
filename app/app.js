@@ -26,6 +26,6 @@ if (cluster.isMaster) {
 }
 else {
   app.listen(config.port, function () {
-    console.log('clustor worker %d started, listening on port: %d', cluster.worker.id, config.port);
+    console.log('clustor worker %d started, pid is %d, listening on port: %d', cluster.worker.id, process.pid, config.port );
   });
 }

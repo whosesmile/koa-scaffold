@@ -19,44 +19,6 @@ module.exports = function (templateCache, shost, whost) {
   // 东八区
   swig.setDefaultTZOffset(-480);
 
-  // 添加优惠券过滤器
-  swig.setFilter('coupon', function (input) {
-    // 1:未使用 2,已使用 3：已过期 4：已作废 5：未生效 6：已锁定
-    return [null, '未使用', '已使用', '已过期', '已作废', '未生效', '已锁定'][Number(input)] || '已禁用';
-  });
-
-  // 订单状态
-  swig.setFilter('order', function (input) {
-    // 1:已下单待付款 2:已退单 3:过期已取消 4:已付全款 5:全部签收 6:付款中 7:支付失败
-    return [null, '待付款', '已退单', '已过期', '已付款', '已签收', '付款中', '支付失败', null, '部分到货', '全部到货', '部分签收', null, '部分退款', '全部退款', '现金部分退款', '现金全部退款'][Number(input)] || '已禁用';
-  });
-
-  // 添加性别过滤器
-  swig.setFilter('sex', function (input) {
-    return ['女士', '先生'][input] || '保密';
-  });
-
-  // 添加支付方式过滤器
-  swig.setFilter('payment', function (input) {
-    return {
-      '11': '现金支付',
-      '21': '刷卡支付',
-      '31': '支付宝',
-      '41': '微信支付'
-    }[input] || '其他';
-  });
-
-  // 通知类型
-  swig.setFilter('notice', function (input) {
-    // 1:紧急通知 2:通知 3:社区活动
-    return [null, '紧急通知', '通知', '社区活动'][Number(input)] || '';
-  });
-
-  // 添加小数点
-  swig.setFilter('currency', function (input, size, symbol) {
-    return _.isUndefined(input) ? '' : (symbol || '￥') + Number(input).toFixed(size || 2);
-  });
-
   // 登录中间件 方便做登录验证跳转
   global.loginRequired = function * (next) {
     if (this.session.user) {
@@ -94,6 +56,15 @@ module.exports = function (templateCache, shost, whost) {
       else {
         yield next;
       }
+    };
+  };
+
+  // 根据名称寻找router并运行
+  global.findRouter = function (name) {
+    return function * (next) {
+      var route = app.router.route('notice');
+      next = route.middleware.call(this, next);
+      yield * next;
     };
   };
 
@@ -153,24 +124,7 @@ module.exports = function (templateCache, shost, whost) {
     }
   }));
 
-  // 读取project信息
   app.use(function * (next) {
-    var except = [/^\/location(\/|$)/, /^\/activity\//, /^\/mobile\//];
-
-    // 是否允许项目为空
-    var disallow = true;
-    for (var i = 0; i < except.length; i++) {
-      if (except[i].test(this.path)) {
-        disallow = false;
-        break;
-      }
-    }
-
-    // 如果不允许
-    if (disallow && !this.session.project) {
-      return this.redirect('/location');
-    }
-
     // 是否是Ajax
     this.request.isAjax = this.headers['x-requested-with'] === 'XMLHttpRequest';
     yield next;
@@ -178,7 +132,10 @@ module.exports = function (templateCache, shost, whost) {
 
   // 设置模板
   app.use(function * (next) {
+    var context = this;
+
     this.template = {
+
       render: function (template) {
 
         // 合并数据模型 

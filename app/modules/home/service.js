@@ -1,27 +1,17 @@
-var config = require('../../config');
-var whost = config.whost;
-var request = require('../../support').request;
+var models = require('../../config').models;
+var Work = models.Work;
 
 /**
- * 获取首页数据
- * @param  {number} projectId 项目主键
+ * 列举Work
+ * @param  {string} path 文件路径
  * @return promise
  */
-exports.home = function (projectId) {
-  return request({
-    url: whost + '/qding-api/api/json/hotcycle/getCommunityIndex',
-    method: 'get',
-    qs: {
-      body: JSON.stringify({
-        "appDevice": {
-          "qdDevice": "browser",
-          "qdPlatform": "HTML5",
-          "qdVersion": config.api.version
-        },
-        "communityId": projectId,
-        "version1": config.api.version,
-        "code": "home"
-      })
-    }
+exports.query = function (page, size) {
+  page = page || 1;
+  size = size || 20;
+
+  return Work.findAll({
+    offset: size * (page - 1),
+    limit: size
   });
 };
