@@ -100,7 +100,7 @@ module.exports = function (templateCache, shost, whost) {
   });
 
   // 设置session
-  app.keys = ['LWXA@0ZrXj~!]/mNHH98j/3yX R,?RT'];
+  app.keys = ['somesecredkey'];
   app.use(session(app, {
     key: 'T',
     maxage: 365 * 24 * 60 * 60 * 1000 // 一年过期
