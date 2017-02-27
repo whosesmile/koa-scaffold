@@ -1,46 +1,35 @@
+var fs = require('fs');
 var path = require('path');
-var storage = require('./storage');
-var starter = require('./starter');
-var models = require('./db');
+var conf = {};
+
+try {
+  conf = require('../../config');
+} catch (e) {
+  console.log('使用生产环境');
+}
 
 module.exports = {
+  // port
+  port: 9002,
 
-  // 服务端口
-  port: 9798,
+  // view folder
+  views: 'templates',
 
-  // 挂接平台
-  platform: 'weixin',
+  // watch tempalte change
+  watch: conf.watch || false,
 
-  // 模板是否缓存
-  templateCache: false,
-
-  // 静态域名地址
-  shost: 'http://front.qdingnet.com',
-  // shost: 'http://devfront.qdingnet.com',
-  // shost: 'http://10.37.63.8',
-
-  // Web接口域名
-  // whost: 'http://boss.qdingnet.com',
-  whost: 'http://devboss.qdingnet.com',
-
-  // favicon路径
+  // favicon
   favicon: path.resolve(__dirname, '../favicon.ico'),
 
-  // 腾讯地图
-  mapkey: 'KROBZ-3HZHV-LPYPF-UHQKQ-KLQ4O-HGFNQ',
+  // assets file
+  assets: conf.assets || path.join(__dirname, '../../assets'),
 
-  // 又拍云
-  storage: storage,
+  // assets target
+  target: 'dist',
 
-  // 接口信息
-  api: {
-    version: '1.2.0'
+  // log file
+  logger: {
+    level: 'error',
+    file: '/var/log/node/error.log',
   },
-
-  models: models,
-
-  // 启动器
-  init: function () {
-    return starter(this.templateCache, this.shost, this.whost);
-  }
 };

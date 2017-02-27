@@ -1,23 +1,31 @@
 ## ![logo](https://avatars1.githubusercontent.com/u/1303816?v=2&u=c153ce09f7ba68a3c3eff36d876638a224db35da&s=30) koa-scaffold
 
-A koa scaffold for build web mvc application rapidly with a carefully designed structure.
+A koa seed for build web mvc application rapidly with a carefully designed structure.
 
 ### Installation
 ````
-$ git clone https://github.com/whosesmile/koa-scaffold
+$ git clone https://github.com/whosesmile/koa-seed
 $ npm install
 ````
 
-### Quick start
+### Quick develop
+You should create a file named **config.js in root dir:
+```
+module.exports = {
+  // watch tempalte change only for develop
+  watch: true
+};
 
-Aha, just input cmd:
+```
+then run:
+
 ````
-$ node --harmony server.js
+$ node server.js
 ````
 
-I strongly suggest you install [node-supervisor](https://github.com/isaacs/node-supervisor), and input cmd:
+I strongly suggest you install nodemon to restart node for develop:
 ````
-$ supervisor --harmony -w app server.js
+$ nodemon --watch app server
 ````
 
 ### Structure
@@ -32,12 +40,12 @@ dont need care require in app.js, but it's no order and all routes.js is autowir
 
 
 ### Static files
-koa-scaffold support serve static files by use [koa-static-cache](https://github.com/koajs/static-cache) for rapidly develop, 
-you can change serve folder and static prefix in app/common/config.js, But I strongly suggest you should has a single static project and serve it use a web service such as nginx.
+koa-seed support serve static files by use koa-send for rapidly develop,
+you can change serve folder and static prefix in app/config/index.js, But I strongly suggest you should has a single static project and serve it use a web service such as nginx.
 
 
 ### Templates
-I use [swig](https://github.com/paularmstrong/swig) as template enegin
+I use [nunjuncks](https://mozilla.github.io/nunjucks/) as template enegin
 
 ### ORM and Database
 ````

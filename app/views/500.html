@@ -1,0 +1,22 @@
+{% set clazz = 'error' %}
+{% set title = "服务卡住了" %}
+{% extends './layout.html' %}
+{% import './macro.html' as macro %}
+{% block content %}
+  {% if not nested %}
+    <header class="bar">
+      {{ macro.back() }}
+      <h1 class="title"><b>{{ title }}</b></h1>
+    </header>
+  {% endif %}
+  <section>
+    <div class="feedback">
+      <div class="mark">
+        <img width="220" height="220" src="//img1.qdingnet.com/b70973ae84276a865ae7ae673ea1e318.png" alt="空白" />
+      </div>
+      <h4 class="title">500</h4>
+      <div class="describe">{{ message|default('服务器被黑洞引力束缚住无法逃脱...') }}</div>
+    </div>
+  </section>
+{% endblock %}
+{% block script %}{% endblock %}
