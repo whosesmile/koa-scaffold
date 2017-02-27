@@ -9,7 +9,7 @@ $ npm install
 ````
 
 ### Quick develop
-You should create a file named **config.js in root dir:
+You should create a file named *config.js* in root dir:
 ```
 module.exports = {
   // watch tempalte change only for develop
