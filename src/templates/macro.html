@@ -1,0 +1,22 @@
+{# 超链接 #}
+{% macro url(path, params) %}
+  {% set query = [] %}
+  
+  {% if params %}
+    {% for name, value in params %}
+      {% if value !== undefined %}
+        {% set query[query.length] = name + '=' + value|url_encode %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if query.length %}
+    {% if path|contains('?') %}
+      {{ path }}&amp;{{ query|join('&amp;') }}
+    {% else %}
+      {{ path }}?{{ query|join('&amp;') }}
+    {% endif %}
+  {% else %}
+    {{ path }}
+  {% endif %}
+{% endmacro %}

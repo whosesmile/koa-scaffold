@@ -1,9 +1,0 @@
-{% macro url(path, params) %}
-  {{ path }}?{{ params|urlencode }}
-{% endmacro %}
-
-{% macro back(path) %}
-  <a class="menu text-dark" href="{{ path|default('javascript:history.back()') }}">
-    <i class="icon">&#xe60e;</i>
-  </a>
-{% endmacro %}

@@ -1,0 +1,53 @@
+{% extends "../../../templates/redux.html" %}
+{% set title = "云淡风轻" %}
+{% block content %}
+  {% for i in range(count) %}
+    <div class="list">
+      <div class="item">
+        <div class="text text-sm">微信商城</div>
+        <div class="extra text-sm">已发货</div>
+      </div>
+      <div class="item" ui-mode="15px">
+        <div class="avatar">
+          <img width="60" src="https://fakeimg.pl/60x60/">
+        </div>
+        <div class="text">
+          <h4>善在·金鼎轩</h4>
+          <div class="brief">菜品真材实料，青菜掐头去尾做的非常精致；豆腐满满的原汁原味啊！</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="text text-sm">人均:<span class="text-driving">￥66.0</span></div>
+        <div class="extra">
+          <div class="button-group">
+            <a class="button plain-success sm">查看物流</a>
+            <a class="button default sm">查看详情</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="item">
+        <div class="text text-sm">京东商城</div>
+        <div class="extra text-sm">已签收</div>
+      </div>
+      <div class="item" ui-mode="15px">
+        {% for k in range(4) %}
+          <div class="avatar">
+            <img width="60" src="https://fakeimg.pl/60x60/">
+          </div>
+        {% endfor %}
+      </div>
+      <div class="item">
+        <div class="text text-sm">总价:<span class="text-driving">￥123.0</span></div>
+        <div class="extra">
+          <div class="button-group">
+            <a class="button plain-success sm">发表评价</a>
+            <a class="button default sm">查看详情</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

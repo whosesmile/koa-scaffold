@@ -1,0 +1,25 @@
+{% extends "./redux.html" %}
+{% set title = "Oops" %}
+{% block content %}
+  <div class="feedback">
+    {% if status == "404" %}
+      <div class="mark">
+        <img width="197" height="98" src="http://img1.qdingnet.com/a93623660fa443e00a6a2fbbf3578635.png" />
+      </div>
+      <h3 class="title">{{status}}</h3>
+      <div class="describe">{{error.message}}</div>
+    {% else %}
+      <div class="mark">
+        <img width="197" height="98" src="http://img1.qdingnet.com/c6e1523b5031a3cd65c65a1e266b95e6.png" />
+      </div>
+      <h3 class="title">{{status}}</h3>
+      {% if env == "development" %}
+        <div class="describe">{{error.stack}}</div>
+      {% elif error.expose %}
+        <div class="describe">{{error.message}}</div>
+      {% else %}
+        <div class="describe">抱歉，服务器响应异常</div>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endblock %}
