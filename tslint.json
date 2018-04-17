@@ -25,6 +25,7 @@
     "no-unused-variable": true,
     "no-implicit-dependencies": false,
     "no-angle-bracket-type-assertion": false,
+    "no-shadowed-variable": false,
     "arrow-parens": false
   }
 }

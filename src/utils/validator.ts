@@ -15,7 +15,7 @@ function validator(opts: Joi.SchemaMap) {
     const { params, request: { body, query } } = ctx;
     const { error, value } = schema.validate({ body, query, params }, options);
     if (error) {
-      return ctx.throw(422, '参数不合法');
+      return ctx.throw(422, error);
     }
     ctx.params = value.params;
     ctx.request.body = value.body;

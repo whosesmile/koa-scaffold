@@ -7,6 +7,7 @@ import nunjucks from './utils/nunjucks';
 import minifier from './utils/minifier';
 import landing from './modules/landing';
 import account from './modules/account';
+import toolkit from './modules/toolkit';
 
 const app = new Koa();
 
@@ -19,5 +20,6 @@ app.use(session(app));
 
 app.use(landing.routes()).use(landing.allowedMethods());
 app.use(account.routes()).use(account.allowedMethods());
+app.use(toolkit.routes()).use(toolkit.allowedMethods());
 
 export default app;

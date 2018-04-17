@@ -44,7 +44,7 @@ export default function (app: Koa) {
       logger.debug(`session is ignored for "${ctx.path}"`);
       return next();
     }
-    await middleware(ctx, next);
     logger.debug(ctx.session ? `session is ${ctx.session.isNew ? 'created' : 'recovered'}` : 'session is destroyed');
+    await middleware(ctx, next);
   };
 }

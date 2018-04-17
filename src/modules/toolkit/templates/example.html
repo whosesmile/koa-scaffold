@@ -1,0 +1,12 @@
+{% extends "../../../templates/redux.html" %}
+{% set title = "云淡风轻" %}
+{% block content %}
+  <form action="/toolkit/upload" method="post" enctype="multipart/form-data">
+    <div class="list">
+      <div class="item">
+        <input class="input" type="file" name="file" multiple />
+        <div class="extra"><button class="button success sm">上传测试</button></div>
+      </div>
+    </div>
+  </form>
+{% endblock %}

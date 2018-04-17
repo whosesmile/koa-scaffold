@@ -30,3 +30,6 @@ Thumbs.db
 
 # Ignore built ts files
 dist/**/*
+
+# Ignore upload temp folder
+upload
