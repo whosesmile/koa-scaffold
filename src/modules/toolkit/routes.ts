@@ -11,6 +11,8 @@ export const upload = async (ctx: Context) => {
     return list.concat(files[name]);
   }, []);
 
-  const list = await Promise.all(group.map(async (file: any) => service.upload(file)));
+  const list = await Promise.all(group.map(file => service.upload(file))).catch(e => {
+    ctx.throw(e.status || 500, '七牛上传失败');
+  });
   ctx.body = { code: 200, list };
 };
