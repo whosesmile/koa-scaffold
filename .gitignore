@@ -36,3 +36,6 @@ upload
 
 # Jest Coverage reports
 coverage
+
+# Ignore upload test image
+upload.limit.jpeg
