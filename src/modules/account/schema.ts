@@ -2,12 +2,8 @@ import Joi = require('joi');
 
 export const account: Joi.SchemaMap = {
   body: {},
-  params: {
-    name: Joi.string(),
-  },
-  query: {
-    age: Joi.number(),
-  },
+  params: {},
+  query: {},
 };
 
 export const settings: Joi.SchemaMap = {

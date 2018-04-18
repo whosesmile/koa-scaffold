@@ -17,7 +17,8 @@
     "watch:ts": "tsc -w",
     "watch:serve": "nodemon --watch 'dist/**/*' --delay 300ms dist/server.js",
     "watch:html": "nodemon --watch 'src/**/*' --ext html --exec ts-node static.ts",
-    "serve-debug": "npm-run-all --parallel tslint watch:ts watch:html watch:serve"
+    "serve-debug": "npm-run-all --parallel tslint watch:ts watch:html watch:serve",
+    "test": "jest --forceExit --coverage --verbose"
   },
   "author": "whosesmile",
   "license": "ISC",
@@ -42,6 +43,7 @@
     "@types/co-body": "^0.0.3",
     "@types/dotenv": "^4.0.3",
     "@types/html-minifier": "^3.5.2",
+    "@types/jest": "^22.2.3",
     "@types/joi": "^13.0.7",
     "@types/koa": "^2.0.44",
     "@types/koa-router": "^7.0.27",
@@ -50,10 +52,14 @@
     "@types/moment": "^2.13.0",
     "@types/nunjucks": "^3.0.0",
     "@types/shelljs": "^0.7.8",
+    "@types/supertest": "^2.0.4",
     "@types/winston": "^2.3.9",
+    "jest": "^22.4.3",
     "nodemon": "^1.17.3",
     "npm-run-all": "^4.1.2",
     "shelljs": "^0.8.1",
+    "supertest": "^3.0.0",
+    "ts-jest": "^22.4.3",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "typescript": "^2.8.1"
