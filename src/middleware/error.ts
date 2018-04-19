@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { STATUS_CODES } from 'http';
-import logger from './logger';
+import logger from '../utils/logger';
 
 export default async (ctx: Context, next: () => Promise<any>) => {
   try {

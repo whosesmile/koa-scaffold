@@ -13,6 +13,7 @@ describe('module toolkit', () => {
 
   test('get /toolkit/example', () => {
     return request(server).get('/toolkit/example')
+      .expect('Content-Type', /html/)
       .expect(200);
   });
 

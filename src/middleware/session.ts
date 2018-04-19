@@ -1,6 +1,6 @@
 import Koa = require('koa');
 import session = require('koa-session');
-import logger from './logger';
+import logger from '../utils/logger';
 
 // const CONFIG = {
 //   key: 'koa:sess', /** (string) cookie key (default is koa:sess) */

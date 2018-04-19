@@ -1,10 +1,11 @@
 import Koa = require('koa');
-import error from './utils/error';
-import send from './utils/send';
-import body from './utils/body';
-import session from './utils/session';
-import nunjucks from './utils/nunjucks';
-import minifier from './utils/minifier';
+import error from './middleware/error';
+import send from './middleware/send';
+import body from './middleware/body';
+import session from './middleware/session';
+import nunjucks from './middleware/nunjucks';
+import minifier from './middleware/minifier';
+
 import landing from './modules/landing';
 import account from './modules/account';
 import toolkit from './modules/toolkit';

@@ -1,5 +1,4 @@
 import { unlink } from 'fs';
-import { promisify } from 'util';
 import qiniu = require('qiniu');
 import logger from '../../utils/logger';
 
@@ -7,7 +6,6 @@ type ConfigOptions = qiniu.conf.ConfigOptions | {
   zone?: qiniu.conf.Zone;
 };
 
-const rmtemp = promisify(unlink);
 const mac = new qiniu.auth.digest.Mac(process.env.QINIU_ACCESS_KEY, process.env.QINIU_SECRET_KEY);
 const policy = new qiniu.rs.PutPolicy({
   scope: process.env.QINIU_BUCKET,
@@ -24,7 +22,7 @@ export async function upload(file: any) {
     // 将KEY设置为null 利用七牛自带的etag/hash算法做消重: https://github.com/qiniu/qetag
     const token = policy.uploadToken(mac);
     uploader.putFile(token, null, file.path, extra, (err, body, info) => {
-      rmtemp(file.path); // 移除硬盘上缓存文件
+      unlink(file.path, e => e); // 移除硬盘上缓存文件
       if (err) {
         logger.error(err.message, err.stack);
         return reject(err);
