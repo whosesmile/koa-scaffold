@@ -3,5 +3,8 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
   transform: { '^.+\\.(ts|tsx)$': 'ts-jest' },
   testRegex: '(/tests/.*|(\\.|/)spec)\\.(ts|tsx)$',
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx,js,jsx,mjs,json}',
+  ],
 };
