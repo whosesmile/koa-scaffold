@@ -15,7 +15,7 @@ describe('module landing', () => {
   test('get /notfound text', () => {
     return request(server).get('/notfound')
       .set('Accept', 'text/plain')
-      .expect('Content-Type', /text/)
+      .expect('Content-Type', /plain/)
       .expect(404);
   });
 

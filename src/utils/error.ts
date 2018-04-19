@@ -12,8 +12,9 @@ export default async (ctx: Context, next: () => Promise<any>) => {
     ctx.status = typeof err.status === 'number' ? err.status : 500;
     // (<any> ctx.app).emit('error', err, ctx);
 
+    const type = ctx.accepts(['json', 'html', 'text/plain']);
     // json
-    if (ctx.accepts('json') === 'json') {
+    if (type === 'json') {
       ctx.type = 'application/json';
       if (process.env.NODE_ENV !== 'production') {
         ctx.body = { code: ctx.status, error: err.message, stack: err.stack };
@@ -26,7 +27,7 @@ export default async (ctx: Context, next: () => Promise<any>) => {
       }
     }
     // html
-    else if (ctx.accepts('html') === 'html') {
+    else if (type === 'html') {
       ctx.type = 'text/html';
       ctx.body = ctx.render('../templates/error.html', {
         error: err,
