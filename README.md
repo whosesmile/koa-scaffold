@@ -60,15 +60,15 @@ $  yarn start
 * 当引用文件时，需要使用../../../some...
 ```html
 |----controlers
-                      |----account.js
-                      |----shopping.js
+              |----account.js
+              |----shopping.js
 |----models
-                      |----user.js
-                      |----goods.js
-                      |----order.js
+              |----user.js
+              |----goods.js
+              |----order.js
 |----templates
-                      |----account.html
-                      |----shopping.html
+              |----account.html
+              |----shopping.html
 ```
 
 #### 按业务内聚的好处：
@@ -77,20 +77,20 @@ $  yarn start
 * 便于维护
 ```html
 |----account
-					  |----index.js
-                      |----routes.js
-                      |----service.js
-                      |----templates
-                                   |----profile.html
-                                   |----settings.html
+              |----index.js
+              |----routes.js
+              |----service.js
+              |----templates
+                            |----profile.html
+                            |----settings.html
 |----shopping
-					  |----index.js
-                      |----routes.js
-                      |----service.js
-                      |----templates
-                                   |----goods.html
-                                   |----carts.html
-                                   |----orders.html
+              |----index.js
+              |----routes.js
+              |----service.js
+              |----templates
+                            |----goods.html
+                            |----carts.html
+                            |----orders.html
 ```
 
 ### 2. 约定严格限制跨模块引用
@@ -118,7 +118,7 @@ $  yarn start
 ## 表单验证
 为了让路由层聚焦业务处理，工程实现了一个简单的中间件用于支撑 [Joi](https://github.com/hapijs/joi) ，用于于解耦路由层的参数验证。
 目前可以支撑 body, query, params 单个参数的验证，可以自行扩展支撑其他请求参数的验证。
- 
+
  ## 测试
 jest
 ````
