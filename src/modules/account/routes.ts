@@ -5,6 +5,6 @@ export const account = async (ctx: Context) => {
 };
 
 export const settings = async (ctx: Context) => {
-  (<any> ctx.session) = null;
+  (ctx.session as any) = null;
   ctx.body = 'I am settings';
 };

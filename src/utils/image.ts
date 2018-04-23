@@ -6,9 +6,11 @@ const exists = util.promisify(fs.exists);
 
 export default function generate(filepath: string, width = 100, height = 100) {
   exists(filepath).then(exist => {
-    if (exist) { return false; }
+    if (exist) {
+      return false;
+    }
 
-    const data = new Buffer(width * height * 4);
+    const data = Buffer.alloc(width * height * 4);
     let i = 0;
     while (i < data.length) {
       data[i++] = 0xFF; // red

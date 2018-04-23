@@ -2,15 +2,11 @@ import { unlink } from 'fs';
 import qiniu = require('qiniu');
 import logger from '../../utils/logger';
 
-type ConfigOptions = qiniu.conf.ConfigOptions | {
-  zone?: qiniu.conf.Zone;
-};
-
 const mac = new qiniu.auth.digest.Mac(process.env.QINIU_ACCESS_KEY, process.env.QINIU_SECRET_KEY);
 const policy = new qiniu.rs.PutPolicy({
   scope: process.env.QINIU_BUCKET,
 });
-const config: ConfigOptions = new qiniu.conf.Config();
+const config: any = new qiniu.conf.Config();
 config.zone = qiniu.zone.Zone_z0;
 const extra = new qiniu.form_up.PutExtra();
 const uploader = new qiniu.form_up.FormUploader(config);
