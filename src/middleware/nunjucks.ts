@@ -1,4 +1,4 @@
-import path = require('path');
+import { resolve } from 'path';
 import moment = require('moment');
 import { Context } from 'koa';
 import { Environment, FileSystemLoader } from 'nunjucks';
@@ -34,13 +34,15 @@ env.addFilter('rmxss', (content: string) => content.replace(REG_SCRIPT, ''));
 env.addFilter('date', (time: any, format: string) => time && moment(time).format(format));
 
 export default function (ctx: Context, next: () => Promise<any>) {
-  // TODO: maybe add some request thread varibel
-  ctx.render = (name: string, context?: any) => {
+  ctx.render = (path: string, viewModel?: any) => {
     // 本地路径 (相对调用目录)
-    if (!name.startsWith('/')) {
-      name = path.resolve(callsite()[1].getFileName(), '../', name);
+    if (!path.startsWith('/')) {
+      path = resolve(callsite()[1].getFileName(), '../', path);
     }
-    return env.render(name, context);
+    return env.render(path, {
+      ...viewModel,
+      STATIC_PREFIX: process.env.STATIC_PREFIX!.replace(/\/$/, ''),
+    });
   };
   return next();
 }
