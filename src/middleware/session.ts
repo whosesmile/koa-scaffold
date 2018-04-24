@@ -1,6 +1,7 @@
 import Koa = require('koa');
 import session = require('koa-session');
 import logger from '../utils/logger';
+import RedisStore from './store';
 
 // const CONFIG = {
 //   key: 'koa:sess', /** (string) cookie key (default is koa:sess) */
@@ -16,11 +17,19 @@ import logger from '../utils/logger';
 // };
 
 // SESSION配置 参考上文注释
-const CONFIG = {
+const CONFIG: Partial<session.opts> = {
   key: 'T',
   maxAge: 86400000 * 7, // 7天
   renew: true,
 };
+
+// 检查是否配置REDIS
+if (process.env.REDIS_PORT && process.env.REDIS_HOST) {
+  const host = process.env.REDIS_HOST;
+  const port = Number(process.env.REDIS_PORT);
+  CONFIG.store = new RedisStore({ host, port });
+}
+
 
 // 部分资源可能不需要SESSION, 譬如favicon、css、js等, 所以这里做一个黑名单列表
 const BLACKLIST = [
@@ -29,11 +38,9 @@ const BLACKLIST = [
 ];
 
 export default function (app: Koa) {
-  /*
-    require('crypto').randomBytes(32, (err, buf) => {
-      console.log(`${buf.length} bytes of random data: ${buf.toString('base64')}`);
-    });
-  */
+  // require('crypto').randomBytes(32, (err, buf) => {
+  //   console.log(`${buf.length} bytes of random data: ${buf.toString('base64')}`);
+  // });
   app.keys = JSON.parse(process.env.SECRET_KEYS!);
 
   // 创建SESSION中间件
