@@ -12,7 +12,6 @@ export default class RedisStore {
   promiseSet: (sid: string, ttl: number, sess: string) => Promise<string>;
   promiseDel: (sid: string) => Promise<number>;
   constructor(options: StoreOptions) {
-    logger.debug('Now session is based on redis');
     options.retry_strategy = options.retry_strategy || function (params) {
       if (params.error && params.error.code === 'ECONNREFUSED') {
         logger.error('Session redis connect failed, You can omit redis config in .env to resolve this');
