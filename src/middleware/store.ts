@@ -24,9 +24,9 @@ export default class RedisStore {
       return params.attempt * 100;
     };
     this.client = options.client || redis.createClient(options);
-    this.promiseGet = promisify(this.client.get);
-    this.promiseSet = promisify(this.client.setex);
-    this.promiseDel = promisify(this.client.del);
+    this.promiseGet = promisify(this.client.get.bind(this.client));
+    this.promiseSet = promisify(this.client.setex.bind(this.client));
+    this.promiseDel = promisify(this.client.del.bind(this.client));
   }
 
   async get(sid: string) {
@@ -40,6 +40,7 @@ export default class RedisStore {
   }
 
   async set(sid: string, sess: object, ttl: number) {
+    logger.debug(String(ttl));
     await this.promiseSet(sid, Math.ceil(ttl / 1000), JSON.stringify(sess));
   }
 

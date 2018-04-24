@@ -28,8 +28,11 @@ if (process.env.REDIS_PORT && process.env.REDIS_HOST) {
   const host = process.env.REDIS_HOST;
   const port = Number(process.env.REDIS_PORT);
   CONFIG.store = new RedisStore({ host, port });
-}
 
+  // 替换默认的genid算法，300ms太慢
+  let p = (len = 6) => (Math.random().toString(16) + '000000000').substr(2, len);
+  CONFIG.genid = () => 'NS:' + p() + p() + p() + p();
+}
 
 // 部分资源可能不需要SESSION, 譬如favicon、css、js等, 所以这里做一个黑名单列表
 const BLACKLIST = [
@@ -38,6 +41,7 @@ const BLACKLIST = [
 ];
 
 export default function (app: Koa) {
+  // 秘钥随机生成办法
   // require('crypto').randomBytes(32, (err, buf) => {
   //   console.log(`${buf.length} bytes of random data: ${buf.toString('base64')}`);
   // });
@@ -51,7 +55,7 @@ export default function (app: Koa) {
       logger.debug(`session is ignored for "${ctx.path}"`);
       return next();
     }
-    logger.debug(ctx.session ? `session is ${ctx.session.isNew ? 'created' : 'recovered'}` : 'session is destroyed');
     await middleware(ctx, next);
+    logger.debug(ctx.session ? `session is ${ctx.session.isNew ? 'created' : 'recovered'}` : 'session is destroyed');
   };
 }
