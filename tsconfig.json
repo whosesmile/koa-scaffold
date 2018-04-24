@@ -9,7 +9,7 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "sourceMap": true,
+    "sourceMap": false,
   },
   "include": [
     "src/**/*",
