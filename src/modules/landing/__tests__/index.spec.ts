@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import request = require('supertest');
-import app from '../src/app';
+import app from '../../../app';
 
 describe('module landing', () => {
   const server = app.listen();

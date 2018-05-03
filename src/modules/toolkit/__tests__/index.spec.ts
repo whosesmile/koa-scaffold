@@ -1,11 +1,25 @@
 import 'dotenv/config';
+import * as fs from 'fs';
 import * as path from 'path';
 import request = require('supertest');
-import app from '../src/app';
-import image from '../src/utils/image';
+import app from '../../../app';
+import image from '../../../utils/image';
+
+const NOT_A_IMAGE = path.resolve(__dirname, './index.spec.ts');
+const BLANK_IMAGE = path.resolve(__dirname, '../upload.blank.jpeg');
+const NORMAL_IMAGE = path.resolve(__dirname, '../upload.image.jpeg');
+const LARGE_IMAGE = path.resolve(__dirname, '../upload.limit.jpeg');
 
 beforeAll(() => {
-  image(path.resolve(__dirname, './material/upload.limit.jpeg'), 8800, 8800);
+  fs.closeSync(fs.openSync(BLANK_IMAGE, 'w'));
+  image(NORMAL_IMAGE, 100, 100);
+  image(LARGE_IMAGE, 8800, 8800);
+});
+
+afterAll(() => {
+  fs.unlinkSync(BLANK_IMAGE);
+  fs.unlinkSync(NORMAL_IMAGE);
+  fs.unlinkSync(LARGE_IMAGE);
 });
 
 describe('module toolkit', () => {
@@ -19,25 +33,25 @@ describe('module toolkit', () => {
 
   test('post /toolkit/upload: only allow image', () => {
     return request(server).post('/toolkit/upload')
-      .attach('file', './tests/toolkit.spec.ts')
+      .attach('file', NOT_A_IMAGE)
       .expect(422);
   });
 
   test('post /toolkit/upload: image size must bigger than 0', () => {
     return request(server).post('/toolkit/upload')
-      .attach('file', './tests/material/upload.blank.jpeg')
+      .attach('file', BLANK_IMAGE)
       .expect(422);
   });
 
   test('post /toolkit/upload: image size must less than 2MB', () => {
     return request(server).post('/toolkit/upload')
-      .attach('file', './tests/material/upload.limit.jpeg')
+      .attach('file', LARGE_IMAGE)
       .expect(422);
   });
 
   test('post /toolkit/upload: success', () => {
     return request(server).post('/toolkit/upload')
-      .attach('file', './tests/material/upload.image.jpeg')
+      .attach('file', NORMAL_IMAGE)
       .expect('Content-Type', /json/)
       .expect(200)
       .then(({ body }) => {

@@ -39,3 +39,5 @@ coverage
 
 # Ignore upload test image
 upload.limit.jpeg
+upload.blank.jpeg
+upload.image.jpeg
