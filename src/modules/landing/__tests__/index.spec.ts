@@ -34,5 +34,10 @@ describe('module landing', () => {
       .expect(200);
   });
 
+  test('get /hello', () => {
+    return request(server).get('/hello')
+      .expect(200);
+  });
+
   server.close();
 });
