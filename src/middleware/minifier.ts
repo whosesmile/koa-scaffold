@@ -11,7 +11,8 @@ const options = {
 };
 
 export default async function (ctx: Context, next: () => Promise<any>) {
-  if (process.env.NODE_ENV !== 'production') {
+  // env is string
+  if (process.env.HTML_MINIFY !== 'true') {
     return next();
   }
 

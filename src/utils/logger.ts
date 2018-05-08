@@ -6,7 +6,7 @@ import 'winston-daily-rotate-file';
 const logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)({
-      level: process.env.NODE_ENV === 'production' ? 'error' : 'debug',
+      level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
       silent: process.env.NODE_ENV === 'test',
     }),
     new (winston.transports.DailyRotateFile)({
@@ -21,7 +21,7 @@ const logger = new (winston.Logger)({
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  logger.debug('Logger initialized at debug level');
+  logger.info('logger is working on debug level');
 }
 
 export default logger;

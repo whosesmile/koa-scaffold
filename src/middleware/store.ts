@@ -39,7 +39,6 @@ export default class RedisStore {
   }
 
   async set(sid: string, sess: object, ttl: number) {
-    logger.debug(String(ttl));
     await this.promiseSet(sid, Math.ceil(ttl / 1000), JSON.stringify(sess));
   }
 

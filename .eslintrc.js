@@ -29,6 +29,7 @@ module.exports = {
     ],
     'typescript/adjacent-overload-signatures': [
       'off',
-    ]
+    ],
+    'no-console': ['error'],
   }
 };

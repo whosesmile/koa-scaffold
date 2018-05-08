@@ -34,7 +34,7 @@ if (process.env.REDIS_PORT && process.env.REDIS_HOST) {
   CONFIG.genid = () => 'NS:' + p() + p() + p() + p();
 }
 
-logger.debug(`${CONFIG.store ? 'redis' : 'cookie'} session is enabled`);
+logger.info(`${CONFIG.store ? 'redis' : 'cookie'} session is enabled`);
 
 // 部分资源可能不需要SESSION, 譬如favicon、css、js等, 所以这里做一个黑名单列表
 const BLACKLIST = [

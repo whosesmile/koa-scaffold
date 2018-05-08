@@ -7,7 +7,7 @@ shell.mkdir('upload');
 
 // 同步资源文件
 shell.find('src').filter(item => {
-  return item.match(/\.html$/);
+  return item.match(/\.(html|ico)$/);
 }).forEach(item => {
   const dest = item.replace(/^src\b/, 'dist');
   shell.mkdir('-p', path.dirname(dest));
